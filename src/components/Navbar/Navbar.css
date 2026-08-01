@@ -1,0 +1,292 @@
+/* ============================================================
+   NAVBAR — Two independent floating neumorphic containers
+   ============================================================ */
+
+.navbar-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 16px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  transition: padding var(--transition-base), background var(--transition-base);
+  pointer-events: none;
+}
+
+/* Blur backdrop when scrolled */
+.navbar-wrapper.scrolled {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.navbar-wrapper.scrolled::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(240, 240, 243, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: -1;
+}
+
+/* --- Container One: Logo + Nav Links --------------------- */
+.nav-container-one {
+  pointer-events: all;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  background: #f2f2f5;
+  border-radius: 100px;
+  padding: 10px 24px 10px 14px;
+  box-shadow: var(--shadow-neu-base);
+  border: 1px solid rgba(255,255,255,0.7);
+  transition: box-shadow var(--transition-base);
+}
+
+.nav-container-one:hover {
+  box-shadow: var(--shadow-neu-hover);
+}
+
+/* Logo */
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.nav-logo-icon {
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, #6c3fc5 0%, #8b5cf6 100%);
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* no box-shadow glow — design shows clean logo */
+}
+
+.nav-logo-icon svg {
+  width: 24px;
+  height: 24px;
+  fill: white;
+}
+
+.nav-logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.nav-logo-brand {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: 0.5px;
+}
+
+.nav-logo-sub {
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* Nav Links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+}
+
+.nav-link-item a {
+  display: block;
+  padding: 6px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  border-radius: 100px;
+  transition: color var(--transition-fast), background var(--transition-fast);
+  white-space: nowrap;
+}
+
+.nav-link-item a:hover {
+  color: var(--color-purple);
+  background: var(--color-purple-bg);
+}
+
+.nav-link-item.active a {
+  color: var(--color-purple);
+  font-weight: 600;
+  position: relative;
+}
+
+.nav-link-item.active a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 14px;
+  right: 14px;
+  height: 2px;
+  background: var(--color-purple);
+  border-radius: 2px;
+}
+
+/* --- Container Two: CTA + Icons -------------------------- */
+.nav-container-two {
+  pointer-events: all;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f2f2f5;
+  border-radius: 100px;
+  padding: 8px 12px;
+  box-shadow: var(--shadow-neu-base);
+  border: 1px solid rgba(255,255,255,0.7);
+  transition: box-shadow var(--transition-base);
+}
+
+.nav-container-two:hover {
+  box-shadow: var(--shadow-neu-hover);
+}
+
+/* CTA Button — purple pill, no outer glow */
+.nav-cta-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #6c3fc5 0%, #8b5cf6 100%);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 22px;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  /* No glow — clean per design */
+  box-shadow: none;
+  transition: transform var(--transition-fast), filter var(--transition-fast);
+}
+
+.nav-cta-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.nav-cta-btn:active {
+  transform: translateY(0);
+  filter: brightness(0.96);
+}
+
+.nav-cta-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Icon Buttons — flat circles, no glow */
+.nav-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.nav-icon-btn:hover {
+  color: var(--color-purple);
+  background: rgba(108, 63, 197, 0.07);
+}
+
+.nav-icon-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Mobile nav toggle (hamburger shows mobile menu) */
+.nav-mobile-menu {
+  display: none;
+  position: fixed;
+  top: 88px;
+  left: 16px;
+  right: 16px;
+  background: #f0f0f3;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: var(--shadow-neu-lg);
+  z-index: 999;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nav-mobile-menu.open {
+  display: flex;
+}
+
+.nav-mobile-link {
+  display: block;
+  padding: 12px 16px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  border-radius: 12px;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.nav-mobile-link:hover,
+.nav-mobile-link.active {
+  color: var(--color-purple);
+  background: var(--color-purple-bg);
+}
+
+/* --- Responsive ------------------------------------------ */
+@media (max-width: 1024px) {
+  .navbar-wrapper {
+    padding: 14px 24px;
+  }
+
+  .nav-link-item:nth-child(n+4) {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-wrapper {
+    padding: 12px 16px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .nav-container-one {
+    padding: 10px 16px;
+    gap: 0;
+  }
+
+  .nav-cta-btn span {
+    display: none;
+  }
+
+  .nav-cta-btn {
+    padding: 10px 14px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+  }
+}

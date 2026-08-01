@@ -1,0 +1,115 @@
+/* ============================================================
+   FEATURE CARDS SECTION
+   ============================================================ */
+
+.feature-cards-section {
+  position: relative;
+  z-index: 10;
+  background: var(--color-bg);
+  padding: 0 40px 0;
+}
+
+/* Overlap with hero — negative margin to float over */
+.feature-cards-inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  margin-top: -52px;
+}
+
+.feature-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+/* Individual Card */
+.feature-card {
+  background: #f4f4f7;
+  border-radius: 18px;
+  padding: 22px 20px;
+  box-shadow: var(--shadow-neu-base);
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  cursor: default;
+  transition: box-shadow var(--transition-base), transform var(--transition-base);
+  border: 1px solid rgba(255,255,255,0.85);
+}
+
+.feature-card:hover {
+  box-shadow: var(--shadow-neu-hover);
+  transform: translateY(-5px);
+}
+
+/* Icon Container */
+.feature-card-icon {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #ebebef;
+  box-shadow: var(--shadow-neu-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  transition: color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.feature-card:hover .feature-card-icon {
+  color: var(--color-purple);
+  box-shadow: var(--shadow-neu-hover);
+}
+
+.feature-card-icon svg {
+  width: 22px;
+  height: 22px;
+  stroke-width: 1.5;
+}
+
+/* Text */
+.feature-card-body {
+  flex: 1;
+}
+
+.feature-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.feature-card-desc {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+/* --- Responsive ------------------------------------------ */
+@media (max-width: 1024px) {
+  .feature-cards-section {
+    padding: 0 24px 0;
+  }
+  .feature-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .feature-cards-inner {
+    margin-top: -40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .feature-cards-section {
+    padding: 0 16px 0;
+  }
+  .feature-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .feature-cards-inner {
+    margin-top: -24px;
+  }
+}
