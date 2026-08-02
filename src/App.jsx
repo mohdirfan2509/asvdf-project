@@ -21,7 +21,7 @@ import FooterCTA from './FooterCTA';
 const PAGES = ["Home", "Projects", "Clients", "Services", "About Us", "Milestones", "Core Values", "Contact Us", "Contact Form", "Testimonials", "Blogs", "Machinery", "Gallery", "FAQs", "Footer"];
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState("Footer");
+  const [activeTab, setActiveTab] = useState("Home");
   const [direction, setDirection] = useState(1);
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -90,7 +90,7 @@ export default function App() {
   };
 
   return (
-    <div className="h-screen w-screen bg-[#F6F7FB] font-['Poppins'] antialiased text-slate-900 flex flex-col justify-between p-3 sm:p-4 overflow-hidden selection:bg-purple-600 selection:text-white">
+    <div className="h-screen w-screen bg-[#F5F7FB] font-['Poppins'] antialiased text-slate-900 flex flex-col justify-between p-3 sm:p-4 overflow-hidden selection:bg-purple-600 selection:text-white">
       
       {/* 1. PERMANENT STATIONARY NAVBAR */}
       <Navbar activePage={activeTab} onNavigate={handleNavigate} />
@@ -132,7 +132,7 @@ export default function App() {
       </div>
 
       {/* Floating Modern Scroll Indicator */}
-      <div className="fixed right-4 bottom-6 z-50 flex flex-col items-center gap-2 bg-white/90 backdrop-blur-md p-2 rounded-full neu-sm border border-white">
+      <div className="fixed right-4 bottom-6 z-50 flex flex-col items-center gap-2 bg-[#F5F7FB] p-2 rounded-full neu-lvl-1 border border-white/70">
         {PAGES.map((page) => {
           const isActive = activeTab === page;
           return (

@@ -3,7 +3,8 @@
 @layer base {
   body {
     font-family: 'Poppins', sans-serif;
-    background-color: #F6F7FB;
+    background-color: #F5F7FB;
+    color: #0F172A;
   }
 }
 
@@ -15,72 +16,91 @@
 }
 
 /* 
-  UNIFIED APPLE / LINEAR NEUMORPHIC SHADOW SYSTEM
-  Zero glow, zero bloom, zero drop-shadow filters.
+  NEUMORPHISM 2.0 DESIGN SYSTEM
+  Carved from one continuous #F5F7FB surface.
+  Single light source: TOP LEFT.
+  Zero glow, zero bloom, zero colored shadows, zero heavy blurs.
 */
 
-/* Small Neumorphic Elevation */
-.neu-sm {
-  box-shadow: -4px -4px 10px rgba(255, 255, 255, 0.9), 4px 4px 10px rgba(210, 218, 230, 0.45);
-  transition: all 0.2s ease;
+/* LEVEL 1: Navbar, Buttons, Statistics, Controls */
+.neu-lvl-1, .neu-sm {
+  background-color: #F5F7FB;
+  box-shadow: 4px 4px 10px rgba(163, 177, 198, 0.28), -4px -4px 10px rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.70);
+  transition: transform 250ms ease, box-shadow 250ms ease;
 }
-.neu-sm:hover {
+
+.neu-lvl-1:hover, .neu-sm:hover {
   transform: translateY(-2px);
-  box-shadow: -6px -6px 14px rgba(255, 255, 255, 0.95), 6px 6px 14px rgba(200, 208, 222, 0.55);
+  box-shadow: 5px 5px 12px rgba(163, 177, 198, 0.32), -5px -5px 12px rgba(255, 255, 255, 0.98);
 }
-.neu-sm:active {
+
+.neu-lvl-1:active, .neu-sm:active {
   transform: translateY(0);
-  box-shadow: inset 3px 3px 6px rgba(209, 217, 230, 0.45), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+  box-shadow: inset 3px 3px 6px rgba(163, 177, 198, 0.28), inset -3px -3px 6px rgba(255, 255, 255, 0.95);
 }
 
-/* Medium Neumorphic Elevation */
-.neu-md {
-  box-shadow: -8px -8px 18px rgba(255, 255, 255, 0.95), 8px 8px 18px rgba(209, 217, 230, 0.50);
-  transition: all 0.2s ease;
-}
-.neu-md-hover:hover {
-  transform: translateY(-3px);
-  box-shadow: -10px -10px 22px rgba(255, 255, 255, 0.95), 10px 10px 22px rgba(198, 207, 222, 0.60);
+/* LEVEL 2: Cards, Service cards, Gallery cards, Testimonials, Main Containers */
+.neu-lvl-2, .neu-md, .neu-lg {
+  background-color: #F5F7FB;
+  box-shadow: 6px 6px 12px rgba(163, 177, 198, 0.28), -6px -6px 12px rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.70);
+  transition: transform 250ms ease, box-shadow 250ms ease;
 }
 
-/* Large Neumorphic Elevation */
-.neu-lg {
-  box-shadow: -12px -12px 24px rgba(255, 255, 255, 0.95), 12px 12px 24px rgba(209, 217, 230, 0.55);
+.neu-md-hover:hover, .neu-lvl-2:hover {
+  transform: translateY(-2px);
+  box-shadow: 7px 7px 14px rgba(163, 177, 198, 0.32), -7px -7px 14px rgba(255, 255, 255, 0.98);
 }
 
-/* Inset Neumorphic Shadow */
+/* LEVEL 3: Modals, Search overlay, Dropdown Menus */
+.neu-lvl-3 {
+  background-color: #F5F7FB;
+  box-shadow: 8px 8px 16px rgba(163, 177, 198, 0.30), -8px -8px 16px rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.80);
+}
+
+/* INSET COMPONENTS: Search bars, Input fields, Filters, Dropdowns, Icon wells */
 .neu-inset {
-  box-shadow: inset 3px 3px 6px rgba(209, 217, 230, 0.45), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+  background-color: #F5F7FB;
+  box-shadow: inset 3px 3px 6px rgba(163, 177, 198, 0.28), inset -3px -3px 6px rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.40);
 }
 
-/* Primary Purple Button */
+/* PRIMARY ACCENT BUTTON (Physical Tactile Neumorphism) */
 .neu-btn-primary {
   background: linear-gradient(135deg, #7C3AED, #6D28D9);
-  box-shadow: -4px -4px 10px rgba(255, 255, 255, 0.8), 5px 5px 12px rgba(109, 40, 217, 0.35);
-  transition: all 0.2s ease;
+  box-shadow: 4px 4px 10px rgba(109, 40, 217, 0.25), -4px -4px 10px rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  transition: transform 250ms ease, box-shadow 250ms ease;
   font-weight: 600;
-}
-.neu-btn-primary:hover {
-  transform: translateY(-3px);
-  box-shadow: -6px -6px 14px rgba(255, 255, 255, 0.9), 7px 7px 16px rgba(109, 40, 217, 0.45);
-}
-.neu-btn-primary:active {
-  transform: translateY(0);
-  box-shadow: inset 3px 3px 6px rgba(67, 20, 140, 0.6), inset -3px -3px 6px rgba(168, 85, 247, 0.4);
 }
 
-/* Secondary White Button */
+.neu-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 5px 5px 12px rgba(109, 40, 217, 0.30), -5px -5px 12px rgba(255, 255, 255, 0.95);
+}
+
+.neu-btn-primary:active {
+  transform: translateY(0);
+  box-shadow: inset 3px 3px 6px rgba(67, 20, 140, 0.5), inset -3px -3px 6px rgba(168, 85, 247, 0.3);
+}
+
+/* SECONDARY BUTTON */
 .neu-btn-secondary {
-  background-color: #FFFFFF;
-  box-shadow: -4px -4px 10px rgba(255, 255, 255, 0.9), 4px 4px 10px rgba(210, 218, 230, 0.45);
-  transition: all 0.2s ease;
+  background-color: #F5F7FB;
+  box-shadow: 4px 4px 10px rgba(163, 177, 198, 0.28), -4px -4px 10px rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.70);
+  transition: transform 250ms ease, box-shadow 250ms ease;
   font-weight: 600;
 }
+
 .neu-btn-secondary:hover {
-  transform: translateY(-3px);
-  box-shadow: -6px -6px 14px rgba(255, 255, 255, 0.95), 6px 6px 14px rgba(200, 208, 222, 0.55);
+  transform: translateY(-2px);
+  box-shadow: 5px 5px 12px rgba(163, 177, 198, 0.32), -5px -5px 12px rgba(255, 255, 255, 0.98);
 }
+
 .neu-btn-secondary:active {
   transform: translateY(0);
-  box-shadow: inset 3px 3px 6px rgba(209, 217, 230, 0.45), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+  box-shadow: inset 3px 3px 6px rgba(163, 177, 198, 0.28), inset -3px -3px 6px rgba(255, 255, 255, 0.95);
 }
