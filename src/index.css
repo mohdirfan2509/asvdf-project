@@ -1,145 +1,86 @@
-/* ============================================================
-   ASVDF FLOORING — GLOBAL DESIGN SYSTEM
-   ============================================================ */
+@import "tailwindcss";
 
-/* --- Reset & Base ----------------------------------------- */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+@layer base {
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #F6F7FB;
+  }
 }
 
-:root {
-  /* Color Tokens */
-  --color-bg:           #f0f0f3;
-  --color-bg-alt:       #e8e8ed;
-  --color-surface:      #f0f0f3;
-  --color-surface-card: #f4f4f7;
-
-  --color-purple:       #6c3fc5;
-  --color-purple-light: #8b5cf6;
-  --color-purple-dark:  #5432a8;
-  --color-purple-bg:    rgba(108, 63, 197, 0.08);
-
-  --color-text-primary:   #1a1a2e;
-  --color-text-secondary: #4a4a6a;
-  --color-text-muted:     #7a7a9a;
-  --color-text-white:     #ffffff;
-
-  /* Neumorphic Shadow Tokens — soft, no glow */
-  --shadow-neu-base:  5px 5px 12px #d1d1d6, -5px -5px 12px rgba(255,255,255,0.78);
-  --shadow-neu-inset: inset 4px 4px 9px #d1d1d6, inset -4px -4px 9px rgba(255,255,255,0.78);
-  --shadow-neu-hover: 7px 7px 16px #c9c9cf, -7px -7px 16px rgba(255,255,255,0.82);
-  --shadow-neu-sm:    3px 3px 7px #d1d1d6, -3px -3px 7px rgba(255,255,255,0.76);
-  --shadow-neu-lg:    10px 10px 24px #c5c5cb, -10px -10px 24px rgba(255,255,255,0.80);
-  --shadow-card:      0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.03);
-
-  /* Border Radius */
-  --radius-sm:   8px;
-  --radius-md:   16px;
-  --radius-lg:   24px;
-  --radius-xl:   32px;
-  --radius-full: 9999px;
-
-  /* Spacing Scale */
-  --space-1:  4px;
-  --space-2:  8px;
-  --space-3:  12px;
-  --space-4:  16px;
-  --space-5:  20px;
-  --space-6:  24px;
-  --space-8:  32px;
-  --space-10: 40px;
-  --space-12: 48px;
-  --space-16: 64px;
-  --space-20: 80px;
-
-  /* Typography */
-  --font-family: 'Poppins', system-ui, -apple-system, sans-serif;
-  --font-size-xs:   11px;
-  --font-size-sm:   13px;
-  --font-size-base: 15px;
-  --font-size-md:   17px;
-  --font-size-lg:   20px;
-  --font-size-xl:   24px;
-  --font-size-2xl:  30px;
-  --font-size-3xl:  38px;
-  --font-size-4xl:  48px;
-  --font-size-5xl:  60px;
-
-  /* Transitions */
-  --transition-fast:   0.15s ease;
-  --transition-base:   0.25s ease;
-  --transition-slow:   0.4s ease;
-  --transition-spring: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+.heading-poppins {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
 }
 
-html {
-  scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* 
+  UNIFIED APPLE / LINEAR NEUMORPHIC SHADOW SYSTEM
+  Zero glow, zero bloom, zero drop-shadow filters.
+*/
+
+/* Small Neumorphic Elevation */
+.neu-sm {
+  box-shadow: -4px -4px 10px rgba(255, 255, 255, 0.9), 4px 4px 10px rgba(210, 218, 230, 0.45);
+  transition: all 0.2s ease;
+}
+.neu-sm:hover {
+  transform: translateY(-2px);
+  box-shadow: -6px -6px 14px rgba(255, 255, 255, 0.95), 6px 6px 14px rgba(200, 208, 222, 0.55);
+}
+.neu-sm:active {
+  transform: translateY(0);
+  box-shadow: inset 3px 3px 6px rgba(209, 217, 230, 0.45), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
 }
 
-body {
-  font-family: var(--font-family);
-  background-color: var(--color-bg);
-  color: var(--color-text-primary);
-  font-size: var(--font-size-base);
-  line-height: 1.6;
-  min-height: 100vh;
-  overflow-x: hidden;
+/* Medium Neumorphic Elevation */
+.neu-md {
+  box-shadow: -8px -8px 18px rgba(255, 255, 255, 0.95), 8px 8px 18px rgba(209, 217, 230, 0.50);
+  transition: all 0.2s ease;
+}
+.neu-md-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: -10px -10px 22px rgba(255, 255, 255, 0.95), 10px 10px 22px rgba(198, 207, 222, 0.60);
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
+/* Large Neumorphic Elevation */
+.neu-lg {
+  box-shadow: -12px -12px 24px rgba(255, 255, 255, 0.95), 12px 12px 24px rgba(209, 217, 230, 0.55);
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
+/* Inset Neumorphic Shadow */
+.neu-inset {
+  box-shadow: inset 3px 3px 6px rgba(209, 217, 230, 0.45), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
 }
 
-button {
-  cursor: pointer;
-  font-family: var(--font-family);
-  border: none;
-  background: none;
+/* Primary Purple Button */
+.neu-btn-primary {
+  background: linear-gradient(135deg, #7C3AED, #6D28D9);
+  box-shadow: -4px -4px 10px rgba(255, 255, 255, 0.8), 5px 5px 12px rgba(109, 40, 217, 0.35);
+  transition: all 0.2s ease;
+  font-weight: 600;
+}
+.neu-btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: -6px -6px 14px rgba(255, 255, 255, 0.9), 7px 7px 16px rgba(109, 40, 217, 0.45);
+}
+.neu-btn-primary:active {
+  transform: translateY(0);
+  box-shadow: inset 3px 3px 6px rgba(67, 20, 140, 0.6), inset -3px -3px 6px rgba(168, 85, 247, 0.4);
 }
 
-/* ============================================================
-   UTILITY CLASSES
-   ============================================================ */
-
-.container {
-  width: 100%;
-  max-width: 1320px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: var(--space-6);
-  padding-right: var(--space-6);
+/* Secondary White Button */
+.neu-btn-secondary {
+  background-color: #FFFFFF;
+  box-shadow: -4px -4px 10px rgba(255, 255, 255, 0.9), 4px 4px 10px rgba(210, 218, 230, 0.45);
+  transition: all 0.2s ease;
+  font-weight: 600;
 }
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+.neu-btn-secondary:hover {
+  transform: translateY(-3px);
+  box-shadow: -6px -6px 14px rgba(255, 255, 255, 0.95), 6px 6px 14px rgba(200, 208, 222, 0.55);
 }
-
-/* ============================================================
-   SCROLLBAR
-   ============================================================ */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--color-bg); }
-::-webkit-scrollbar-thumb {
-  background: var(--color-purple);
-  border-radius: var(--radius-full);
+.neu-btn-secondary:active {
+  transform: translateY(0);
+  box-shadow: inset 3px 3px 6px rgba(209, 217, 230, 0.45), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
 }
-::-webkit-scrollbar-thumb:hover { background: var(--color-purple-dark); }
