@@ -3,7 +3,7 @@
 @layer base {
   body {
     font-family: 'Poppins', sans-serif;
-    background-color: #F5F7FB;
+    background-color: #EBECF0;
     color: #0F172A;
   }
 }
@@ -16,91 +16,73 @@
 }
 
 /* 
-  NEUMORPHISM 2.0 DESIGN SYSTEM
-  Carved from one continuous #F5F7FB surface.
-  Single light source: TOP LEFT.
-  Zero glow, zero bloom, zero colored shadows, zero heavy blurs.
+  UNIFIED NEUMORPHISM SYSTEM (Matching neu1.png reference exactly)
+  Surface Background: #EBECF0
+  Single Light Direction: TOP LEFT
+  No glow, no bloom, no harsh outlines, no colored shadows.
 */
 
-/* LEVEL 1: Navbar, Buttons, Statistics, Controls */
-.neu-lvl-1, .neu-sm {
-  background-color: #F5F7FB;
-  box-shadow: 4px 4px 10px rgba(163, 177, 198, 0.28), -4px -4px 10px rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.70);
-  transition: transform 250ms ease, box-shadow 250ms ease;
+/* RAISED ELEVATION (Level 1, Level 2, Level 3 Cards & Components) */
+.neu-lvl-1, .neu-lvl-2, .neu-lvl-3, .neu-sm, .neu-md, .neu-lg {
+  background-color: #EBECF0;
+  box-shadow: 6px 6px 12px #B8B9BE, -6px -6px 12px #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  transition: transform 220ms ease-in-out, box-shadow 220ms ease-in-out, background-color 220ms ease-in-out;
 }
 
-.neu-lvl-1:hover, .neu-sm:hover {
-  transform: translateY(-2px);
-  box-shadow: 5px 5px 12px rgba(163, 177, 198, 0.32), -5px -5px 12px rgba(255, 255, 255, 0.98);
+/* HOVER: Soft Lightening (-1px translate, slightly reduced shadow intensity for tactile feedback) */
+.neu-lvl-1:hover, .neu-lvl-2:hover, .neu-sm:hover, .neu-md:hover, .neu-md-hover:hover {
+  transform: translateY(-1px);
+  box-shadow: 4px 4px 8px #B8B9BE, -4px -4px 8px #FFFFFF;
 }
 
-.neu-lvl-1:active, .neu-sm:active {
+/* ACTIVE / PRESSED: Immediate switch to clean inset depth */
+.neu-lvl-1:active, .neu-lvl-2:active, .neu-sm:active, .neu-md:active {
   transform: translateY(0);
-  box-shadow: inset 3px 3px 6px rgba(163, 177, 198, 0.28), inset -3px -3px 6px rgba(255, 255, 255, 0.95);
+  box-shadow: inset 3px 3px 6px #B8B9BE, inset -3px -3px 6px #FFFFFF;
 }
 
-/* LEVEL 2: Cards, Service cards, Gallery cards, Testimonials, Main Containers */
-.neu-lvl-2, .neu-md, .neu-lg {
-  background-color: #F5F7FB;
-  box-shadow: 6px 6px 12px rgba(163, 177, 198, 0.28), -6px -6px 12px rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.70);
-  transition: transform 250ms ease, box-shadow 250ms ease;
-}
-
-.neu-md-hover:hover, .neu-lvl-2:hover {
-  transform: translateY(-2px);
-  box-shadow: 7px 7px 14px rgba(163, 177, 198, 0.32), -7px -7px 14px rgba(255, 255, 255, 0.98);
-}
-
-/* LEVEL 3: Modals, Search overlay, Dropdown Menus */
-.neu-lvl-3 {
-  background-color: #F5F7FB;
-  box-shadow: 8px 8px 16px rgba(163, 177, 198, 0.30), -8px -8px 16px rgba(255, 255, 255, 0.98);
-  border: 1px solid rgba(255, 255, 255, 0.80);
-}
-
-/* INSET COMPONENTS: Search bars, Input fields, Filters, Dropdowns, Icon wells */
+/* INSET ELEVATION (Search, Inputs, Dropdowns, Icon Wells, Filters) */
 .neu-inset {
-  background-color: #F5F7FB;
-  box-shadow: inset 3px 3px 6px rgba(163, 177, 198, 0.28), inset -3px -3px 6px rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.40);
+  background-color: #EBECF0;
+  box-shadow: inset 3px 3px 6px #B8B9BE, inset -3px -3px 6px #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.20);
 }
 
-/* PRIMARY ACCENT BUTTON (Physical Tactile Neumorphism) */
+/* PRIMARY ACCENT BUTTON (Purple Neumorphic Tactile Pill) */
 .neu-btn-primary {
   background: linear-gradient(135deg, #7C3AED, #6D28D9);
-  box-shadow: 4px 4px 10px rgba(109, 40, 217, 0.25), -4px -4px 10px rgba(255, 255, 255, 0.85);
+  box-shadow: 5px 5px 10px rgba(109, 40, 217, 0.35), -5px -5px 10px rgba(255, 255, 255, 0.80);
   border: 1px solid rgba(255, 255, 255, 0.25);
-  transition: transform 250ms ease, box-shadow 250ms ease;
+  transition: transform 220ms ease-in-out, box-shadow 220ms ease-in-out;
   font-weight: 600;
 }
 
 .neu-btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 5px 5px 12px rgba(109, 40, 217, 0.30), -5px -5px 12px rgba(255, 255, 255, 0.95);
+  transform: translateY(-1px);
+  box-shadow: 3px 3px 7px rgba(109, 40, 217, 0.40), -3px -3px 7px rgba(255, 255, 255, 0.90);
 }
 
 .neu-btn-primary:active {
   transform: translateY(0);
-  box-shadow: inset 3px 3px 6px rgba(67, 20, 140, 0.5), inset -3px -3px 6px rgba(168, 85, 247, 0.3);
+  box-shadow: inset 3px 3px 6px rgba(55, 15, 115, 0.6), inset -3px -3px 6px rgba(168, 85, 247, 0.4);
 }
 
 /* SECONDARY BUTTON */
 .neu-btn-secondary {
-  background-color: #F5F7FB;
-  box-shadow: 4px 4px 10px rgba(163, 177, 198, 0.28), -4px -4px 10px rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.70);
-  transition: transform 250ms ease, box-shadow 250ms ease;
+  background-color: #EBECF0;
+  box-shadow: 6px 6px 12px #B8B9BE, -6px -6px 12px #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  transition: transform 220ms ease-in-out, box-shadow 220ms ease-in-out;
   font-weight: 600;
 }
 
 .neu-btn-secondary:hover {
-  transform: translateY(-2px);
-  box-shadow: 5px 5px 12px rgba(163, 177, 198, 0.32), -5px -5px 12px rgba(255, 255, 255, 0.98);
+  transform: translateY(-1px);
+  box-shadow: 4px 4px 8px #B8B9BE, -4px -4px 8px #FFFFFF;
 }
 
 .neu-btn-secondary:active {
   transform: translateY(0);
-  box-shadow: inset 3px 3px 6px rgba(163, 177, 198, 0.28), inset -3px -3px 6px rgba(255, 255, 255, 0.95);
+  box-shadow: inset 3px 3px 6px #B8B9BE, inset -3px -3px 6px #FFFFFF;
 }

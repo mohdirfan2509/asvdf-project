@@ -90,7 +90,7 @@ export default function App() {
   };
 
   return (
-    <div className="h-screen w-screen bg-[#F5F7FB] font-['Poppins'] antialiased text-slate-900 flex flex-col justify-between p-3 sm:p-4 overflow-hidden selection:bg-purple-600 selection:text-white">
+    <div className="h-screen w-screen bg-[#EBECF0] font-['Poppins'] antialiased text-slate-900 flex flex-col justify-between p-3 sm:p-4 overflow-hidden selection:bg-purple-600 selection:text-white">
       
       {/* 1. PERMANENT STATIONARY NAVBAR */}
       <Navbar activePage={activeTab} onNavigate={handleNavigate} />
@@ -132,7 +132,7 @@ export default function App() {
       </div>
 
       {/* Floating Modern Scroll Indicator */}
-      <div className="fixed right-4 bottom-6 z-50 flex flex-col items-center gap-2 bg-[#F5F7FB] p-2 rounded-full neu-lvl-1 border border-white/70">
+      <div className="fixed right-4 bottom-6 z-50 flex flex-col items-center gap-2 bg-[#EBECF0] p-2 rounded-full neu-lvl-1 border border-white/35">
         {PAGES.map((page) => {
           const isActive = activeTab === page;
           return (

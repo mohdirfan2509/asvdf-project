@@ -65,11 +65,11 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
     <header className="w-full max-w-[1440px] mx-auto shrink-0 mb-2 font-['Poppins'] relative">
       <div className="flex items-center justify-between gap-3 h-[68px]">
         
-        {/* Left Floating Navigation Container */}
-        <div className="flex items-center justify-between bg-[#F5F7FB] px-5 sm:px-6 h-full rounded-[24px] neu-lvl-1 flex-1 border border-white/70">
+        {/* Left Floating Navigation Container (#EBECF0 background surface) */}
+        <div className="flex items-center justify-between bg-[#EBECF0] px-5 sm:px-6 h-full rounded-xl neu-lvl-1 flex-1">
           {/* Logo Area */}
           <div className="flex items-center gap-2.5 shrink-0 cursor-pointer" onClick={() => onNavigate && onNavigate("Home")}>
-            <div className="w-8 h-8 rounded-xl bg-[#F5F7FB] neu-inset flex items-center justify-center p-1">
+            <div className="w-8 h-8 rounded-lg bg-[#EBECF0] neu-inset flex items-center justify-center p-1">
               <svg viewBox="0 0 40 40" className="w-6 h-6" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <linearGradient id="logoGradNav" x1="0%" y1="100%" x2="100%" y2="0%">
@@ -105,11 +105,11 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
                   }}
                   className="relative px-3.5 py-1.5 transition-none z-10 text-slate-700 hover:text-slate-900"
                 >
-                  {/* Framer Motion Sliding Purple Colored Rectangle Box */}
+                  {/* Framer Motion Inset Neumorphic Active Highlight Pill */}
                   {isActive && (
                     <motion.div
                       layoutId="activeBoxHighlight"
-                      className="absolute inset-0 bg-[#F3F0FF] rounded-lg border border-purple-200/80 -z-10 shadow-sm"
+                      className="absolute inset-0 bg-[#EBECF0] rounded-lg neu-inset -z-10"
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -120,12 +120,12 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
           </nav>
         </div>
 
-        {/* Right Action Container */}
-        <div className="flex items-center gap-2 bg-[#F5F7FB] px-3.5 h-full rounded-[24px] neu-lvl-1 border border-white/70 shrink-0 relative">
+        {/* Right Action Container (#EBECF0 background surface) */}
+        <div className="flex items-center gap-2 bg-[#EBECF0] px-3.5 h-full rounded-xl neu-lvl-1 shrink-0 relative">
           
           {/* Request Quote Button */}
           {!searchOpen && (
-            <button className="group hidden sm:inline-flex items-center gap-2 text-white text-xs sm:text-[13px] font-[600] px-4 py-2.5 rounded-xl neu-btn-primary cursor-pointer transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 active:shadow-inner shrink-0">
+            <button className="group hidden sm:inline-flex items-center gap-2 text-white text-xs sm:text-[13px] font-[600] px-4 py-2.5 rounded-lg neu-btn-primary cursor-pointer shrink-0">
               <span>Request Quote</span>
               <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
             </button>
@@ -136,7 +136,7 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
             initial={false}
             animate={{ width: searchOpen ? 240 : 36 }}
             transition={{ type: "spring", stiffness: 350, damping: 28 }}
-            className="relative flex items-center h-9 bg-[#F5F7FB] neu-inset rounded-full overflow-hidden shrink-0"
+            className="relative flex items-center h-9 bg-[#EBECF0] neu-inset rounded-lg overflow-hidden shrink-0"
           >
             {/* Search Icon / Toggle Button */}
             <button
@@ -192,7 +192,7 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
           <button
             aria-label="Toggle menu"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="w-9 h-9 rounded-full bg-[#F5F7FB] neu-lvl-1 flex items-center justify-center text-slate-700 hover:text-[#7C3AED] hover:-translate-y-0.5 transition-all cursor-pointer shrink-0"
+            className="w-9 h-9 rounded-full bg-[#EBECF0] neu-sm flex items-center justify-center text-slate-700 hover:text-[#7C3AED] cursor-pointer shrink-0"
           >
             {mobileMenuOpen ? <X className="w-4 h-4 text-[#7C3AED]" /> : <Menu className="w-4 h-4" />}
           </button>
@@ -200,7 +200,7 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
 
       </div>
 
-      {/* Comprehensive Menu Overlay Panel (Level 3 Elevation) */}
+      {/* Comprehensive Menu Overlay Panel (#EBECF0 surface background) */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -208,16 +208,16 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.98 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-0 top-20 z-50 w-60 bg-[#F5F7FB] neu-lvl-3 rounded-2xl p-3 flex flex-col gap-2.5 border border-white/80 shadow-2xl"
+            className="absolute right-0 top-20 z-50 w-60 bg-[#EBECF0] neu-lvl-3 rounded-2xl p-3 flex flex-col gap-2.5 shadow-2xl"
           >
             {/* Header: Dark / Light Mode Toggle */}
-            <div className="flex items-center justify-between pb-2 border-b border-slate-200/60">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-300/50">
               <span className="text-[11px] font-[700] text-slate-900 uppercase tracking-wider">
                 Theme
               </span>
               <button
                 onClick={toggleDarkMode}
-                className="flex items-center gap-1.5 bg-[#F5F7FB] neu-inset px-2.5 py-1 rounded-lg text-[11px] font-[600] text-slate-700 hover:text-[#7C3AED] cursor-pointer transition-colors"
+                className="flex items-center gap-1.5 bg-[#EBECF0] neu-inset px-2.5 py-1 rounded-lg text-[11px] font-[600] text-slate-700 hover:text-[#7C3AED] cursor-pointer transition-colors"
               >
                 {isDarkMode ? (
                   <>
@@ -251,12 +251,12 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
                     }}
                     className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-[11.5px] font-[600] transition-all cursor-pointer ${
                       isActive
-                        ? "bg-[#F3F0FF] text-[#7C3AED] border border-purple-200/80 shadow-sm"
-                        : "text-slate-700 hover:bg-[#F5F7FB] hover:text-[#7C3AED]"
+                        ? "bg-[#EBECF0] text-[#7C3AED] neu-inset"
+                        : "text-slate-700 hover:bg-[#EBECF0] hover:text-[#7C3AED]"
                     }`}
                   >
                     <div className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 ${
-                      isActive ? "bg-[#7C3AED] text-white" : "bg-[#F5F7FB] neu-inset text-slate-500"
+                      isActive ? "bg-[#7C3AED] text-white" : "bg-[#EBECF0] neu-inset text-slate-500"
                     }`}>
                       <IconComp className="w-3 h-3" />
                     </div>
