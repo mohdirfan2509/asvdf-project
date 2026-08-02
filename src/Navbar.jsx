@@ -1,9 +1,31 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight, Search, Menu, X } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  ArrowRight,
+  Search,
+  Menu,
+  X,
+  Sun,
+  Moon,
+  Home as HomeIcon,
+  Briefcase,
+  Users,
+  Wrench,
+  Info,
+  Phone,
+  MessageSquareQuote,
+  FileText,
+  Settings,
+  Image,
+  HelpCircle
+} from 'lucide-react';
 
 export default function Navbar({ activePage = "Home", onNavigate }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const searchInputRef = useRef(null);
 
   const navLinks = [
     { label: "Home", href: "/" },
@@ -14,8 +36,33 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
     { label: "Contact Us", href: "/contact" }
   ];
 
+  const fullMenuItems = [
+    { label: "Home", icon: HomeIcon },
+    { label: "Projects", icon: Briefcase },
+    { label: "Clients", icon: Users },
+    { label: "Services", icon: Wrench },
+    { label: "About Us", icon: Info },
+    { label: "Contact Us", icon: Phone },
+    { label: "Testimonials", icon: MessageSquareQuote },
+    { label: "Blogs", icon: FileText },
+    { label: "Machinery", icon: Settings },
+    { label: "Gallery", icon: Image },
+    { label: "FAQs", icon: HelpCircle }
+  ];
+
+  useEffect(() => {
+    if (searchOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [searchOpen]);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+    document.documentElement.classList.toggle('dark');
+  };
+
   return (
-    <header className="w-full max-w-[1440px] mx-auto shrink-0 mb-2 font-['Poppins']">
+    <header className="w-full max-w-[1440px] mx-auto shrink-0 mb-2 font-['Poppins'] relative">
       <div className="flex items-center justify-between gap-3 h-[68px]">
         
         {/* Left Floating Navigation Container */}
@@ -44,7 +91,7 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
             </div>
           </div>
 
-          {/* Navigation Items with Colored Rectangle Box Tab Animation (No text color animation, no underline animation) */}
+          {/* Navigation Items */}
           <nav className="hidden md:flex items-center gap-4 lg:gap-5 text-[15px] font-[600] tracking-[-0.02em] text-slate-700 relative">
             {navLinks.map((link, idx) => {
               const isActive = activePage === link.label;
@@ -74,56 +121,154 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
         </div>
 
         {/* Right Action Container */}
-        <div className="flex items-center gap-2 bg-white px-3.5 h-full rounded-xl neu-md border border-white/40 shrink-0">
+        <div className="flex items-center gap-2 bg-white px-3.5 h-full rounded-xl neu-md border border-white/40 shrink-0 relative">
+          
           {/* Request Quote Button */}
-          <button className="group hidden sm:inline-flex items-center gap-2 text-white text-xs sm:text-[13px] font-[600] px-4 py-2.5 rounded-lg neu-btn-primary cursor-pointer transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 active:shadow-inner">
-            <span>Request Quote</span>
-            <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
-          </button>
+          {!searchOpen && (
+            <button className="group hidden sm:inline-flex items-center gap-2 text-white text-xs sm:text-[13px] font-[600] px-4 py-2.5 rounded-lg neu-btn-primary cursor-pointer transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 active:shadow-inner shrink-0">
+              <span>Request Quote</span>
+              <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+            </button>
+          )}
 
-          {/* Search Button */}
-          <button
-            aria-label="Search"
-            className="w-9 h-9 rounded-lg bg-[#F6F7FB] neu-sm flex items-center justify-center text-slate-700 hover:text-[#7C3AED] hover:-translate-y-0.5 transition-all cursor-pointer"
+          {/* Animated Expandable Search Input Container */}
+          <motion.div 
+            initial={false}
+            animate={{ width: searchOpen ? 240 : 36 }}
+            transition={{ type: "spring", stiffness: 350, damping: 28 }}
+            className="relative flex items-center h-9 bg-[#F6F7FB] neu-inset rounded-lg overflow-hidden shrink-0"
           >
-            <Search className="w-4 h-4" />
-          </button>
+            {/* Search Icon / Toggle Button */}
+            <button
+              aria-label="Search"
+              onClick={() => setSearchOpen(!searchOpen)}
+              className="w-9 h-9 flex items-center justify-center text-slate-700 hover:text-[#7C3AED] shrink-0 cursor-pointer z-10"
+            >
+              <Search className="w-4 h-4" />
+            </button>
 
-          {/* Hamburger Button */}
+            {/* Input Field */}
+            <AnimatePresence>
+              {searchOpen && (
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex items-center w-full pr-2"
+                >
+                  <input
+                    ref={searchInputRef}
+                    type="text"
+                    placeholder="Search site..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full bg-transparent text-xs font-[500] text-slate-800 placeholder:text-slate-400 focus:outline-none px-1"
+                  />
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery("")}
+                      className="text-slate-400 hover:text-slate-600 p-1"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  )}
+                  <button
+                    onClick={() => {
+                      setSearchOpen(false);
+                      setSearchQuery("");
+                    }}
+                    className="text-slate-400 hover:text-slate-700 p-1 ml-1"
+                    title="Close Search"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+
+          {/* Hamburger Menu Button */}
           <button
             aria-label="Toggle menu"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="w-9 h-9 rounded-lg bg-[#F6F7FB] neu-sm flex items-center justify-center text-slate-700 hover:text-[#7C3AED] hover:-translate-y-0.5 transition-all cursor-pointer"
+            className="w-9 h-9 rounded-lg bg-[#F6F7FB] neu-sm flex items-center justify-center text-slate-700 hover:text-[#7C3AED] hover:-translate-y-0.5 transition-all cursor-pointer shrink-0"
           >
-            {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            {mobileMenuOpen ? <X className="w-4 h-4 text-[#7C3AED]" /> : <Menu className="w-4 h-4" />}
           </button>
         </div>
 
       </div>
 
-      {/* Mobile Nav Overlay */}
-      {mobileMenuOpen && (
-        <div className="md:hidden absolute left-4 right-4 top-20 z-50 bg-white neu-lg rounded-xl p-4 flex flex-col gap-2 border border-white/60">
-          {navLinks.map((link, idx) => (
-            <a
-              key={idx}
-              href={link.href}
-              onClick={(e) => {
-                e.preventDefault();
-                if (onNavigate) onNavigate(link.label);
-                setMobileMenuOpen(false);
-              }}
-              className={`px-3 py-2 rounded-lg text-sm font-[600] ${
-                activePage === link.label
-                  ? "bg-[#F3F0FF] text-slate-900 border border-purple-200/80"
-                  : "text-slate-700 hover:bg-[#F6F7FB]"
-              }`}
-            >
-              {link.label}
-            </a>
-          ))}
-        </div>
-      )}
+      {/* Comprehensive Menu Overlay Panel (Decreased width to w-60) */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.98 }}
+            transition={{ duration: 0.2 }}
+            className="absolute right-0 top-20 z-50 w-60 bg-white neu-lg rounded-2xl p-3 flex flex-col gap-2.5 border border-white/80 shadow-2xl"
+          >
+            {/* Header: Dark / Light Mode Toggle */}
+            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+              <span className="text-[11px] font-[700] text-slate-900 uppercase tracking-wider">
+                Theme
+              </span>
+              <button
+                onClick={toggleDarkMode}
+                className="flex items-center gap-1.5 bg-[#F6F7FB] neu-inset px-2.5 py-1 rounded-lg text-[11px] font-[600] text-slate-700 hover:text-[#7C3AED] cursor-pointer transition-colors"
+              >
+                {isDarkMode ? (
+                  <>
+                    <Moon className="w-3 h-3 text-[#7C3AED]" />
+                    <span>Dark</span>
+                  </>
+                ) : (
+                  <>
+                    <Sun className="w-3 h-3 text-amber-500" />
+                    <span>Light</span>
+                  </>
+                )}
+              </button>
+            </div>
+
+            {/* Menu List of All 11 Pages */}
+            <div className="flex flex-col gap-1 max-h-[360px] overflow-y-auto pr-0.5">
+              <span className="text-[9.5px] font-[700] text-slate-400 uppercase tracking-widest px-1.5 mb-0.5">
+                Navigation Menu
+              </span>
+
+              {fullMenuItems.map((item, idx) => {
+                const IconComp = item.icon;
+                const isActive = activePage === item.label;
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => {
+                      if (onNavigate) onNavigate(item.label);
+                      setMobileMenuOpen(false);
+                    }}
+                    className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-[11.5px] font-[600] transition-all cursor-pointer ${
+                      isActive
+                        ? "bg-[#F3F0FF] text-[#7C3AED] border border-purple-200/80 shadow-sm"
+                        : "text-slate-700 hover:bg-[#F6F7FB] hover:text-[#7C3AED]"
+                    }`}
+                  >
+                    <div className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 ${
+                      isActive ? "bg-[#7C3AED] text-white" : "bg-[#F6F7FB] neu-inset text-slate-500"
+                    }`}>
+                      <IconComp className="w-3 h-3" />
+                    </div>
+                    <span>{item.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
     </header>
   );
 }
