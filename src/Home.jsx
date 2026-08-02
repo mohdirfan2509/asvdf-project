@@ -113,20 +113,20 @@ export default function Home({ content = DEFAULT_CONTENT, showNavbar = true, onN
 
   return (
     <div className="h-full w-full font-['Poppins'] antialiased text-slate-900 flex flex-col justify-between overflow-hidden selection:bg-purple-600 selection:text-white">
-
+      
       {showNavbar && <Navbar activePage="Home" onNavigate={onNavigate} />}
 
       {/* MAIN VIEWPORT CONTENT */}
       <div className="flex-1 flex flex-col justify-between gap-2.5 max-w-[1440px] w-full mx-auto min-h-0">
-
+        
         {/* HERO SECTION */}
         <section className="relative flex-1 rounded-[2rem] overflow-hidden flex items-center neu-lg min-h-0 border border-white/60">
-          <div
+          <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: `url('${hero.bgImage}')` }}
           />
 
-          {/* Softened Dark Overlay Tint (Adjusted opacity from 90%/70%/20% to balanced 70%/45%/10% so the banner image shows through clearly while retaining full text contrast) */}
+          {/* Softened Dark Overlay Tint */}
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950/70 via-slate-950/45 to-slate-950/10" />
 
           <div className="relative z-10 px-8 sm:px-12 lg:px-16 py-4 sm:py-6 max-w-2xl flex flex-col justify-center items-start">
@@ -136,7 +136,7 @@ export default function Home({ content = DEFAULT_CONTENT, showNavbar = true, onN
               </span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-[600] tracking-[-0.04em] leading-[1.08] text-white mb-3 drop-shadow-md">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-[800] tracking-[-0.04em] leading-[1.08] text-white mb-3 drop-shadow-md">
               {hero.headingLine1}
               <br />
               {hero.headingLine2}
@@ -149,15 +149,19 @@ export default function Home({ content = DEFAULT_CONTENT, showNavbar = true, onN
               {hero.subtext}
             </p>
 
+            {/* CTA Buttons with Rectangular Low-Radius Style (rounded-lg) */}
             <div className="flex items-center gap-3 w-full sm:w-auto">
-              <button className="inline-flex items-center justify-center gap-2 text-white text-xs font-[600] px-6 py-3 rounded-full neu-btn-primary cursor-pointer">
+              <button 
+                onClick={() => onNavigate && onNavigate("Services")}
+                className="inline-flex items-center justify-center gap-2 text-white text-xs font-[600] px-6 py-3 rounded-lg neu-btn-primary cursor-pointer hover:-translate-y-0.5 transition-all"
+              >
                 <span>{hero.ctaPrimary}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 
-              <button
+              <button 
                 onClick={() => onNavigate && onNavigate("Projects")}
-                className="inline-flex items-center justify-center gap-2 text-slate-900 text-xs font-[600] px-6 py-3 rounded-full neu-btn-secondary cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 text-slate-900 text-xs font-[600] px-6 py-3 rounded-lg neu-btn-secondary cursor-pointer hover:-translate-y-0.5 transition-all"
               >
                 <span>{hero.ctaSecondary}</span>
                 <ArrowRight className="w-4 h-4 text-slate-900" />
@@ -173,10 +177,11 @@ export default function Home({ content = DEFAULT_CONTENT, showNavbar = true, onN
                   key={index}
                   onClick={() => setActiveDot(index)}
                   aria-label={`Slide ${index + 1}`}
-                  className={`transition-all duration-200 rounded-full flex items-center justify-center cursor-pointer ${isActive
-                    ? "w-5 h-5 bg-purple-600 border border-purple-300"
-                    : "w-3 h-3 bg-white/50 hover:bg-white"
-                    }`}
+                  className={`transition-all duration-200 rounded-full flex items-center justify-center cursor-pointer ${
+                    isActive
+                      ? "w-5 h-5 bg-purple-600 border border-purple-300"
+                      : "w-3 h-3 bg-white/50 hover:bg-white"
+                  }`}
                 >
                   {isActive && <span className="w-2 h-2 rounded-full bg-white" />}
                 </button>
@@ -229,8 +234,9 @@ export default function Home({ content = DEFAULT_CONTENT, showNavbar = true, onN
               {stats.map((stat, idx) => (
                 <div
                   key={stat.id}
-                  className={`flex items-center gap-3.5 ${idx !== 0 ? "lg:pl-6" : ""
-                    }`}
+                  className={`flex items-center gap-3.5 ${
+                    idx !== 0 ? "lg:pl-6" : ""
+                  }`}
                 >
                   <div className="w-10 h-10 rounded-full bg-[#F6F7FB] neu-inset flex items-center justify-center text-[#7C3AED] shrink-0">
                     {renderIcon(stat.icon, "w-4 h-4")}
