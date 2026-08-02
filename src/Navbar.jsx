@@ -91,7 +91,7 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
             </div>
           </div>
 
-          {/* Navigation Items */}
+          {/* Navigation Items with Soft Purple Neumorphic Tint Active Box */}
           <nav className="hidden md:flex items-center gap-4 lg:gap-5 text-[15px] font-[600] tracking-[-0.02em] text-slate-700 relative">
             {navLinks.map((link, idx) => {
               const isActive = activePage === link.label;
@@ -103,13 +103,15 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
                     e.preventDefault();
                     if (onNavigate) onNavigate(link.label);
                   }}
-                  className="relative px-3.5 py-1.5 transition-none z-10 text-slate-700 hover:text-slate-900"
+                  className={`relative px-3.5 py-1.5 transition-colors duration-200 z-10 ${
+                    isActive ? "text-[#7C3AED]" : "text-slate-700 hover:text-slate-900"
+                  }`}
                 >
-                  {/* Framer Motion Inset Neumorphic Active Highlight Pill */}
+                  {/* Framer Motion Sliding Active Highlight Box with Soft Brand Accent Color */}
                   {isActive && (
                     <motion.div
                       layoutId="activeBoxHighlight"
-                      className="absolute inset-0 bg-[#EBECF0] rounded-lg neu-inset -z-10"
+                      className="absolute inset-0 bg-[#EDE9FE] rounded-lg border border-[#DDD6FE] shadow-sm -z-10"
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -251,14 +253,14 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
                     }}
                     className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-[11.5px] font-[600] transition-all cursor-pointer ${
                       isActive
-                        ? "bg-[#EBECF0] text-[#7C3AED] neu-inset"
+                        ? "bg-[#EDE9FE] text-[#7C3AED] border border-[#DDD6FE] shadow-sm"
                         : "text-slate-700 hover:bg-[#EBECF0] hover:text-[#7C3AED]"
                     }`}
                   >
                     <div className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 ${
                       isActive ? "bg-[#7C3AED] text-white" : "bg-[#EBECF0] neu-inset text-slate-500"
                     }`}>
-                      <IconComp className="w-3 h-3" />
+                      <IconComp className="w-3-h-3" />
                     </div>
                     <span>{item.label}</span>
                   </button>
