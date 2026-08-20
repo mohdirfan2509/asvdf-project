@@ -39,7 +39,17 @@ export default function AdminLoginForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      const data = await res.json();
+      const raw = await res.text();
+      let data = {};
+      try {
+        data = raw ? JSON.parse(raw) : {};
+      } catch {
+        throw new Error(
+          res.ok
+            ? 'Unexpected server response'
+            : 'Server error during login. Redeploy after the Firebase fix.'
+        );
+      }
       if (!res.ok) throw new Error(data.error || 'Wrong email or password');
 
       router.replace('/admin');
