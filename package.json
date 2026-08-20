@@ -1,29 +1,29 @@
 {
   "name": "asvdf-project",
   "version": "1.0.0",
-  "type": "module",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "seed:firebase": "node --env-file=.env.local scripts/seed-firebase.mjs"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
+    "@supabase/ssr": "^0.7.0",
+    "@supabase/supabase-js": "^2.57.4",
+    "cloudinary": "^2.10.1",
+    "firebase": "^12.18.0",
+    "firebase-admin": "^14.3.0",
     "framer-motion": "^12.43.0",
     "lucide-react": "^1.28.0",
+    "next": "^15.5.2",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "react-icons": "^5.7.0",
-    "react-router-dom": "^7.18.2"
+    "react-icons": "^5.7.0"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.3.3",
-    "@vitejs/plugin-react": "^6.0.5",
-    "tailwindcss": "^4.3.3",
-    "vite": "^8.2.0"
+    "@tailwindcss/postcss": "^4.3.3",
+    "tailwindcss": "^4.3.3"
   }
 }

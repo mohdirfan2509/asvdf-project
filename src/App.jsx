@@ -1,5 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import {
+  motion,
+  useScroll,
+  useSpring,
+  useReducedMotion,
+} from 'framer-motion';
 import Navbar from './Navbar';
 import Home from './Home';
 import Projects from './Projects';
@@ -17,138 +22,203 @@ import Gallery from './Gallery';
 import Faqs from './Faqs';
 import FooterCTA from './FooterCTA';
 
-// Navigation order: Home -> Projects -> Clients -> Services -> About Us -> Milestones -> Core Values -> Contact Us -> Contact Form -> Testimonials -> Blogs -> Machinery -> Gallery -> FAQs -> Footer CTA
-const PAGES = ["Home", "Projects", "Clients", "Services", "About Us", "Milestones", "Core Values", "Contact Us", "Contact Form", "Testimonials", "Blogs", "Machinery", "Gallery", "FAQs", "Footer"];
+const SECTIONS = [
+  { id: 'home', label: 'Home', Component: Home },
+  { id: 'projects', label: 'Projects', Component: Projects },
+  { id: 'clients', label: 'Clients', Component: Clients },
+  { id: 'services', label: 'Services', Component: Services },
+  { id: 'about-us', label: 'About Us', Component: AboutUs01A },
+  { id: 'milestones', label: 'Milestones', Component: AboutUs02 },
+  { id: 'core-values', label: 'Core Values', Component: AboutUs03 },
+  { id: 'contact-us', label: 'Contact Us', Component: ContactUs01 },
+  { id: 'contact-form', label: 'Contact Form', Component: ContactUs02 },
+  { id: 'testimonials', label: 'Testimonials', Component: Testimonials },
+  { id: 'blogs', label: 'Blogs', Component: Blogs },
+  { id: 'machinery', label: 'Machinery', Component: Machinery },
+  { id: 'gallery', label: 'Gallery', Component: Gallery },
+  { id: 'faqs', label: 'FAQs', Component: Faqs },
+  { id: 'footer', label: 'Footer', Component: FooterCTA },
+];
+
+const LABEL_TO_ID = Object.fromEntries(SECTIONS.map((s) => [s.label, s.id]));
+
+const sectionReveal = {
+  hidden: (reduceMotion) =>
+    reduceMotion
+      ? { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }
+      : { opacity: 0, y: 56, scale: 0.97, filter: 'blur(6px)' },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    filter: 'blur(0px)',
+    transition: {
+      duration: 0.7,
+      ease: [0.22, 1, 0.36, 1],
+      opacity: { duration: 0.45 },
+      filter: { duration: 0.55 },
+    },
+  },
+};
+
+function ScrollSection({ id, label, reduceMotion, children }) {
+  return (
+    <motion.section
+      id={id}
+      data-label={label}
+      custom={reduceMotion}
+      variants={sectionReveal}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.25, margin: '0px 0px -6% 0px' }}
+      className="scroll-mt-[5.5rem] w-full h-[calc(100svh-5.5rem)] shrink-0 will-change-transform"
+    >
+      {children}
+    </motion.section>
+  );
+}
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState("Home");
-  const [direction, setDirection] = useState(1);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [activeTab, setActiveTab] = useState('Home');
+  const [navScrolled, setNavScrolled] = useState(false);
+  const isScrollingToSection = useRef(false);
+  const scrollTimeout = useRef(null);
+  const reduceMotion = useReducedMotion();
 
-  const handleNavigate = (pageLabel) => {
-    if (pageLabel === activeTab || isAnimating) return;
-    const currentIndex = PAGES.indexOf(activeTab);
-    const targetIndex = PAGES.indexOf(pageLabel);
-
-    if (targetIndex !== -1) {
-      setDirection(targetIndex > currentIndex ? 1 : -1);
-      setIsAnimating(true);
-      setActiveTab(pageLabel);
-    }
-  };
+  const { scrollYProgress, scrollY } = useScroll();
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 28,
+    restDelta: 0.001,
+  });
 
   useEffect(() => {
-    let lastWheelTime = 0;
-    const handleWheel = (e) => {
-      const now = Date.now();
-      if (now - lastWheelTime < 800 || isAnimating) return;
+    return scrollY.on('change', (y) => {
+      setNavScrolled(y > 24);
+    });
+  }, [scrollY]);
 
-      if (e.deltaY > 40) {
-        const currentIndex = PAGES.indexOf(activeTab);
-        if (currentIndex < PAGES.length - 1) {
-          lastWheelTime = now;
-          handleNavigate(PAGES[currentIndex + 1]);
-        }
-      } else if (e.deltaY < -40) {
-        const currentIndex = PAGES.indexOf(activeTab);
-        if (currentIndex > 0) {
-          lastWheelTime = now;
-          handleNavigate(PAGES[currentIndex - 1]);
-        }
+  const handleNavigate = useCallback((pageLabel) => {
+    const id = LABEL_TO_ID[pageLabel];
+    if (!id) return;
+
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    isScrollingToSection.current = true;
+    setActiveTab(pageLabel);
+    el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+
+    clearTimeout(scrollTimeout.current);
+    scrollTimeout.current = setTimeout(() => {
+      isScrollingToSection.current = false;
+    }, reduceMotion ? 100 : 900);
+  }, [reduceMotion]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (isScrollingToSection.current) return;
+
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (!visible.length) return;
+
+        const label = visible[0].target.getAttribute('data-label');
+        if (label) setActiveTab(label);
+      },
+      {
+        root: null,
+        rootMargin: '-20% 0px -55% 0px',
+        threshold: [0.15, 0.35, 0.55],
       }
+    );
+
+    SECTIONS.forEach(({ id }) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(scrollTimeout.current);
     };
-
-    window.addEventListener('wheel', handleWheel, { passive: true });
-    return () => window.removeEventListener('wheel', handleWheel);
-  }, [activeTab, isAnimating]);
-
-  const contentVariants = {
-    initial: (dir) => ({
-      opacity: 0,
-      y: dir > 0 ? 40 : -40,
-      scale: 0.98,
-    }),
-    animate: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        y: { type: 'spring', stiffness: 260, damping: 28 },
-        opacity: { duration: 0.3 },
-        scale: { duration: 0.3 },
-      },
-    },
-    exit: (dir) => ({
-      opacity: 0,
-      y: dir > 0 ? -30 : 30,
-      scale: 0.98,
-      transition: {
-        duration: 0.25,
-        ease: [0.4, 0, 0.2, 1],
-      },
-    }),
-  };
+  }, []);
 
   return (
-    <div className="h-screen w-screen bg-[#EBECF0] font-['Poppins'] antialiased text-slate-900 flex flex-col justify-between p-3 sm:p-4 overflow-hidden selection:bg-purple-600 selection:text-white">
-      
-      {/* 1. PERMANENT STATIONARY NAVBAR */}
-      <Navbar activePage={activeTab} onNavigate={handleNavigate} />
+    <div className="min-h-screen w-full bg-[#EBECF0] font-['Poppins'] antialiased text-slate-900 selection:bg-purple-600 selection:text-white">
+      {/* Scroll progress */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 z-[60] h-[3px] origin-left bg-gradient-to-r from-[#7C3AED] via-[#A855F7] to-[#C084FC]"
+        style={{ scaleX: progress }}
+      />
 
-      {/* 2. DYNAMIC PAGE CONTENT AREA */}
-      <div className="flex-1 max-w-[1440px] w-full mx-auto relative min-h-0">
-        <AnimatePresence 
-          initial={false} 
-          custom={direction} 
-          mode="wait"
-          onExitComplete={() => setIsAnimating(false)}
-        >
-          <motion.div
-            key={activeTab}
-            custom={direction}
-            variants={contentVariants}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            className="h-full w-full absolute inset-0"
+      {/* Sticky nav with scroll depth */}
+      <motion.div
+        className={`sticky top-0 z-40 px-3 sm:px-4 pt-3 sm:pt-4 pb-2 backdrop-blur-md transition-[background-color,box-shadow] duration-300 ${
+          navScrolled
+            ? 'bg-[#EBECF0]/85 shadow-[0_8px_24px_rgba(184,185,190,0.35)]'
+            : 'bg-[#EBECF0]/55'
+        }`}
+        initial={false}
+        animate={
+          reduceMotion
+            ? undefined
+            : { y: 0, opacity: 1 }
+        }
+      >
+        <Navbar activePage={activeTab} onNavigate={handleNavigate} />
+      </motion.div>
+
+      <div className="max-w-[1440px] w-full mx-auto px-3 sm:px-4 pb-6 flex flex-col gap-5">
+        {SECTIONS.map(({ id, label, Component }) => (
+          <ScrollSection
+            key={id}
+            id={id}
+            label={label}
+            reduceMotion={reduceMotion}
           >
-            {activeTab === "Home" && <Home showNavbar={false} onNavigate={handleNavigate} />}
-            {activeTab === "Projects" && <Projects showNavbar={false} onNavigate={handleNavigate} />}
-            {activeTab === "Clients" && <Clients showNavbar={false} onNavigate={handleNavigate} />}
-            {activeTab === "Services" && <Services showNavbar={false} onNavigate={handleNavigate} />}
-            {activeTab === "About Us" && <AboutUs01A showNavbar={false} onNavigate={handleNavigate} />}
-            {activeTab === "Milestones" && <AboutUs02 showNavbar={false} onNavigate={handleNavigate} />}
-            {activeTab === "Core Values" && <AboutUs03 showNavbar={false} onNavigate={handleNavigate} />}
-            {activeTab === "Contact Us" && <ContactUs01 showNavbar={false} onNavigate={handleNavigate} />}
-            {activeTab === "Contact Form" && <ContactUs02 showNavbar={false} onNavigate={handleNavigate} />}
-            {activeTab === "Testimonials" && <Testimonials showNavbar={false} onNavigate={handleNavigate} />}
-            {activeTab === "Blogs" && <Blogs showNavbar={false} onNavigate={handleNavigate} />}
-            {activeTab === "Machinery" && <Machinery showNavbar={false} onNavigate={handleNavigate} />}
-            {activeTab === "Gallery" && <Gallery showNavbar={false} onNavigate={handleNavigate} />}
-            {activeTab === "FAQs" && <Faqs showNavbar={false} onNavigate={handleNavigate} />}
-            {activeTab === "Footer" && <FooterCTA showNavbar={false} onNavigate={handleNavigate} />}
-          </motion.div>
-        </AnimatePresence>
+            <Component showNavbar={false} onNavigate={handleNavigate} />
+          </ScrollSection>
+        ))}
       </div>
 
-      {/* Floating Modern Scroll Indicator */}
-      <div className="fixed right-4 bottom-6 z-50 flex flex-col items-center gap-2 bg-[#EBECF0] p-2 rounded-full neu-lvl-1 border border-white/35">
-        {PAGES.map((page) => {
-          const isActive = activeTab === page;
+      {/* Animated section dots */}
+      <motion.div
+        initial={reduceMotion ? false : { opacity: 0, x: 16 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.4, duration: 0.5 }}
+        className="fixed right-4 bottom-6 z-50 flex flex-col items-center gap-2 bg-[#EBECF0]/90 backdrop-blur-sm p-2 rounded-full neu-lvl-1 border border-white/35"
+      >
+        {SECTIONS.map(({ id, label }) => {
+          const isActive = activeTab === label;
           return (
             <button
-              key={page}
-              onClick={() => handleNavigate(page)}
-              title={`Go to ${page}`}
-              className={`w-3 h-3 rounded-full transition-all duration-300 cursor-pointer ${
-                isActive
-                  ? "bg-[#7C3AED] h-6 shadow-sm"
-                  : "bg-slate-300 hover:bg-slate-400"
-              }`}
-            />
+              key={id}
+              onClick={() => handleNavigate(label)}
+              title={`Go to ${label}`}
+              className="relative flex h-3 w-3 items-center justify-center cursor-pointer"
+            >
+              {isActive && (
+                <motion.span
+                  layoutId="scroll-dot-active"
+                  className="absolute h-6 w-3 rounded-full bg-[#7C3AED] shadow-sm"
+                  transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                />
+              )}
+              <motion.span
+                className={`relative z-10 block rounded-full ${
+                  isActive ? 'h-1.5 w-1.5 bg-white' : 'h-3 w-3 bg-slate-300'
+                }`}
+                whileHover={reduceMotion ? undefined : { scale: 1.25 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 22 }}
+              />
+            </button>
           );
         })}
-      </div>
+      </motion.div>
     </div>
   );
 }
