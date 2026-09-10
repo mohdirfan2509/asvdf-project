@@ -7,8 +7,8 @@ create extension if not exists "pgcrypto";
 create table if not exists site_settings (
   id int primary key default 1 check (id = 1),
   company_name text not null default 'ASVDF Flooring',
-  phone text not null default '8074337407',
-  whatsapp text not null default '918074337407',
+  phone text not null default '9063222804',
+  whatsapp text not null default '919063222804',
   email text default 'info@asvdf.com',
   address text default '',
   seo_title text default 'ASVDF Flooring | Premium VDF Flooring Solutions',

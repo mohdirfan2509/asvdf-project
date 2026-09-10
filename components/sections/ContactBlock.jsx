@@ -4,7 +4,7 @@ import { MessageCircle, Phone, Mail, MapPin } from 'lucide-react';
 import { formatDisplayPhone, getTelUrl, getWhatsAppUrl } from '@/lib/contact';
 
 export default function ContactBlock({ settings, showForm = true }) {
-  const phone = settings?.phone || '8074337407';
+  const phone = settings?.phone || '9063222804';
   const whatsapp = settings?.whatsapp || phone;
 
   return (

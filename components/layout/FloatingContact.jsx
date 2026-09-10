@@ -5,7 +5,7 @@ import { formatDisplayPhone, getTelUrl, getWhatsAppUrl } from '@/lib/contact';
 
 /** Desktop floating contact — always available, does not appear as login */
 export default function FloatingContact({ settings }) {
-  const phone = settings?.phone || '8074337407';
+  const phone = settings?.phone || '9063222804';
   const whatsapp = settings?.whatsapp || phone;
 
   return (

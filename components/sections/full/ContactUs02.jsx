@@ -7,7 +7,7 @@ import SectionFrame from '@/components/layout/SectionFrame';
 const BG = 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?q=80&w=1600&auto=format&fit=crop';
 
 export default function ContactUs02({ settings = null }) {
-  const phoneDigits = String(settings?.phone || '8074337407').replace(/\D/g, '').slice(-10);
+  const phoneDigits = String(settings?.phone || '9063222804').replace(/\D/g, '').slice(-10);
   const displayPhone = `+91 ${phoneDigits.slice(0, 5)} ${phoneDigits.slice(5)}`;
   const wa = String(settings?.whatsapp || `91${phoneDigits}`).replace(/\D/g, '');
   const email = settings?.email || 'info@asvdf.com';

@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 
 export default function ContactUs01({ onNavigate, showNavbar = true, settings = null }) {
-  const phoneDigits = String(settings?.phone || '8074337407').replace(/\D/g, '').slice(-10);
+  const phoneDigits = String(settings?.phone || '9063222804').replace(/\D/g, '').slice(-10);
   const displayPhone = `+91 ${phoneDigits.slice(0, 5)} ${phoneDigits.slice(5)}`;
   const contactDetails = [
     {

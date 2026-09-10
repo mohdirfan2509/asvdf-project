@@ -15,7 +15,7 @@ const NAV = [
 
 export default function Navbar({ settings, activePath = '/' }) {
   const [open, setOpen] = useState(false);
-  const phone = settings?.phone || '8074337407';
+  const phone = settings?.phone || '9063222804';
 
   return (
     <header className="w-full max-w-[1440px] mx-auto shrink-0 font-['Poppins'] relative">

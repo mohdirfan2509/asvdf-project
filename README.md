@@ -65,7 +65,7 @@ Keep adding clients/projects forever — toggle visibility instead of deleting.
 
 ## Contact
 
-Default: **+91 8074337407** (WhatsApp + Call). Edit in Admin → Site Settings.
+Default: **+91 9063222804** (WhatsApp + Call). Edit in Admin → Site Settings.
 
 ## Deploy (Vercel)
 

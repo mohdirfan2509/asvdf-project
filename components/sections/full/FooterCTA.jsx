@@ -8,7 +8,7 @@ const BG =
   'https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=1600&auto=format&fit=crop';
 
 export default function FooterCTA({ onNavigate, settings = null }) {
-  const phoneDigits = String(settings?.phone || '8074337407').replace(/\D/g, '').slice(-10);
+  const phoneDigits = String(settings?.phone || '9063222804').replace(/\D/g, '').slice(-10);
   const displayPhone = `+91 ${phoneDigits}`;
   const year = new Date().getFullYear();
 
