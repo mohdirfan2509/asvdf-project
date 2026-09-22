@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { ArrowRight, Phone } from 'lucide-react';
 import SectionFrame from '@/components/layout/SectionFrame';
 
@@ -27,14 +28,19 @@ export default function FooterCTA({ onNavigate, settings = null }) {
               Partner with ASVDF for reliable, durable, high-performance flooring.
             </p>
             <div className="flex flex-wrap gap-3">
-              <button
-                type="button"
-                onClick={() => onNavigate?.('Contact Us')}
+              <Link
+                href="/contact"
+                onClick={(e) => {
+                  if (onNavigate) {
+                    e.preventDefault();
+                    onNavigate('Contact Us');
+                  }
+                }}
                 className="inline-flex items-center gap-2 text-white text-sm font-[600] px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl bg-white/15 border border-white/25 hover:bg-white/25"
               >
                 Request a Quote
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </Link>
               <a
                 href={`tel:+91${phoneDigits}`}
                 className="inline-flex items-center gap-2 bg-white text-[#3B25B0] text-sm font-[700] px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl"
@@ -54,13 +60,18 @@ export default function FooterCTA({ onNavigate, settings = null }) {
         </div>
 
         <div className="shrink-0 bg-white/95 rounded-2xl px-4 sm:px-5 py-3 sm:py-4 border border-white flex flex-col sm:flex-row items-center justify-between gap-2">
-          <button
-            type="button"
-            onClick={() => onNavigate?.('Home')}
+          <Link
+            href="/"
+            onClick={(e) => {
+              if (onNavigate) {
+                e.preventDefault();
+                onNavigate('Home');
+              }
+            }}
             className="text-sm font-[800] text-slate-900"
           >
             ASVDF <span className="text-slate-400 font-[600] tracking-[0.18em] text-[10px]">FLOORING</span>
-          </button>
+          </Link>
           <p className="text-[11px] sm:text-xs text-slate-500">
             © {year} ASVDF Flooring. All rights reserved.
           </p>

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { ArrowRight, Phone, MessageCircle, Mail, MapPin } from 'lucide-react';
 import SectionFrame from '@/components/layout/SectionFrame';
+import { COMPANY, mapsUrl } from '@/lib/seo/company';
 
 const BG = 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?q=80&w=1600&auto=format&fit=crop';
 
@@ -11,7 +12,7 @@ export default function ContactUs02({ settings = null }) {
   const displayPhone = `+91 ${phoneDigits.slice(0, 5)} ${phoneDigits.slice(5)}`;
   const wa = String(settings?.whatsapp || `91${phoneDigits}`).replace(/\D/g, '');
   const email = settings?.email || 'info@asvdf.com';
-  const address = settings?.address || 'Hyderabad, Telangana, India';
+  const address = settings?.address || COMPANY.address;
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -53,8 +54,9 @@ export default function ContactUs02({ settings = null }) {
             <Field label="Phone" name="phone" value={formData.phone} onChange={onChange} required />
           </div>
           <div className="flex-1 min-h-0 flex flex-col">
-            <label className="text-[11px] font-[600] text-slate-600 mb-1 block">Message</label>
+            <label htmlFor="contact-message" className="text-[11px] font-[600] text-slate-600 mb-1 block">Message</label>
             <textarea
+              id="contact-message"
               name="message"
               required
               value={formData.message}
@@ -76,7 +78,7 @@ export default function ContactUs02({ settings = null }) {
           <ContactCard icon={Phone} title="Call" value={displayPhone} href={`tel:+91${phoneDigits}`} />
           <ContactCard icon={MessageCircle} title="WhatsApp" value="Chat with us" href={`https://wa.me/${wa}`} external />
           <ContactCard icon={Mail} title="Email" value={email} href={`mailto:${email}`} />
-          <ContactCard icon={MapPin} title="Office" value={address} />
+          <ContactCard icon={MapPin} title="Office" value={address} href={mapsUrl()} external />
         </aside>
       </div>
     </SectionFrame>
@@ -86,8 +88,9 @@ export default function ContactUs02({ settings = null }) {
 function Field({ label, name, value, onChange, type = 'text', required }) {
   return (
     <div>
-      <label className="text-[11px] font-[600] text-slate-600 mb-1 block">{label}</label>
+      <label htmlFor={name} className="text-[11px] font-[600] text-slate-600 mb-1 block">{label}</label>
       <input
+        id={name}
         type={type}
         name={name}
         value={value}
@@ -107,7 +110,7 @@ function ContactCard({ icon: Icon, title, value, href, external }) {
       </div>
       <div className="min-w-0">
         <p className="text-[10px] font-[700] uppercase tracking-wider text-slate-400">{title}</p>
-        <p className="text-sm font-[700] text-slate-900 truncate">{value}</p>
+        <p className={`text-sm font-[700] text-slate-900 ${title === 'Office' ? 'line-clamp-3' : 'truncate'}`}>{value}</p>
       </div>
     </>
   );

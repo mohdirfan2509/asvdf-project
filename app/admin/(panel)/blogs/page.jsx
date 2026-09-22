@@ -25,6 +25,8 @@ export default function AdminBlogsPage() {
         { name: 'slug', label: 'Web link name (example: what-is-vdf)' },
         { name: 'excerpt', label: 'Short preview', type: 'textarea' },
         { name: 'body', label: 'Full article', type: 'textarea' },
+        { name: 'seo_title', label: 'Search title (optional)' },
+        { name: 'seo_description', label: 'Search description (optional)', type: 'textarea' },
         { name: 'cover', label: 'Cover photo', type: 'image' },
       ]}
     />

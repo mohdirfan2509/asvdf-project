@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { ArrowRight, Play, Award, Building2, Clock, Shield } from 'lucide-react';
 import SectionFrame from '@/components/layout/SectionFrame';
 
@@ -34,14 +35,19 @@ export default function AboutUs01A({ onNavigate, about = null, settings = null }
             {body}
           </p>
           <div className="flex flex-wrap gap-3">
-            <button
-              type="button"
-              onClick={() => onNavigate?.('Contact Us')}
+            <Link
+              href="/contact"
+              onClick={(e) => {
+                if (onNavigate) {
+                  e.preventDefault();
+                  onNavigate('Contact Us');
+                }
+              }}
               className="inline-flex items-center gap-2 text-white text-sm font-[600] px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl neu-btn-primary"
             >
               Request a Quote
               <ArrowRight className="w-4 h-4" />
-            </button>
+            </Link>
             <button
               type="button"
               onClick={() => onNavigate?.('Milestones')}

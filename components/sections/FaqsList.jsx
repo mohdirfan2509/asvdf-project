@@ -23,6 +23,7 @@ export default function FaqsList({ faqs = [] }) {
                 <ChevronDown className={`w-4 h-4 text-slate-500 transition ${open ? 'rotate-180' : ''}`} />
               </button>
               {open && <p className="px-4 pb-3 text-sm text-slate-600 leading-relaxed">{faq.answer}</p>}
+              {!open && <p className="px-4 pb-3 text-sm text-slate-600 leading-relaxed hidden">{faq.answer}</p>}
             </div>
           );
         })}

@@ -86,11 +86,14 @@ export default function SettingsPage() {
       </div>
 
       <Card icon={Phone} title="Contact">
-        {field(settings, setSettings, 'company_name', 'Company name')}
+        {field(settings, setSettings, 'company_name', 'Brand name (shown on site)')}
+        {field(settings, setSettings, 'legal_name', 'Legal company name')}
+        {field(settings, setSettings, 'gstin', 'GSTIN')}
+        {field(settings, setSettings, 'pan', 'PAN')}
         {field(settings, setSettings, 'phone', 'Phone number')}
         {field(settings, setSettings, 'whatsapp', 'WhatsApp number')}
         {field(settings, setSettings, 'email', 'Email')}
-        {field(settings, setSettings, 'address', 'Address')}
+        {field(settings, setSettings, 'address', 'Full office address', true)}
       </Card>
 
       <Card icon={Hash} title="Numbers on website" note="Shown on Home, About, and Projects.">

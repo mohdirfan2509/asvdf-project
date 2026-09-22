@@ -7,8 +7,9 @@ import { formatDisplayPhone, getTelUrl } from '@/lib/contact';
 
 const NAV = [
   { label: 'Home', href: '/' },
-  { label: 'Projects', href: '/projects' },
   { label: 'Services', href: '/services' },
+  { label: 'Projects', href: '/projects' },
+  { label: 'Guides', href: '/blog' },
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
 ];

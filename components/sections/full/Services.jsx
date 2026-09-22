@@ -1,8 +1,10 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import SectionFrame from '@/components/layout/SectionFrame';
 import QuadCarousel from '@/components/ui/QuadCarousel';
+import { serviceHref } from '@/lib/seo/slug';
 
 const SERVICES_DATA = [
   { id: 1, title: 'VDF Flooring', description: 'High-strength vacuum dewatered floors built for heavy industrial use.', image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=900&auto=format&fit=crop' },
@@ -39,12 +41,13 @@ export default function Services({ services = null }) {
       <QuadCarousel
         items={source}
         renderItem={(service) => (
+          <Link href={serviceHref(service.title)} className="block h-full">
           <article className="group h-full min-h-[200px] rounded-2xl overflow-hidden bg-white border border-slate-100 shadow-sm flex flex-col">
             <div className="relative h-[38%] min-h-[100px] overflow-hidden shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={service.image}
-                alt={service.title}
+                alt={service.title || 'Flooring service'}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
             </div>
@@ -57,6 +60,7 @@ export default function Services({ services = null }) {
               </p>
             </div>
           </article>
+          </Link>
         )}
       />
     </SectionFrame>

@@ -18,6 +18,7 @@ import Machinery from '@/components/sections/full/Machinery';
 import Gallery from '@/components/sections/full/Gallery';
 import Faqs from '@/components/sections/full/Faqs';
 import FooterCTA from '@/components/sections/full/FooterCTA';
+import CrawlableFooter from '@/components/layout/CrawlableFooter';
 
 const SECTION_DEFS = [
   { id: 'home', label: 'Home', key: 'home' },
@@ -134,7 +135,7 @@ export default function SpaApp({ content }) {
         </div>
       </div>
 
-      <div className="spa-stack">
+      <div id="main" className="spa-stack">
         {visibleSections.map((section) => (
           <section
             key={section.id}
@@ -170,6 +171,10 @@ export default function SpaApp({ content }) {
             )}
           </section>
         ))}
+      </div>
+
+      <div className="w-full max-w-[1440px] mx-auto px-3 sm:px-4 pb-28 md:pb-10">
+        <CrawlableFooter settings={settings} />
       </div>
 
       <MobileContactBar settings={settings} />

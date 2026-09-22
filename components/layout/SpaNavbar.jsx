@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowRight,
@@ -27,32 +29,41 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const pathname = usePathname();
   const searchInputRef = useRef(null);
 
   const navLinks = [
-    { label: "Home", href: "#home" },
-    { label: "Projects", href: "#projects" },
-    { label: "Clients", href: "#clients" },
-    { label: "Services", href: "#services" },
-    { label: "About Us", href: "#about-us" },
-    { label: "Contact Us", href: "#contact-us" }
+    { label: "Home", href: "/", spaLabel: "Home" },
+    { label: "Projects", href: "/projects", spaLabel: "Projects" },
+    { label: "Clients", href: "/#clients", spaLabel: "Clients" },
+    { label: "Services", href: "/services", spaLabel: "Services" },
+    { label: "About Us", href: "/about", spaLabel: "About Us" },
+    { label: "Contact Us", href: "/contact", spaLabel: "Contact Us" }
   ];
 
   const fullMenuItems = [
-    { label: "Home", icon: HomeIcon },
-    { label: "Projects", icon: Briefcase },
-    { label: "Clients", icon: Users },
-    { label: "Services", icon: Wrench },
-    { label: "Machinery", icon: Settings },
-    { label: "About Us", icon: Info },
-    { label: "Milestones", icon: Info },
-    { label: "Core Values", icon: Info },
-    { label: "Contact Us", icon: Phone },
-    { label: "Testimonials", icon: MessageSquareQuote },
-    { label: "Blogs", icon: FileText },
-    { label: "Gallery", icon: Image },
-    { label: "FAQs", icon: HelpCircle },
+    { label: "Home", icon: HomeIcon, href: "/", spaLabel: "Home" },
+    { label: "Projects", icon: Briefcase, href: "/projects", spaLabel: "Projects" },
+    { label: "Clients", icon: Users, href: "/#clients", spaLabel: "Clients" },
+    { label: "Services", icon: Wrench, href: "/services", spaLabel: "Services" },
+    { label: "Machinery", icon: Settings, href: "/#machinery", spaLabel: "Machinery" },
+    { label: "About Us", icon: Info, href: "/about", spaLabel: "About Us" },
+    { label: "Milestones", icon: Info, href: "/about", spaLabel: "Milestones" },
+    { label: "Core Values", icon: Info, href: "/about", spaLabel: "Core Values" },
+    { label: "Contact Us", icon: Phone, href: "/contact", spaLabel: "Contact Us" },
+    { label: "Testimonials", icon: MessageSquareQuote, href: "/#testimonials", spaLabel: "Testimonials" },
+    { label: "Blogs", icon: FileText, href: "/blog", spaLabel: "Blogs" },
+    { label: "Gallery", icon: Image, href: "/#gallery", spaLabel: "Gallery" },
+    { label: "FAQs", icon: HelpCircle, href: "/#faqs", spaLabel: "FAQs" },
   ];
+
+  const goSpa = (e, spaLabel) => {
+    if (pathname === '/' && onNavigate && spaLabel) {
+      e.preventDefault();
+      onNavigate(spaLabel);
+      setMobileMenuOpen(false);
+    }
+  };
 
   useEffect(() => {
     if (searchOpen && searchInputRef.current) {
@@ -72,7 +83,7 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
         {/* Left Floating Navigation Container (#EBECF0 background surface) */}
         <div className="flex items-center justify-between bg-[#EBECF0] px-5 sm:px-6 h-full rounded-xl neu-lvl-1 flex-1">
           {/* Logo Area */}
-          <div className="flex items-center gap-2.5 shrink-0 cursor-pointer" onClick={() => onNavigate && onNavigate("Home")}>
+          <Link href="/" className="flex items-center gap-2.5 shrink-0" onClick={(e) => goSpa(e, "Home")}>
             <div className="w-8 h-8 rounded-lg bg-[#EBECF0] neu-inset flex items-center justify-center p-1">
               <svg viewBox="0 0 40 40" className="w-6 h-6" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
@@ -93,20 +104,17 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
                 FLOORING
               </span>
             </div>
-          </div>
+          </Link>
 
           {/* Navigation Items with Soft Purple Neumorphic Tint Active Box */}
           <nav className="hidden md:flex items-center gap-4 lg:gap-5 text-[15px] font-[600] tracking-[-0.02em] text-slate-700 relative">
-            {navLinks.map((link, idx) => {
+            {navLinks.map((link) => {
               const isActive = activePage === link.label;
               return (
-                <a
-                  key={idx}
+                <Link
+                  key={link.href + link.label}
                   href={link.href}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (onNavigate) onNavigate(link.label);
-                  }}
+                  onClick={(e) => goSpa(e, link.spaLabel)}
                   className={`relative px-3.5 py-1.5 transition-colors duration-200 z-10 ${
                     isActive ? "text-[#7C3AED]" : "text-slate-700 hover:text-slate-900"
                   }`}
@@ -120,7 +128,7 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
                     />
                   )}
                   <span>{link.label}</span>
-                </a>
+                </Link>
               );
             })}
           </nav>
@@ -131,10 +139,10 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
           
           {/* Request Quote Button */}
           {!searchOpen && (
-            <button type="button" onClick={() => onNavigate && onNavigate("Contact Us")} className="group hidden sm:inline-flex items-center gap-2 text-white text-xs sm:text-[13px] font-[600] px-4 py-2.5 rounded-lg neu-btn-primary cursor-pointer shrink-0">
+            <Link href="/contact" onClick={(e) => goSpa(e, "Contact Us")} className="group hidden sm:inline-flex items-center gap-2 text-white text-xs sm:text-[13px] font-[600] px-4 py-2.5 rounded-lg neu-btn-primary cursor-pointer shrink-0">
               <span>Request Quote</span>
               <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
-            </button>
+            </Link>
           )}
 
           {/* Animated Expandable Search Input Container */}
@@ -245,16 +253,14 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
                 Navigation Menu
               </span>
 
-              {fullMenuItems.map((item, idx) => {
+              {fullMenuItems.map((item) => {
                 const IconComp = item.icon;
                 const isActive = activePage === item.label;
                 return (
-                  <button
-                    key={idx}
-                    onClick={() => {
-                      if (onNavigate) onNavigate(item.label);
-                      setMobileMenuOpen(false);
-                    }}
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    onClick={(e) => goSpa(e, item.spaLabel)}
                     className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-[11.5px] font-[600] transition-all cursor-pointer ${
                       isActive
                         ? "bg-[#EDE9FE] text-[#7C3AED] border border-[#DDD6FE] shadow-sm"
@@ -267,7 +273,7 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
                       <IconComp className="w-3 h-3" />
                     </div>
                     <span>{item.label}</span>
-                  </button>
+                  </Link>
                 );
               })}
             </div>

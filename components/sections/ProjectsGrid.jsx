@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
+import { projectSlug } from '@/lib/seo/slug';
 
 export default function ProjectsGrid({ projects = [], title = 'Our Projects', showAllLink = false }) {
   const categories = useMemo(() => {
@@ -38,7 +39,7 @@ export default function ProjectsGrid({ projects = [], title = 'Our Projects', sh
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {filtered.map((project) => (
-          <article key={project.id} className="bg-[#F6F7FB] rounded-2xl overflow-hidden neu-sm border border-white">
+          <Link key={project.id} href={`/projects/${projectSlug(project)}`} className="bg-[#F6F7FB] rounded-2xl overflow-hidden neu-sm border border-white">
             <div
               className="h-40 bg-cover bg-center"
               style={{ backgroundImage: `url('${project.image}')` }}
@@ -50,7 +51,7 @@ export default function ProjectsGrid({ projects = [], title = 'Our Projects', sh
               <h3 className="text-sm font-[700] text-slate-900 mb-1">{project.title}</h3>
               <p className="text-[11px] text-slate-500">{project.location}{project.area ? ` · ${project.area}` : ''}</p>
             </div>
-          </article>
+          </Link>
         ))}
         {!filtered.length && <p className="text-sm text-slate-500 col-span-full">No projects published yet.</p>}
       </div>

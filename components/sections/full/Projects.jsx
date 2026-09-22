@@ -1,9 +1,11 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { Briefcase, Building2 } from 'lucide-react';
 import SectionFrame from '@/components/layout/SectionFrame';
 import QuadCarousel from '@/components/ui/QuadCarousel';
+import { projectSlug } from '@/lib/seo/slug';
 
 const PROJECTS_DATA = [
   { id: 1, title: 'Manufacturing Plant Flooring', location: 'Hyderabad', image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=900&auto=format&fit=crop' },
@@ -61,11 +63,12 @@ export default function Projects({ projects = null, settings = null }) {
       <QuadCarousel
         items={source}
         renderItem={(project) => (
+          <Link href={`/projects/${projectSlug(project)}`} className="block h-full">
           <article className="group relative h-full min-h-[160px] sm:min-h-[200px] rounded-2xl overflow-hidden shadow-md border border-white/50">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={project.image}
-              alt={project.title}
+              <img
+                src={project.image}
+                alt={[project.title, project.location].filter(Boolean).join(' in ') || 'Flooring project'}
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent" />
@@ -78,6 +81,7 @@ export default function Projects({ projects = null, settings = null }) {
               ) : null}
             </div>
           </article>
+          </Link>
         )}
       />
     </SectionFrame>

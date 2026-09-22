@@ -1,18 +1,30 @@
 import SpaApp from '@/components/spa/SpaApp';
 import JsonLd from '@/components/seo/JsonLd';
 import { getAllContent } from '@/lib/content/queries';
-import { formatDisplayPhone, normalizePhone } from '@/lib/contact';
+import { buildMetadata } from '@/lib/seo/metadata';
+import { BRAND_NAME } from '@/lib/seo/site';
+import { graph, faqNode } from '@/lib/seo/schema';
 
 export const revalidate = 60;
 
-/**
- * Live SPA only shows admin-selected items (featured).
- * If none are selected yet, fall back to published bag so the site is never empty.
- */
 function pickForSite(rows) {
   const list = rows || [];
   const selected = list.filter((r) => r.featured === true);
   return selected.length ? selected : list;
+}
+
+export async function generateMetadata() {
+  const content = await getAllContent({ homepageOnly: false });
+  const settings = content.settings || {};
+  return buildMetadata({
+    title: settings.seo_title || `${BRAND_NAME} | VDF Flooring & Industrial Flooring`,
+    description:
+      settings.seo_description ||
+      'ASVDF Flooring installs VDF and industrial concrete floors for warehouses, plants, and commercial buildings. Based in Hyderabad.',
+    path: '/',
+    image: settings.hero_image || '/banner.png',
+    absoluteTitle: true,
+  });
 }
 
 export default async function HomePage() {
@@ -30,31 +42,16 @@ export default async function HomePage() {
     faqs: pickForSite(content.faqs),
   };
 
-  const settings = content.settings;
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-  const phone = normalizePhone(settings.phone);
-
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
-    name: settings.company_name || 'ASVDF Flooring',
-    description: settings.seo_description,
-    url: siteUrl,
-    telephone: `+${phone}`,
-    email: settings.email,
-    image: settings.hero_image?.startsWith('http')
-      ? settings.hero_image
-      : `${siteUrl}${settings.hero_image || '/banner.png'}`,
-    areaServed: 'IN',
-  };
+  const faqLd = graph([
+    faqNode(
+      (spaContent.faqs || []).map((f) => ({ question: f.question, answer: f.answer }))
+    ),
+  ]);
 
   return (
     <>
-      <JsonLd data={jsonLd} />
+      {spaContent.faqs?.length ? <JsonLd data={faqLd} /> : null}
       <SpaApp content={spaContent} />
-      <p className="sr-only">
-        Call ASVDF Flooring at {formatDisplayPhone(settings.phone)} for VDF flooring solutions.
-      </p>
     </>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { Plus, Minus, ArrowRight } from 'lucide-react';
 import SectionFrame from '@/components/layout/SectionFrame';
 
@@ -85,7 +86,11 @@ export default function Faqs({ faqs = null, onNavigate }) {
                   <div className="px-3.5 sm:px-4 pb-3.5 sm:pb-4">
                     <p className="text-sm text-slate-600 leading-relaxed">{faq.answer}</p>
                   </div>
-                ) : null}
+                ) : (
+                  <div className="px-3.5 sm:px-4 pb-3.5 sm:pb-4 hidden">
+                    <p className="text-sm text-slate-600 leading-relaxed">{faq.answer}</p>
+                  </div>
+                )}
               </div>
             );
           })}
@@ -104,14 +109,19 @@ export default function Faqs({ faqs = null, onNavigate }) {
                 Share your site details and we&apos;ll recommend the right system.
               </p>
             </div>
-            <button
-              type="button"
-              onClick={() => onNavigate?.('Contact Us')}
+            <Link
+              href="/contact"
+              onClick={(e) => {
+                if (onNavigate) {
+                  e.preventDefault();
+                  onNavigate('Contact Us');
+                }
+              }}
               className="mt-4 inline-flex items-center justify-center gap-2 self-start bg-white text-[#5B21B6] text-sm font-[700] px-5 py-3 rounded-xl"
             >
               Contact Us
               <ArrowRight className="w-4 h-4" />
-            </button>
+            </Link>
           </div>
         </aside>
       </div>

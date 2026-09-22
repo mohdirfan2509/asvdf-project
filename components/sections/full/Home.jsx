@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { ArrowRight, Briefcase, Building2, Clock, Shield } from 'lucide-react';
 import SectionFrame from '@/components/layout/SectionFrame';
 
@@ -56,22 +57,32 @@ export default function Home({ onNavigate, settings = null }) {
             {subtext}
           </p>
           <div className="flex flex-wrap items-center gap-3">
-            <button
-              type="button"
-              onClick={() => onNavigate?.('Services')}
+            <Link
+              href="/services"
+              onClick={(e) => {
+                if (onNavigate) {
+                  e.preventDefault();
+                  onNavigate('Services');
+                }
+              }}
               className="inline-flex items-center gap-2 text-white text-sm font-[600] px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl neu-btn-primary"
             >
               {cta1}
               <ArrowRight className="w-4 h-4" />
-            </button>
-            <button
-              type="button"
-              onClick={() => onNavigate?.('Projects')}
+            </Link>
+            <Link
+              href="/projects"
+              onClick={(e) => {
+                if (onNavigate) {
+                  e.preventDefault();
+                  onNavigate('Projects');
+                }
+              }}
               className="inline-flex items-center gap-2 text-slate-900 text-sm font-[600] px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl bg-white/95 hover:bg-white shadow-lg"
             >
               {cta2}
               <ArrowRight className="w-4 h-4" />
-            </button>
+            </Link>
           </div>
         </div>
 
