@@ -38,14 +38,14 @@ export default function Machinery({ machinery = null }) {
       <QuadCarousel
         items={source}
         renderItem={(m) => (
-          <article className="h-full min-h-[200px] rounded-2xl overflow-hidden bg-white border border-slate-100 shadow-sm flex flex-col">
+          <article className="h-full min-h-[200px] rounded-card overflow-hidden surface-raised shadow-neu-sm flex flex-col">
             <div className="h-[40%] min-h-[100px] overflow-hidden shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={m.image} alt={m.title} className="w-full h-full object-cover" />
             </div>
             <div className="p-3.5 sm:p-4 flex-1 min-h-0">
-              <h3 className="text-base sm:text-lg font-[800] text-slate-900 mb-1">{m.title}</h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-3">{m.description}</p>
+              <h3 className="text-base sm:text-lg font-semibold text-ink mb-1">{m.title}</h3>
+              <p className="text-xs sm:text-sm text-ink-muted leading-relaxed line-clamp-3">{m.description}</p>
             </div>
           </article>
         )}

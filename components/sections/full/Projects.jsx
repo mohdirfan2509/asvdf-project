@@ -6,6 +6,7 @@ import { Briefcase, Building2 } from 'lucide-react';
 import SectionFrame from '@/components/layout/SectionFrame';
 import QuadCarousel from '@/components/ui/QuadCarousel';
 import { projectSlug } from '@/lib/seo/slug';
+import { statValue } from '@/lib/stats';
 
 const PROJECTS_DATA = [
   { id: 1, title: 'Manufacturing Plant Flooring', location: 'Hyderabad', image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=900&auto=format&fit=crop' },
@@ -25,26 +26,26 @@ export default function Projects({ projects = null, settings = null }) {
 
   const aside = (
     <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-      <div className="bg-white/95 rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 border border-white shadow-sm flex items-center gap-2.5">
-        <div className="w-9 h-9 rounded-full bg-[#F6F7FB] neu-inset flex items-center justify-center text-[#7C3AED]">
-          <Briefcase className="w-4 h-4" />
-        </div>
+      <div className="bg-surface-raised rounded-card px-3 sm:px-4 py-2.5 sm:py-3 border border-white/80 shadow-neu-sm flex items-center gap-2.5">
+        <span className="icon-well w-9 h-9">
+          <Briefcase className="w-4 h-4" strokeWidth={1.75} />
+        </span>
         <div>
-          <p className="text-base sm:text-lg font-[800] text-slate-900 leading-none">
-            {settings?.stat_projects || '120+'}
+          <p className="text-base sm:text-lg font-bold text-brand leading-none">
+            {statValue(settings, 'stat_projects')}
           </p>
-          <p className="text-[10px] font-[500] text-slate-500">Projects Completed</p>
+          <p className="text-[11px] font-medium text-ink-muted">Projects Completed</p>
         </div>
       </div>
-      <div className="bg-white/95 rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 border border-white shadow-sm flex items-center gap-2.5">
-        <div className="w-9 h-9 rounded-full bg-[#F6F7FB] neu-inset flex items-center justify-center text-[#7C3AED]">
-          <Building2 className="w-4 h-4" />
-        </div>
+      <div className="bg-surface-raised rounded-card px-3 sm:px-4 py-2.5 sm:py-3 border border-white/80 shadow-neu-sm flex items-center gap-2.5">
+        <span className="icon-well w-9 h-9">
+          <Building2 className="w-4 h-4" strokeWidth={1.75} />
+        </span>
         <div>
-          <p className="text-base sm:text-lg font-[800] text-slate-900 leading-none">
-            {settings?.stat_industries || '8+'}
+          <p className="text-base sm:text-lg font-bold text-brand leading-none">
+            {statValue(settings, 'stat_industries')}
           </p>
-          <p className="text-[10px] font-[500] text-slate-500">Industries Served</p>
+          <p className="text-[11px] font-medium text-ink-muted">Industries Served</p>
         </div>
       </div>
     </div>
@@ -64,7 +65,7 @@ export default function Projects({ projects = null, settings = null }) {
         items={source}
         renderItem={(project) => (
           <Link href={`/projects/${projectSlug(project)}`} className="block h-full">
-          <article className="group relative h-full min-h-[160px] sm:min-h-[200px] rounded-2xl overflow-hidden shadow-md border border-white/50">
+          <article className="group relative h-full min-h-[160px] sm:min-h-[200px] rounded-card overflow-hidden shadow-neu-sm border border-white/60">
             {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={project.image}
@@ -73,7 +74,7 @@ export default function Projects({ projects = null, settings = null }) {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent" />
             <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4">
-              <h3 className="text-sm sm:text-base lg:text-lg font-[700] text-white leading-snug">
+              <h3 className="text-sm sm:text-base lg:text-lg font-semibold text-white leading-snug">
                 {project.title}
               </h3>
               {project.location ? (

@@ -1,21 +1,22 @@
 import SpaApp from '@/components/spa/SpaApp';
-import JsonLd from '@/components/seo/JsonLd';
-import { getAllContent } from '@/lib/content/queries';
+import {
+  getAbout,
+  getBlogs,
+  getClients,
+  getFaqs,
+  getGallery,
+  getProjects,
+  getServices,
+  getSiteSettings,
+  getTestimonials,
+} from '@/lib/content/queries';
 import { buildMetadata } from '@/lib/seo/metadata';
 import { BRAND_NAME } from '@/lib/seo/site';
-import { graph, faqNode } from '@/lib/seo/schema';
 
 export const revalidate = 60;
 
-function pickForSite(rows) {
-  const list = rows || [];
-  const selected = list.filter((r) => r.featured === true);
-  return selected.length ? selected : list;
-}
-
 export async function generateMetadata() {
-  const content = await getAllContent({ homepageOnly: false });
-  const settings = content.settings || {};
+  const settings = await getSiteSettings();
   return buildMetadata({
     title: settings.seo_title || `${BRAND_NAME} | VDF Flooring & Industrial Flooring`,
     description:
@@ -28,30 +29,19 @@ export async function generateMetadata() {
 }
 
 export default async function HomePage() {
-  const content = await getAllContent({ homepageOnly: false });
-
-  const spaContent = {
-    ...content,
-    projects: pickForSite(content.projects),
-    services: pickForSite(content.services),
-    clients: pickForSite(content.clients),
-    testimonials: pickForSite(content.testimonials),
-    blogs: pickForSite(content.blogs),
-    gallery: pickForSite(content.gallery),
-    machinery: pickForSite(content.machinery),
-    faqs: pickForSite(content.faqs),
-  };
-
-  const faqLd = graph([
-    faqNode(
-      (spaContent.faqs || []).map((f) => ({ question: f.question, answer: f.answer }))
-    ),
+  // Same queries as the dedicated routes, so each homepage section matches its page.
+  const [settings, projects, clients, testimonials, services, about, gallery, blogs, faqs] = await Promise.all([
+    getSiteSettings(),
+    getProjects(),
+    getClients({ homepageOnly: true }),
+    getTestimonials({ homepageOnly: true }),
+    getServices({ homepageOnly: true }),
+    getAbout(),
+    getGallery({ homepageOnly: true }),
+    getBlogs(),
+    getFaqs({ homepageOnly: true }),
   ]);
-
   return (
-    <>
-      {spaContent.faqs?.length ? <JsonLd data={faqLd} /> : null}
-      <SpaApp content={spaContent} />
-    </>
+    <SpaApp content={{ settings, projects, clients, testimonials, services, about, gallery, blogs, faqs }} />
   );
 }

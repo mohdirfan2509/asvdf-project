@@ -24,19 +24,22 @@ import {
   HelpCircle
 } from 'lucide-react';
 import BrandLogo from '@/components/brand/BrandLogo';
+import SiteSearch from '@/components/layout/SiteSearch';
 
-export default function Navbar({ activePage = "Home", onNavigate }) {
+const MENU_ID = 'spa-site-menu';
+
+export default function Navbar({ onNavigate, searchIndex = [] }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(false);
   const pathname = usePathname();
-  const searchInputRef = useRef(null);
+  const menuRef = useRef(null);
+  const menuButtonRef = useRef(null);
 
   const navLinks = [
     { label: "Home", href: "/", spaLabel: "Home" },
     { label: "Projects", href: "/projects", spaLabel: "Projects" },
-    { label: "Clients", href: "/#clients", spaLabel: "Clients" },
+    { label: "Clients", href: "/clients", spaLabel: "Clients" },
     { label: "Services", href: "/services", spaLabel: "Services" },
     { label: "About Us", href: "/about", spaLabel: "About Us" },
     { label: "Contact Us", href: "/contact", spaLabel: "Contact Us" }
@@ -45,7 +48,7 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
   const fullMenuItems = [
     { label: "Home", icon: HomeIcon, href: "/", spaLabel: "Home" },
     { label: "Projects", icon: Briefcase, href: "/projects", spaLabel: "Projects" },
-    { label: "Clients", icon: Users, href: "/#clients", spaLabel: "Clients" },
+    { label: "Clients", icon: Users, href: "/clients", spaLabel: "Clients" },
     { label: "Services", icon: Wrench, href: "/services", spaLabel: "Services" },
     { label: "Machinery", icon: Settings, href: "/#machinery", spaLabel: "Machinery" },
     { label: "About Us", icon: Info, href: "/about", spaLabel: "About Us" },
@@ -58,19 +61,43 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
     { label: "FAQs", icon: HelpCircle, href: "/#faqs", spaLabel: "FAQs" },
   ];
 
-  const goSpa = (e, spaLabel) => {
-    if (pathname === '/' && onNavigate && spaLabel) {
+  // Dedicated pages use normal routing; only "/" and "/#section" targets scroll within the homepage.
+  const goSpa = (e, href, spaLabel) => {
+    const inPage = href === '/' || href.startsWith('/#');
+    if (inPage && pathname === '/' && onNavigate && spaLabel) {
       e.preventDefault();
       onNavigate(spaLabel);
-      setMobileMenuOpen(false);
     }
+    setMobileMenuOpen(false);
+  };
+
+  const isActive = (href) => {
+    if (href.includes('#')) return false;
+    if (href === '/') return pathname === '/';
+    return pathname === href || pathname.startsWith(`${href}/`);
   };
 
   useEffect(() => {
-    if (searchOpen && searchInputRef.current) {
-      searchInputRef.current.focus();
-    }
-  }, [searchOpen]);
+    if (!mobileMenuOpen) return undefined;
+
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setMobileMenuOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+    const onPointerDown = (e) => {
+      if (menuRef.current?.contains(e.target) || menuButtonRef.current?.contains(e.target)) return;
+      setMobileMenuOpen(false);
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('pointerdown', onPointerDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('pointerdown', onPointerDown);
+    };
+  }, [mobileMenuOpen]);
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
@@ -78,191 +105,153 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
   };
 
   return (
-    <header className="w-full max-w-[1440px] mx-auto shrink-0 font-['Poppins'] relative h-full flex items-center">
-      <div className="flex items-center justify-between gap-2 sm:gap-3 h-[56px] sm:h-[64px] w-full">
-        
-        {/* Left Floating Navigation Container (#EBECF0 background surface) */}
-        <div className="flex items-center justify-between bg-[#EBECF0] px-5 sm:px-6 h-full rounded-xl neu-lvl-1 flex-1">
-          {/* Logo Area */}
-          <Link href="/" className="flex items-center shrink-0" aria-label="AS VDF Flooring home" onClick={(e) => goSpa(e, "Home")}>
+    <header className="relative w-full max-w-[1440px] mx-auto h-full flex items-center">
+      <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 w-full h-14 sm:h-16 lg:h-[72px]">
+
+        <div className="surface-raised rounded-panel flex-1 min-w-0 h-full flex items-center gap-4 px-3 sm:px-5 lg:px-6">
+          <Link
+            href="/"
+            className="flex items-center shrink-0"
+            aria-label="AS VDF Flooring home"
+            onClick={(e) => goSpa(e, "/", "Home")}
+          >
             <BrandLogo />
           </Link>
 
-          {/* Navigation Items with Soft Purple Neumorphic Tint Active Box */}
-          <nav className="hidden md:flex items-center gap-4 lg:gap-5 text-[15px] font-[600] tracking-[-0.02em] text-slate-700 relative">
+          <nav aria-label="Primary" className="hidden lg:flex flex-1 h-full items-stretch justify-center gap-1 xl:gap-3">
             {navLinks.map((link) => {
-              const isActive = activePage === link.label;
+              const active = isActive(link.href);
               return (
                 <Link
                   key={link.href + link.label}
                   href={link.href}
-                  onClick={(e) => goSpa(e, link.spaLabel)}
-                  className={`relative px-3.5 py-1.5 transition-colors duration-200 z-10 ${
-                    isActive ? "text-[#7C3AED]" : "text-slate-700 hover:text-slate-900"
+                  onClick={(e) => goSpa(e, link.href, link.spaLabel)}
+                  aria-current={active ? 'page' : undefined}
+                  className={`relative inline-flex items-center px-3 xl:px-4 text-[15px] font-medium transition-colors duration-200 ${
+                    active ? "text-brand" : "text-ink hover:text-brand"
                   }`}
                 >
-                  {/* Framer Motion Sliding Active Highlight Box with Soft Brand Accent Color */}
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeBoxHighlight"
-                      className="absolute inset-0 bg-[#EDE9FE] rounded-lg border border-[#DDD6FE] shadow-sm -z-10"
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  <span>{link.label}</span>
+                  {active && (
+                    <motion.span
+                      layoutId="spaNavActiveIndicator"
+                      className="absolute left-3 right-3 xl:left-4 xl:right-4 bottom-0 h-[2px] rounded-full bg-brand"
+                      transition={{ type: "tween", ease: [0.2, 0, 0, 1], duration: 0.25 }}
                     />
                   )}
-                  <span>{link.label}</span>
                 </Link>
               );
             })}
           </nav>
         </div>
 
-        {/* Right Action Container (#EBECF0 background surface) */}
-        <div className="flex items-center gap-2 bg-[#EBECF0] px-3.5 h-full rounded-xl neu-lvl-1 shrink-0 relative">
-          
-          {/* Request Quote Button */}
-          {!searchOpen && (
-            <Link href="/contact" onClick={(e) => goSpa(e, "Contact Us")} className="group hidden sm:inline-flex items-center gap-2 text-white text-xs sm:text-[13px] font-[600] px-4 py-2.5 rounded-lg neu-btn-primary cursor-pointer shrink-0">
-              <span>Request Quote</span>
-              <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
-            </Link>
-          )}
-
-          {/* Animated Expandable Search Input Container */}
-          <motion.div 
-            initial={false}
-            animate={{ width: searchOpen ? 240 : 36 }}
-            transition={{ type: "spring", stiffness: 350, damping: 28 }}
-            className="relative flex items-center h-9 bg-[#EBECF0] neu-inset rounded-lg overflow-hidden shrink-0"
+        <div className="surface-raised rounded-panel h-full shrink-0 flex items-center gap-2 sm:gap-3 px-2 sm:px-3 lg:px-4">
+          <Link
+            href="/contact"
+            onClick={(e) => goSpa(e, "/contact", "Contact Us")}
+            className="group btn-primary hidden min-[420px]:inline-flex rounded-full h-10 lg:h-11 px-4 lg:px-5 text-[13px] lg:text-sm shrink-0"
           >
-            {/* Search Icon / Toggle Button */}
-            <button
-              aria-label="Search"
-              onClick={() => setSearchOpen(!searchOpen)}
-              className="w-9 h-9 flex items-center justify-center text-slate-700 hover:text-[#7C3AED] shrink-0 cursor-pointer z-10"
-            >
-              <Search className="w-4 h-4" />
-            </button>
+            <span>Request Quote</span>
+            <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+          </Link>
 
-            {/* Input Field */}
-            <AnimatePresence>
-              {searchOpen && (
-                <motion.div
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -10 }}
-                  transition={{ duration: 0.2 }}
-                  className="flex items-center w-full pr-2"
-                >
-                  <input
-                    ref={searchInputRef}
-                    type="text"
-                    placeholder="Search site..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full bg-transparent text-xs font-[500] text-slate-800 placeholder:text-slate-400 focus:outline-none px-1"
-                  />
-                  {searchQuery && (
-                    <button
-                      onClick={() => setSearchQuery("")}
-                      className="text-slate-400 hover:text-slate-600 p-1"
-                    >
-                      <X className="w-3 h-3" />
-                    </button>
-                  )}
-                  <button
-                    onClick={() => {
-                      setSearchOpen(false);
-                      setSearchQuery("");
-                    }}
-                    className="text-slate-400 hover:text-slate-700 p-1 ml-1"
-                    title="Close Search"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-
-          {/* Hamburger Menu Button (Perfect Circle) */}
           <button
-            aria-label="Toggle menu"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="w-9 h-9 rounded-full bg-[#EBECF0] neu-sm flex items-center justify-center text-slate-700 hover:text-[#7C3AED] cursor-pointer shrink-0"
+            type="button"
+            aria-label="Search"
+            aria-haspopup="dialog"
+            onClick={() => setSearchOpen(true)}
+            className="icon-well w-10 h-10 lg:w-11 lg:h-11 text-ink transition-colors hover:text-brand"
           >
-            {mobileMenuOpen ? <X className="w-4 h-4 text-[#7C3AED]" /> : <Menu className="w-4 h-4" />}
+            <Search className="w-[18px] h-[18px]" />
+          </button>
+
+          <button
+            ref={menuButtonRef}
+            type="button"
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileMenuOpen}
+            aria-controls={MENU_ID}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className={`icon-well w-10 h-10 lg:w-11 lg:h-11 transition-colors hover:text-brand ${
+              mobileMenuOpen ? "text-brand" : "text-ink"
+            }`}
+          >
+            {mobileMenuOpen ? <X className="w-[18px] h-[18px]" /> : <Menu className="w-[18px] h-[18px]" />}
           </button>
         </div>
-
       </div>
 
-      {/* Comprehensive Menu Overlay Panel (#EBECF0 surface background) */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -10, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.98 }}
-            transition={{ duration: 0.2 }}
-            className="absolute right-0 top-20 z-50 w-60 bg-[#EBECF0] neu-lvl-3 rounded-2xl p-3 flex flex-col gap-2.5 shadow-2xl"
+            ref={menuRef}
+            id={MENU_ID}
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.18, ease: [0.2, 0, 0, 1] }}
+            className="absolute right-0 top-full mt-2 z-50 w-[min(18rem,calc(100vw-1rem))] surface-raised shadow-neu-lg rounded-panel p-3 flex flex-col gap-2.5"
           >
-            {/* Header: Dark / Light Mode Toggle */}
-            <div className="flex items-center justify-between pb-2 border-b border-slate-300/50">
-              <span className="text-[11px] font-[700] text-slate-900 uppercase tracking-wider">
+            <div className="flex items-center justify-between px-1.5 pb-2.5 border-b border-line">
+              <span className="text-[11px] font-semibold text-ink uppercase tracking-wider">
                 Theme
               </span>
               <button
+                type="button"
                 onClick={toggleDarkMode}
-                className="flex items-center gap-1.5 bg-[#EBECF0] neu-inset px-2.5 py-1 rounded-lg text-[11px] font-[600] text-slate-700 hover:text-[#7C3AED] cursor-pointer transition-colors"
+                className="flex items-center gap-1.5 surface-inset px-2.5 py-1 rounded-lg text-xs font-medium text-ink transition-colors hover:text-brand"
               >
                 {isDarkMode ? (
                   <>
-                    <Moon className="w-3 h-3 text-[#7C3AED]" />
+                    <Moon className="w-3.5 h-3.5 text-brand" />
                     <span>Dark</span>
                   </>
                 ) : (
                   <>
-                    <Sun className="w-3 h-3 text-amber-500" />
+                    <Sun className="w-3.5 h-3.5 text-amber-500" />
                     <span>Light</span>
                   </>
                 )}
               </button>
             </div>
 
-            {/* Menu List of All 11 Pages */}
-            <div className="flex flex-col gap-1 max-h-[360px] overflow-y-auto pr-0.5">
-              <span className="text-[9.5px] font-[700] text-slate-400 uppercase tracking-widest px-1.5 mb-0.5">
+            <nav aria-label="Site menu" className="flex flex-col gap-0.5 max-h-[min(60vh,26rem)] overflow-y-auto pr-0.5">
+              <span className="text-[11px] font-semibold text-ink-muted uppercase tracking-widest px-1.5 mb-1">
                 Navigation Menu
               </span>
 
               {fullMenuItems.map((item) => {
                 const IconComp = item.icon;
-                const isActive = activePage === item.label;
+                const active = isActive(item.href);
                 return (
                   <Link
                     key={item.label}
                     href={item.href}
-                    onClick={(e) => goSpa(e, item.spaLabel)}
-                    className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-[11.5px] font-[600] transition-all cursor-pointer ${
-                      isActive
-                        ? "bg-[#EDE9FE] text-[#7C3AED] border border-[#DDD6FE] shadow-sm"
-                        : "text-slate-700 hover:bg-[#EBECF0] hover:text-[#7C3AED]"
+                    onClick={(e) => goSpa(e, item.href, item.spaLabel)}
+                    aria-current={active ? 'page' : undefined}
+                    className={`w-full flex items-center gap-3 px-2 py-2 rounded-control text-sm font-medium transition-colors ${
+                      active
+                        ? "bg-brand-soft text-brand"
+                        : "text-ink hover:bg-surface hover:text-brand"
                     }`}
                   >
-                    <div className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 ${
-                      isActive ? "bg-[#7C3AED] text-white" : "bg-[#EBECF0] neu-inset text-slate-500"
-                    }`}>
-                      <IconComp className="w-3 h-3" />
-                    </div>
+                    <span
+                      className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
+                        active ? "bg-brand text-white" : "surface-inset text-ink-muted"
+                      }`}
+                    >
+                      <IconComp className="w-3.5 h-3.5" />
+                    </span>
                     <span>{item.label}</span>
                   </Link>
                 );
               })}
-            </div>
+            </nav>
           </motion.div>
         )}
       </AnimatePresence>
 
+      <SiteSearch open={searchOpen} onClose={() => setSearchOpen(false)} index={searchIndex} />
     </header>
   );
 }

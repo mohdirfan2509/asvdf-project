@@ -29,18 +29,18 @@ export default function AboutUs02({ milestones = null }) {
     >
       <div className="h-full min-h-0 flex flex-col justify-center gap-4 sm:gap-6 overflow-y-auto">
         <div className="relative">
-          <div className="hidden sm:block absolute top-8 left-[6%] right-[6%] h-px border-t border-dashed border-purple-300/80" />
+          <div className="hidden sm:block absolute top-8 left-[6%] right-[6%] h-px border-t border-dashed border-brand-line" />
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
             {source.map((m, idx) => {
               const Icon = resolveIcon(m.icon, Building2);
               return (
                 <div key={m.id || idx} className="flex flex-col items-center text-center">
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white neu-sm flex items-center justify-center text-[#7C3AED] border border-white mb-2 sm:mb-3 relative z-10">
-                    <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </div>
-                  <p className="text-lg sm:text-xl font-[800] text-[#7C3AED] leading-none mb-1">{m.year}</p>
-                  <h3 className="text-xs sm:text-sm font-[700] text-slate-900 mb-1">{m.title}</h3>
-                  <p className="text-[11px] sm:text-xs text-slate-500 leading-snug line-clamp-3">
+                  <span className="icon-well w-12 h-12 sm:w-14 sm:h-14 mb-2 sm:mb-3 relative z-10">
+                    <Icon className="w-4 h-4 sm:w-5 sm:h-5" strokeWidth={1.75} />
+                  </span>
+                  <p className="text-lg sm:text-xl font-bold text-brand leading-none mb-1">{m.year}</p>
+                  <h3 className="text-xs sm:text-sm font-semibold text-ink mb-1">{m.title}</h3>
+                  <p className="text-[11px] sm:text-xs text-ink-muted leading-snug line-clamp-3">
                     {m.description}
                   </p>
                 </div>

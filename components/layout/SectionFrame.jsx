@@ -20,19 +20,20 @@ export default function SectionFrame({
 }) {
   const overlayClass =
     overlay === 'dark'
-      ? 'bg-gradient-to-br from-slate-950/75 via-slate-950/55 to-slate-900/40'
+      ? 'bg-slate-950/70'
       : overlay === 'light'
-        ? 'bg-gradient-to-br from-white/96 via-white/92 to-white/88'
+        ? 'bg-surface-raised/95'
         : 'bg-transparent';
 
-  const titleColor = overlay === 'dark' ? 'text-white' : 'text-slate-900';
-  const subtitleColor = overlay === 'dark' ? 'text-white/80' : 'text-slate-600';
-  const eyebrowColor = overlay === 'dark' ? 'text-purple-200' : 'text-[#7C3AED]';
+  const titleColor = overlay === 'dark' ? 'text-white' : 'text-ink';
+  const subtitleColor = overlay === 'dark' ? 'text-white/80' : 'text-ink-muted';
+  const eyebrowColor = overlay === 'dark' ? 'text-brand-light' : 'text-brand';
+  const highlightColor = overlay === 'dark' ? 'text-brand-light' : 'text-brand';
 
   return (
     <div
-      className={`spa-panel relative h-full w-full overflow-hidden rounded-[1.25rem] sm:rounded-[1.75rem] lg:rounded-[2rem] ${
-        panel ? 'bg-white border border-white/70 shadow-[0_8px_30px_rgba(15,23,42,0.06)]' : ''
+      className={`spa-panel relative h-full w-full overflow-hidden rounded-panel ${
+        panel ? 'surface-raised' : ''
       } ${className}`}
     >
       {backgroundImage ? (
@@ -52,28 +53,20 @@ export default function SectionFrame({
             <div className="min-w-0 max-w-3xl">
               {eyebrow ? (
                 <p
-                  className={`text-[10px] sm:text-xs font-[700] tracking-[0.2em] uppercase mb-1.5 sm:mb-2 ${eyebrowColor}`}
+                  className={`text-[11px] sm:text-xs font-semibold tracking-[0.16em] uppercase mb-1.5 sm:mb-2 ${eyebrowColor}`}
                 >
                   {eyebrow}
                 </p>
               ) : null}
               {title ? (
                 <h2
-                  className={`text-[1.65rem] sm:text-3xl md:text-4xl lg:text-[2.75rem] font-[800] tracking-[-0.04em] leading-[1.08] ${titleColor}`}
+                  className={`text-[1.65rem] sm:text-3xl md:text-4xl lg:text-[2.6rem] font-bold tracking-[-0.03em] leading-[1.1] ${titleColor}`}
                 >
                   {title}
                   {highlight ? (
                     <>
                       <br />
-                      <span
-                        className={
-                          overlay === 'dark'
-                            ? 'text-purple-200'
-                            : 'bg-gradient-to-r from-[#7C3AED] via-[#8B5CF6] to-[#A855F7] bg-clip-text text-transparent'
-                        }
-                      >
-                        {highlight}
-                      </span>
+                      <span className={highlightColor}>{highlight}</span>
                     </>
                   ) : null}
                 </h2>

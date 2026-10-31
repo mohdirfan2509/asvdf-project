@@ -14,25 +14,25 @@ export default async function NotFound() {
 
   return (
     <SiteShell settings={settings} activePath="/">
-      <article className="bg-white rounded-[1.5rem] sm:rounded-[2rem] p-6 sm:p-10 neu-lg border border-white/80 mb-4">
-        <p className="text-[10px] font-[700] tracking-widest text-[#7C3AED] uppercase mb-2">404</p>
-        <h1 className="text-3xl sm:text-4xl font-[800] tracking-tight text-slate-900 mb-3">This page is not available</h1>
-        <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-6">
+      <article className="surface-raised rounded-panel p-6 sm:p-10 mb-4">
+        <p className="text-[11px] font-semibold tracking-[0.14em] text-brand uppercase mb-2">404</p>
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-ink mb-3">This page is not available</h1>
+        <p className="text-sm sm:text-base text-ink-muted leading-relaxed mb-6">
           The link may be old or typed incorrectly. Use the pages below to reach VDF flooring, projects, or the office in
           Hyderabad.
         </p>
         <div className="flex flex-wrap gap-3 mb-6">
-          <Link href="/" className="inline-flex text-white text-sm font-[600] px-5 py-3 rounded-xl neu-btn-primary">
+          <Link href="/" className="btn-primary text-sm px-5 py-3">
             Home
           </Link>
-          <Link href="/contact" className="inline-flex text-sm font-[600] px-5 py-3 rounded-xl bg-[#F6F7FB] neu-sm">
+          <Link href="/contact" className="btn-secondary text-sm px-5 py-3">
             Contact
           </Link>
         </div>
-        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm font-[600]">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm font-semibold">
           {SERVICE_NAV.map((item) => (
             <li key={item.href}>
-              <Link href={item.href} className="text-[#7C3AED] hover:underline">
+              <Link href={item.href} className="text-brand hover:underline">
                 {item.label}
               </Link>
             </li>

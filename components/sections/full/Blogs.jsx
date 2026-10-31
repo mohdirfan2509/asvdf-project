@@ -46,28 +46,28 @@ export default function Blogs({ blogs = null }) {
         items={source}
         renderItem={(article) => {
           const card = (
-            <article className="group h-full min-h-[200px] bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm flex flex-col">
+            <article className="group h-full min-h-[200px] surface-raised shadow-neu-sm rounded-card overflow-hidden flex flex-col">
               <div className="relative h-[36%] min-h-[90px] overflow-hidden shrink-0">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={article.image} alt={article.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                <span className="absolute bottom-2 left-2 text-[10px] font-[700] px-2 py-0.5 rounded-md bg-white/95 text-[#7C3AED]">
+                <span className="absolute bottom-2 left-2 text-[11px] font-semibold px-2 py-0.5 rounded-md bg-surface-raised/95 text-brand">
                   {article.category}
                 </span>
               </div>
               <div className="p-3.5 sm:p-4 flex-1 min-h-0 flex flex-col">
                 {article.date ? (
-                  <p className="text-[11px] text-slate-400 flex items-center gap-1 mb-1">
+                  <p className="text-[11px] text-ink-muted flex items-center gap-1 mb-1">
                     <Calendar className="w-3 h-3" />
                     {article.date}
                   </p>
                 ) : null}
-                <h3 className="text-sm sm:text-base font-[800] text-slate-900 leading-snug mb-1.5 group-hover:text-[#7C3AED] transition-colors line-clamp-2">
+                <h3 className="text-sm sm:text-base font-semibold text-ink leading-snug mb-1.5 group-hover:text-brand transition-colors line-clamp-2">
                   {article.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-2 flex-1">
+                <p className="text-xs sm:text-sm text-ink-muted leading-relaxed line-clamp-2 flex-1">
                   {article.excerpt}
                 </p>
-                <span className="mt-2 inline-flex items-center gap-1 text-xs font-[700] text-[#7C3AED]">
+                <span className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-brand">
                   Read more <ArrowRight className="w-3.5 h-3.5" />
                 </span>
               </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import CollectionManager from '@/components/admin/CollectionManager';
+import { BLOG_CATEGORIES } from '@/lib/blogs';
 
 export default function AdminBlogsPage() {
   return (
@@ -14,7 +15,8 @@ export default function AdminBlogsPage() {
         excerpt: '',
         body: '',
         cover: '',
-        category: 'Guides',
+        category: BLOG_CATEGORIES[0],
+        tags: '',
         featured: true,
         published: true,
         published_at: new Date().toISOString(),
@@ -23,8 +25,14 @@ export default function AdminBlogsPage() {
       fields={[
         { name: 'title', label: 'Blog title' },
         { name: 'slug', label: 'Web link name (example: what-is-vdf)' },
+        { name: 'category', label: 'Category', type: 'select', options: BLOG_CATEGORIES },
+        { name: 'tags', label: 'Tags (comma separated, e.g. Epoxy Flooring, Concrete Floors)' },
         { name: 'excerpt', label: 'Short preview', type: 'textarea' },
-        { name: 'body', label: 'Full article', type: 'textarea' },
+        {
+          name: 'body',
+          label: 'Full article (blank line between paragraphs; "## " for headings, "- " for list items)',
+          type: 'textarea',
+        },
         { name: 'seo_title', label: 'Search title (optional)' },
         { name: 'seo_description', label: 'Search description (optional)', type: 'textarea' },
         { name: 'cover', label: 'Cover photo', type: 'image' },

@@ -9,12 +9,12 @@ export default function FloatingContact({ settings }) {
   const whatsapp = settings?.whatsapp || phone;
 
   return (
-    <div className="hidden md:flex fixed right-4 bottom-6 z-[55] flex-col gap-2">
+    <div className="hidden md:flex fixed right-4 bottom-6 z-[55] flex-col gap-2.5">
       <a
         href={getWhatsAppUrl(whatsapp)}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-12 h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg hover:scale-105 transition"
+        className="w-12 h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-neu-sm transition-transform duration-150 hover:-translate-y-0.5"
         aria-label="WhatsApp"
         title="WhatsApp"
       >
@@ -22,7 +22,7 @@ export default function FloatingContact({ settings }) {
       </a>
       <a
         href={getTelUrl(phone)}
-        className="w-12 h-12 rounded-full neu-btn-primary text-white flex items-center justify-center shadow-lg hover:scale-105 transition"
+        className="btn-primary w-12 h-12 rounded-full"
         aria-label={`Call ${formatDisplayPhone(phone)}`}
         title={formatDisplayPhone(phone)}
       >

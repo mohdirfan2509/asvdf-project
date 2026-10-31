@@ -97,10 +97,18 @@ export default function SettingsPage() {
       </Card>
 
       <Card icon={Hash} title="Numbers on website" note="Shown on Home, About, and Projects.">
-        {field(settings, setSettings, 'stat_projects', 'Projects (e.g. 120+)')}
+        {field(settings, setSettings, 'stat_projects', 'Projects (e.g. 100+)')}
+        {field(settings, setSettings, 'stat_clients', 'Happy clients (e.g. 50+)')}
         {field(settings, setSettings, 'stat_industries', 'Industries (e.g. 8+)')}
-        {field(settings, setSettings, 'stat_years', 'Years (e.g. 12+)')}
+        {field(settings, setSettings, 'stat_years', 'Years (e.g. 10+)')}
+        {field(settings, setSettings, 'stat_satisfaction', 'Client satisfaction (e.g. 98%) — leave empty to hide')}
         {field(settings, setSettings, 'stat_sqft', 'Sq.ft (e.g. 1M+)')}
+        {field(settings, setSettings, 'stat_quality', 'Quality (gallery, e.g. 100%) — leave empty to hide')}
+        {field(settings, setSettings, 'working_hours', 'Working hours (FAQ contact strip, e.g. Mon – Sat: 9 AM – 6 PM) — leave empty to hide')}
+        {field(settings, setSettings, 'social_linkedin', 'LinkedIn page URL (footer icon stays disabled until set)')}
+        {field(settings, setSettings, 'social_facebook', 'Facebook URL (optional override)')}
+        {field(settings, setSettings, 'social_instagram', 'Instagram URL (optional override)')}
+        {field(settings, setSettings, 'social_youtube', 'YouTube URL (optional override)')}
       </Card>
 
       <Card icon={ImageIcon} title="Homepage banner">

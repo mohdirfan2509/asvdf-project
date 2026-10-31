@@ -45,7 +45,7 @@ export default function ContactUs02({ settings = null }) {
       <div className="h-full min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 overflow-hidden">
         <form
           onSubmit={onSubmit}
-          className="lg:col-span-7 bg-white/95 rounded-2xl p-4 sm:p-5 border border-slate-100 shadow-sm flex flex-col gap-2.5 sm:gap-3 min-h-0 overflow-y-auto"
+          className="lg:col-span-7 surface-raised shadow-neu-sm rounded-card p-4 sm:p-5 flex flex-col gap-2.5 sm:gap-3 min-h-0 overflow-y-auto"
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
             <Field label="Full name" name="fullName" value={formData.fullName} onChange={onChange} required />
@@ -54,20 +54,20 @@ export default function ContactUs02({ settings = null }) {
             <Field label="Phone" name="phone" value={formData.phone} onChange={onChange} required />
           </div>
           <div className="flex-1 min-h-0 flex flex-col">
-            <label htmlFor="contact-message" className="text-[11px] font-[600] text-slate-600 mb-1 block">Message</label>
+            <label htmlFor="contact-message" className="text-xs font-semibold text-ink-muted mb-1 block">Message</label>
             <textarea
               id="contact-message"
               name="message"
               required
               value={formData.message}
               onChange={onChange}
-              className="w-full flex-1 min-h-[5.5rem] bg-[#F6F7FB] rounded-xl px-3 py-2.5 text-sm neu-inset border-0 focus:outline-none focus:ring-2 focus:ring-purple-300 resize-none"
+              className="w-full flex-1 min-h-[5.5rem] surface-inset rounded-control px-3 py-2.5 text-sm text-ink placeholder:text-ink-muted/70 focus:outline-none focus:ring-2 focus:ring-brand/30 resize-none"
               placeholder="Tell us about your project…"
             />
           </div>
           <button
             type="submit"
-            className="mt-1 inline-flex items-center justify-center gap-2 self-start text-white text-sm font-[600] px-5 py-3 rounded-xl neu-btn-primary"
+            className="btn-primary mt-1 self-start text-sm px-5 py-3"
           >
             <span>{sent ? 'Opening WhatsApp…' : 'Send message'}</span>
             <ArrowRight className="w-4 h-4" />
@@ -88,7 +88,7 @@ export default function ContactUs02({ settings = null }) {
 function Field({ label, name, value, onChange, type = 'text', required }) {
   return (
     <div>
-      <label htmlFor={name} className="text-[11px] font-[600] text-slate-600 mb-1 block">{label}</label>
+      <label htmlFor={name} className="text-xs font-semibold text-ink-muted mb-1 block">{label}</label>
       <input
         id={name}
         type={type}
@@ -96,7 +96,7 @@ function Field({ label, name, value, onChange, type = 'text', required }) {
         value={value}
         onChange={onChange}
         required={required}
-        className="w-full bg-[#F6F7FB] rounded-xl px-3 py-2.5 text-sm neu-inset border-0 focus:outline-none focus:ring-2 focus:ring-purple-300"
+        className="w-full surface-inset rounded-control px-3 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-brand/30"
       />
     </div>
   );
@@ -105,22 +105,22 @@ function Field({ label, name, value, onChange, type = 'text', required }) {
 function ContactCard({ icon: Icon, title, value, href, external }) {
   const inner = (
     <>
-      <div className="w-10 h-10 rounded-full bg-[#F6F7FB] neu-inset flex items-center justify-center text-[#7C3AED] shrink-0">
-        <Icon className="w-4 h-4" />
-      </div>
+      <span className="icon-well w-10 h-10">
+        <Icon className="w-4 h-4" strokeWidth={1.75} />
+      </span>
       <div className="min-w-0">
-        <p className="text-[10px] font-[700] uppercase tracking-wider text-slate-400">{title}</p>
-        <p className={`text-sm font-[700] text-slate-900 ${title === 'Office' ? 'line-clamp-3' : 'truncate'}`}>{value}</p>
+        <p className="text-[11px] font-semibold uppercase tracking-wider text-ink-muted">{title}</p>
+        <p className={`text-sm font-semibold text-ink ${title === 'Office' ? 'line-clamp-3' : 'truncate'}`}>{value}</p>
       </div>
     </>
   );
   const className =
-    'bg-white/95 rounded-2xl p-3.5 sm:p-4 border border-slate-100 shadow-sm flex items-center gap-3';
+    'surface-raised shadow-neu-sm rounded-card p-3.5 sm:p-4 flex items-center gap-3';
   if (!href) return <div className={className}>{inner}</div>;
   return (
     <a
       href={href}
-      className={`${className} hover:border-purple-200 transition-colors`}
+      className={`${className} transition-colors hover:border-brand-line`}
       target={external ? '_blank' : undefined}
       rel={external ? 'noreferrer' : undefined}
     >

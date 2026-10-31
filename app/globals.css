@@ -1,20 +1,69 @@
 @import "tailwindcss";
 
+/* Design tokens — every public-site surface, colour, radius and shadow derives from these. */
+@theme {
+  --color-surface: #F1F2F7;
+  --color-surface-raised: #F5F6FA;
+  --color-surface-sunken: #EAECF3;
+  --color-line: #E1E4EE;
+
+  --color-brand: #6845E8;
+  --color-brand-highlight: #815CEB;
+  --color-brand-strong: #5534D4;
+  --color-brand-light: #BBA8F8;
+  --color-brand-soft: #EEEAFD;
+  --color-brand-line: #D8CEFA;
+
+  --color-ink: #111827;
+  --color-ink-muted: #53617C;
+
+  --radius-control: 0.75rem;
+  --radius-card: 1rem;
+  --radius-panel: 1.25rem;
+
+  --shadow-neu-sm: -3px -3px 8px rgb(255 255 255 / 0.9), 3px 3px 9px rgb(17 24 39 / 0.07);
+  --shadow-neu-md: -6px -6px 16px rgb(255 255 255 / 0.85), 6px 6px 18px rgb(17 24 39 / 0.07);
+  --shadow-neu-lg: -10px -10px 26px rgb(255 255 255 / 0.8), 12px 12px 30px rgb(17 24 39 / 0.09);
+  --shadow-neu-inset: inset 2px 2px 5px rgb(17 24 39 / 0.07), inset -2px -2px 5px rgb(255 255 255 / 0.9);
+  --shadow-brand: 0 10px 22px -8px rgb(104 69 232 / 0.6);
+  /* For raised elements resting on photography, where a white highlight would read as a halo. */
+  --shadow-float: 0 14px 32px -14px rgb(17 24 39 / 0.35), 0 2px 6px rgb(17 24 39 / 0.06);
+
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Wide but short screens (e.g. 1366×768 laptops), for layouts that must fit one viewport. */
+@custom-variant short-desktop (@media (min-width: 1280px) and (max-height: 860px));
+
+@theme inline {
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+}
+
 :root {
-  --spa-nav-h: 5.5rem;
+  --spa-nav-h: 4.5rem;
   --spa-rail: clamp(0.5rem, 1.2vw, 1rem);
-  --spa-gap: clamp(0.5rem, 1vw, 0.85rem);
+  --spa-gap: clamp(0.75rem, 1.4vw, 1.25rem);
   --spa-section-h: calc(100svh - var(--spa-nav-h) - var(--spa-gap));
   --spa-pad-x: clamp(1rem, 2.2vw, 2rem);
   --spa-pad-y: clamp(0.9rem, 1.8vw, 1.6rem);
-  --spa-bottom-safe: 0px;
+  --spa-bottom-safe: 5.25rem;
 }
 
-@media (max-width: 767px) {
+@media (min-width: 640px) {
   :root {
     --spa-nav-h: 5rem;
-    --spa-bottom-safe: 5.25rem;
-    --spa-section-h: calc(100svh - var(--spa-nav-h) - var(--spa-gap) - 0.25rem);
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --spa-bottom-safe: 0px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --spa-nav-h: 6rem;
   }
 }
 
@@ -30,17 +79,123 @@
   }
 
   body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #EBECF0;
-    color: #0F172A;
+    background-color: var(--color-surface);
+    color: var(--color-ink);
     overflow-x: hidden;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .surface-raised {
+    background-color: var(--color-surface-raised);
+    border: 1px solid rgb(255 255 255 / 0.75);
+    box-shadow: var(--shadow-neu-md);
+  }
+
+  .surface-inset {
+    background-color: var(--color-surface-sunken);
+    border: 1px solid transparent;
+    box-shadow: var(--shadow-neu-inset);
+  }
+
+  .icon-well {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    background-color: var(--color-surface-raised);
+    border: 1px solid rgb(255 255 255 / 0.85);
+    box-shadow: var(--shadow-neu-sm);
+    color: var(--color-brand);
+  }
+
+  /* Solid purple icon disc for emphasised statistics. */
+  .icon-orb {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    background-color: var(--color-brand);
+    color: #fff;
+    box-shadow: var(--shadow-brand), inset 0 1px 0 rgb(255 255 255 / 0.25);
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    border-radius: var(--radius-control);
+    transition:
+      background-color 160ms var(--ease-standard),
+      color 160ms var(--ease-standard),
+      box-shadow 160ms var(--ease-standard),
+      transform 160ms var(--ease-standard);
+  }
+
+  .btn-primary {
+    background-color: var(--color-brand);
+    color: #fff;
+    box-shadow: var(--shadow-brand);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-brand-highlight);
+  }
+
+  .btn-primary:active {
+    background-color: var(--color-brand-strong);
+    transform: translateY(1px);
+    box-shadow: 0 4px 10px -4px rgb(104 69 232 / 0.55);
+  }
+
+  .btn-secondary {
+    background-color: var(--color-surface-raised);
+    color: var(--color-ink);
+    border: 1px solid rgb(255 255 255 / 0.85);
+    box-shadow: var(--shadow-neu-sm);
+  }
+
+  .btn-secondary:hover {
+    color: var(--color-brand);
+  }
+
+  .btn-secondary:active {
+    transform: translateY(1px);
+    box-shadow: var(--shadow-neu-inset);
+  }
+
+  /* Readability scrim for text over the hero footage; stops measured against the video's brightest frames. */
+  .hero-scrim {
+    background: linear-gradient(
+      90deg,
+      rgb(9 12 22 / 0.82) 0%,
+      rgb(9 12 22 / 0.62) 45%,
+      rgb(9 12 22 / 0.25) 75%,
+      rgb(9 12 22 / 0.1) 100%
+    );
+  }
+
+  @media (max-width: 767px) {
+    .hero-scrim {
+      background: rgb(9 12 22 / 0.72);
+    }
   }
 }
 
 .spa-shell {
   min-height: 100svh;
   width: 100%;
-  background: #EBECF0;
+  background: var(--color-surface);
 }
 
 .spa-nav-sticky {
@@ -52,7 +207,7 @@
   align-items: center;
   padding-left: var(--spa-rail);
   padding-right: var(--spa-rail);
-  background: rgba(235, 236, 240, 0.92);
+  background: rgb(241 242 247 / 0.9);
   backdrop-filter: blur(10px);
 }
 
@@ -83,6 +238,36 @@
   flex: 1 1 auto;
   min-height: 0;
   height: 100%;
+}
+
+/* The homepage hero grows with its feature cards and statistics instead of filling one viewport. */
+.spa-section.spa-section--auto {
+  height: auto;
+  min-height: 0;
+  max-height: none;
+}
+
+.spa-section.spa-section--auto > * {
+  height: auto;
+}
+
+.home-section {
+  scroll-margin-top: calc(var(--spa-nav-h) + 0.5rem);
+}
+
+/* Dimensional "FAQ" lettering over the FAQ hero photo; the reflection is a progressive enhancement. */
+.faq-hero-word {
+  font-size: clamp(3.5rem, 8vw, 8rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: transparent;
+  background-image: linear-gradient(180deg, #d9d0fd 0%, #a58ff5 45%, var(--color-brand) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(0 1px 0 var(--color-brand-strong)) drop-shadow(0 2px 0 var(--color-brand-strong))
+    drop-shadow(0 3px 0 #4a2cc0) drop-shadow(0 16px 20px rgb(17 24 39 / 0.4));
+  -webkit-box-reflect: below -0.1em linear-gradient(transparent 60%, rgb(255 255 255 / 0.22));
 }
 
 .spa-pad {
@@ -116,70 +301,4 @@
   .animate-marquee-rtl {
     animation: none;
   }
-}
-
-.heading-poppins {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1.08;
-}
-
-.neu-lvl-1, .neu-lvl-2, .neu-lvl-3, .neu-sm, .neu-md, .neu-lg {
-  background-color: #EBECF0;
-  box-shadow: 6px 6px 12px #B8B9BE, -6px -6px 12px #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  transition: transform 220ms ease-in-out, box-shadow 220ms ease-in-out, background-color 220ms ease-in-out;
-}
-
-.neu-lvl-1:hover, .neu-lvl-2:hover, .neu-sm:hover, .neu-md:hover, .neu-md-hover:hover {
-  transform: translateY(-1px);
-  box-shadow: 4px 4px 8px #B8B9BE, -4px -4px 8px #FFFFFF;
-}
-
-.neu-lvl-1:active, .neu-lvl-2:active, .neu-sm:active, .neu-md:active {
-  transform: translateY(0);
-  box-shadow: inset 3px 3px 6px #B8B9BE, inset -3px -3px 6px #FFFFFF;
-}
-
-.neu-inset {
-  background-color: #EBECF0;
-  box-shadow: inset 3px 3px 6px #B8B9BE, inset -3px -3px 6px #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.20);
-}
-
-.neu-btn-primary {
-  background: linear-gradient(135deg, #7C3AED, #6D28D9);
-  box-shadow: 5px 5px 10px rgba(109, 40, 217, 0.35), -5px -5px 10px rgba(255, 255, 255, 0.80);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  transition: transform 220ms ease-in-out, box-shadow 220ms ease-in-out;
-  font-weight: 600;
-}
-
-.neu-btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 3px 3px 7px rgba(109, 40, 217, 0.40), -3px -3px 7px rgba(255, 255, 255, 0.90);
-}
-
-.neu-btn-primary:active {
-  transform: translateY(0);
-  box-shadow: inset 3px 3px 6px rgba(55, 15, 115, 0.6), inset -3px -3px 6px rgba(168, 85, 247, 0.4);
-}
-
-.neu-btn-secondary {
-  background-color: #EBECF0;
-  box-shadow: 6px 6px 12px #B8B9BE, -6px -6px 12px #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  transition: transform 220ms ease-in-out, box-shadow 220ms ease-in-out;
-  font-weight: 600;
-}
-
-.neu-btn-secondary:hover {
-  transform: translateY(-1px);
-  box-shadow: 4px 4px 8px #B8B9BE, -4px -4px 8px #FFFFFF;
-}
-
-.neu-btn-secondary:active {
-  transform: translateY(0);
-  box-shadow: inset 3px 3px 6px #B8B9BE, inset -3px -3px 6px #FFFFFF;
 }

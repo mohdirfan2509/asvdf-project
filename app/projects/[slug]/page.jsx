@@ -68,33 +68,33 @@ export default async function ProjectDetailPage({ params }) {
     <SiteShell settings={settings} activePath="/projects">
       <JsonLd data={jsonLd} />
       <Breadcrumbs items={breadcrumbs} />
-      <article className="bg-white rounded-[1.5rem] sm:rounded-[2rem] p-4 sm:p-8 neu-lg border border-white/80 mb-4">
-        <p className="text-[10px] font-[700] tracking-widest text-[#7C3AED] uppercase mb-2">Project</p>
-        <h1 className="text-3xl sm:text-4xl font-[800] tracking-tight text-slate-900 mb-4">{project.title}</h1>
+      <article className="surface-raised rounded-panel p-4 sm:p-8 mb-4">
+        <p className="text-[11px] font-semibold tracking-[0.14em] text-brand uppercase mb-2">Project</p>
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-ink mb-4">{project.title}</h1>
         {project.image ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={project.image}
             alt={alt || project.title}
-            className="w-full h-56 sm:h-72 object-cover rounded-2xl mb-6"
+            className="w-full h-56 sm:h-72 object-cover rounded-card mb-6"
           />
         ) : null}
         <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
           {facts.map(([label, value]) => (
-            <div key={label} className="bg-[#F6F7FB] rounded-xl p-3">
-              <dt className="text-[10px] font-[700] uppercase tracking-wider text-slate-400">{label}</dt>
-              <dd className="text-sm font-[700] text-slate-900">{value}</dd>
+            <div key={label} className="bg-surface border border-line rounded-control p-3">
+              <dt className="text-[11px] font-semibold uppercase tracking-wider text-ink-muted">{label}</dt>
+              <dd className="text-sm font-semibold text-ink">{value}</dd>
             </div>
           ))}
         </dl>
         {project.body || project.work_performed || project.summary ? (
-          <div className="text-sm sm:text-base text-slate-600 leading-relaxed whitespace-pre-line">
+          <div className="text-sm sm:text-base text-ink-muted leading-relaxed whitespace-pre-line">
             {project.body || project.work_performed || project.summary}
           </div>
         ) : (
-          <p className="text-sm text-slate-600 leading-relaxed">
+          <p className="text-sm text-ink-muted leading-relaxed">
             Published details for this project are listed above. For scope, programme, or a similar floor on your site,{' '}
-            <Link href="/contact" className="font-[700] text-[#7C3AED]">
+            <Link href="/contact" className="font-semibold text-brand">
               request a quotation
             </Link>
             .

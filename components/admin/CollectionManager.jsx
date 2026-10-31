@@ -272,6 +272,19 @@ export default function CollectionManager({
                   onChange={(e) => setEditing({ ...editing, [field.name]: e.target.value })}
                   className={inputClass}
                 />
+              ) : field.type === 'select' ? (
+                <select
+                  value={editing[field.name] || ''}
+                  onChange={(e) => setEditing({ ...editing, [field.name]: e.target.value })}
+                  className={inputClass}
+                >
+                  <option value="">Choose…</option>
+                  {field.options.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
               ) : field.type === 'image' ? (
                 <div className="space-y-3">
                   {editing[field.name] ? (

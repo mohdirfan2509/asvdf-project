@@ -11,6 +11,7 @@ export default function AdminTestimonialsPage() {
       emptyRow={{
         name: '',
         role: '',
+        company: '',
         quote: '',
         avatar: '',
         rating: 5,
@@ -21,6 +22,10 @@ export default function AdminTestimonialsPage() {
       fields={[
         { name: 'name', label: 'Customer name' },
         { name: 'role', label: 'Job / company' },
+        {
+          name: 'company',
+          label: 'Client company (optional, same name as in Clients to show its logo)',
+        },
         { name: 'quote', label: 'What they said', type: 'textarea' },
         { name: 'avatar', label: 'Photo (optional)', type: 'image' },
         { name: 'rating', label: 'Stars (1–5)', type: 'number' },

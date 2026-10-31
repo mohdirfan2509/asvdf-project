@@ -19,6 +19,7 @@ import {
   Info,
   MessageSquareQuote,
   ChevronRight,
+  Inbox,
 } from 'lucide-react';
 
 export const metadata = { title: 'Admin Home' };
@@ -37,6 +38,7 @@ async function count(collection) {
 }
 
 const CARDS = [
+  { label: 'Enquiries', collection: 'inquiries', href: '/admin/enquiries', icon: Inbox },
   { label: 'Projects', collection: 'projects', href: '/admin/projects', icon: Briefcase },
   { label: 'Services', collection: 'services', href: '/admin/services', icon: Wrench },
   { label: 'Machinery', collection: 'machinery', href: '/admin/machinery', icon: Cog },

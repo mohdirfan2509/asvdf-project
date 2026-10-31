@@ -55,7 +55,7 @@ export async function generateMetadata() {
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#EBECF0',
+  themeColor: '#F1F2F7',
 };
 
 export default async function RootLayout({ children }) {
@@ -63,11 +63,11 @@ export default async function RootLayout({ children }) {
   const jsonLd = graph([organizationNode(settings), websiteNode(settings)]);
 
   return (
-    <html lang="en-IN" className={poppins.variable}>
-      <body className={`${poppins.className} bg-[#EBECF0] text-slate-800 antialiased`}>
+    <html lang="en-IN" className={poppins.variable} data-scroll-behavior="smooth">
+      <body className={`${poppins.className} bg-surface text-ink antialiased`}>
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-[80] focus:bg-white focus:px-3 focus:py-2 focus:rounded-lg"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-[80] focus:bg-surface-raised focus:text-ink focus:px-3 focus:py-2 focus:rounded-control"
         >
           Skip to content
         </a>

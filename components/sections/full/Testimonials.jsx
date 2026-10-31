@@ -41,18 +41,18 @@ export default function Testimonials({ testimonials = null }) {
       <QuadCarousel
         items={source}
         renderItem={(t) => (
-          <article className="h-full min-h-[180px] bg-white rounded-2xl p-4 sm:p-5 border border-slate-100 shadow-sm flex flex-col justify-between">
+          <article className="h-full min-h-[180px] surface-raised shadow-neu-sm rounded-card p-4 sm:p-5 flex flex-col justify-between">
             <div>
-              <div className="flex gap-0.5 text-[#7C3AED] mb-2.5">
+              <div className="flex gap-0.5 text-brand mb-2.5">
                 {[...Array(Number(t.rating) || 5)].map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 fill-[#7C3AED]" />
+                  <Star key={i} className="w-3.5 h-3.5 fill-current" />
                 ))}
               </div>
-              <p className="text-sm text-slate-700 leading-relaxed font-[500] line-clamp-5">
+              <p className="text-sm text-ink/85 leading-relaxed font-medium line-clamp-5">
                 “{t.quote}”
               </p>
             </div>
-            <div className="flex items-center gap-3 mt-4 pt-3 border-t border-slate-100">
+            <div className="flex items-center gap-3 mt-4 pt-3 border-t border-line">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={t.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop'}
@@ -60,8 +60,8 @@ export default function Testimonials({ testimonials = null }) {
                 className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover"
               />
               <div className="min-w-0">
-                <p className="text-sm font-[800] text-slate-900 truncate">{t.name}</p>
-                <p className="text-xs text-slate-500 truncate">{t.role}</p>
+                <p className="text-sm font-semibold text-ink truncate">{t.name}</p>
+                <p className="text-xs text-ink-muted truncate">{t.role}</p>
               </div>
             </div>
           </article>

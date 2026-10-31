@@ -1,98 +1,76 @@
 import Link from 'next/link';
-import { PRIMARY_NAV, SERVICE_NAV } from '@/lib/seo/routes';
-import { BRAND_NAME } from '@/lib/seo/site';
-import { COMPANY, SERVICE_AREAS, mapsUrl } from '@/lib/seo/company';
-import { formatDisplayPhone, getTelUrl } from '@/lib/contact';
+import BrandLogo from '@/components/brand/BrandLogo';
+import FinalCta from '@/components/layout/FinalCta';
+import SocialIcon from '@/components/ui/SocialIcons';
+import { COMPANY, SERVICE_AREAS, socialLinks } from '@/lib/seo/company';
 
-export default function CrawlableFooter({ settings }) {
-  const phone = settings?.phone;
-  const email = settings?.email;
-  const address = settings?.address || COMPANY.address;
+const socialClass =
+  'inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/80 bg-surface-raised text-ink shadow-neu-sm transition-[color,box-shadow,transform] duration-200';
+
+/** Site-wide closing block: the final CTA banner (optional) and the footer with service areas and social links. */
+export default function CrawlableFooter({ settings, showCta = true }) {
   const legal = settings?.legal_name || COMPANY.legalName;
-  const gstin = settings?.gstin || COMPANY.gstin;
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-white rounded-[1.5rem] sm:rounded-[2rem] p-5 sm:p-8 neu-lg border border-white/80">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-        <div>
-          <p className="font-[800] text-slate-900 mb-1">{settings?.company_name || BRAND_NAME}</p>
-          <p className="text-xs text-slate-500 mb-2">{legal}</p>
-          <p className="text-sm text-slate-500 leading-relaxed">
-            VDF and industrial flooring from Shamshabad, Hyderabad. Service areas: Telangana, Andhra Pradesh,
-            Karnataka, Maharashtra, Odisha, and Chennai.
+    <>
+      {showCta ? <FinalCta settings={settings} className="mb-4 lg:mb-5" /> : null}
+      <footer
+        id="site-footer"
+        className="flex flex-col gap-6 rounded-panel border border-white/80 bg-surface px-5 py-6 shadow-neu-sm sm:px-8 lg:flex-row lg:items-center lg:gap-8 lg:px-10 lg:py-7"
+      >
+        <Link href="/" aria-label="ASVDF Flooring home" className="shrink-0 self-start lg:self-center">
+          <BrandLogo />
+        </Link>
+        <span aria-hidden className="hidden h-16 w-px shrink-0 bg-line lg:block" />
+
+        <div className="min-w-0 flex-1">
+          <p className="text-sm leading-relaxed text-ink-muted">
+            © {year} {legal}.
+            <br />
+            All rights reserved.
           </p>
+          <nav aria-labelledby="footer-service-areas" className="mt-3">
+            <p id="footer-service-areas" className="text-[11px] font-semibold uppercase tracking-[0.14em] text-brand">
+              Service Areas
+            </p>
+            <ul className="mt-1.5 grid max-w-[34rem] grid-cols-2 gap-x-3 gap-y-1.5 text-sm font-medium text-ink sm:grid-cols-4 sm:gap-x-0">
+              {SERVICE_AREAS.map((area) => (
+                <li
+                  key={area.path}
+                  className="sm:border-l sm:border-line sm:px-3 sm:[&:nth-child(4n+1)]:border-l-0 sm:[&:nth-child(4n+1)]:pl-0"
+                >
+                  <Link href={area.path} className="transition-colors hover:text-brand">
+                    {area.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
-        <div>
-          <p className="text-[10px] font-[700] tracking-widest uppercase text-[#7C3AED] mb-2">Explore</p>
-          <ul className="space-y-1.5 text-sm font-[600] text-slate-700">
-            {PRIMARY_NAV.map((item) => (
-              <li key={item.href}>
-                <Link href={item.href} className="hover:text-[#7C3AED]">
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <p className="text-[10px] font-[700] tracking-widest uppercase text-[#7C3AED] mb-2">Services</p>
-          <ul className="space-y-1.5 text-sm font-[600] text-slate-700">
-            {SERVICE_NAV.map((item) => (
-              <li key={item.href}>
-                <Link href={item.href} className="hover:text-[#7C3AED]">
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <p className="text-[10px] font-[700] tracking-widest uppercase text-[#7C3AED] mb-2">Contact</p>
-          <ul className="space-y-1.5 text-sm text-slate-700">
-            {phone ? (
-              <li>
-                <a href={getTelUrl(phone)} className="font-[600] hover:text-[#7C3AED]">
-                  {formatDisplayPhone(phone)}
+
+        <ul aria-label="ASVDF Flooring on social media" className="flex shrink-0 items-center gap-3">
+          {socialLinks(settings).map(({ id, label, url }) => (
+            <li key={id}>
+              {url ? (
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${label} (opens in a new tab)`}
+                  className={`${socialClass} hover:-translate-y-0.5 hover:text-brand hover:shadow-neu-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40`}
+                >
+                  <SocialIcon id={id} />
                 </a>
-              </li>
-            ) : null}
-            {email ? (
-              <li>
-                <a href={`mailto:${email}`} className="font-[600] hover:text-[#7C3AED]">
-                  {email}
-                </a>
-              </li>
-            ) : null}
-            <li>
-              <a
-                href={mapsUrl()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-slate-500 hover:text-[#7C3AED]"
-              >
-                {address}
-              </a>
-            </li>
-            <li className="text-slate-500">GSTIN {gstin}</li>
-          </ul>
-        </div>
-      </div>
-      <div className="border-t border-slate-100 pt-4 mb-3">
-        <p className="text-[10px] font-[700] tracking-widest uppercase text-[#7C3AED] mb-2">Service areas</p>
-        <ul className="flex flex-wrap gap-x-4 gap-y-1 text-sm font-[600] text-slate-700">
-          {SERVICE_AREAS.map((area) => (
-            <li key={area.path}>
-              <Link href={area.path} className="hover:text-[#7C3AED]">
-                {area.name}
-              </Link>
+              ) : (
+                <span role="img" aria-label={`${label} (coming soon)`} title={`${label}: coming soon`} className={`${socialClass} opacity-60`}>
+                  <SocialIcon id={id} />
+                </span>
+              )}
             </li>
           ))}
         </ul>
-      </div>
-      <p className="text-[11px] text-slate-400">
-        © {year} {legal}. All rights reserved.
-      </p>
-    </footer>
+      </footer>
+    </>
   );
 }

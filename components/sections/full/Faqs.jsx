@@ -46,7 +46,7 @@ const FAQS_DATA = [
 
 const BG = 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=1600&auto=format&fit=crop';
 
-export default function Faqs({ faqs = null, onNavigate }) {
+export default function Faqs({ faqs = null }) {
   const source = faqs?.length
     ? faqs.map((f) => ({ id: f.id, question: f.question, answer: f.answer }))
     : FAQS_DATA;
@@ -68,27 +68,27 @@ export default function Faqs({ faqs = null, onNavigate }) {
             return (
               <div
                 key={faq.id}
-                className="bg-white/95 rounded-2xl border border-slate-100 shadow-sm overflow-hidden"
+                className="surface-raised shadow-neu-sm rounded-card overflow-hidden"
               >
                 <button
                   type="button"
                   onClick={() => setOpenId(open ? null : faq.id)}
                   className="w-full flex items-start justify-between gap-3 p-3.5 sm:p-4 text-left"
                 >
-                  <span className="text-sm sm:text-base font-[700] text-slate-900 leading-snug">
+                  <span className="text-sm sm:text-base font-semibold text-ink leading-snug">
                     {faq.question}
                   </span>
-                  <span className="w-8 h-8 rounded-full bg-[#F6F7FB] neu-inset flex items-center justify-center text-[#7C3AED] shrink-0">
+                  <span className="icon-well w-8 h-8">
                     {open ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
                   </span>
                 </button>
                 {open ? (
                   <div className="px-3.5 sm:px-4 pb-3.5 sm:pb-4">
-                    <p className="text-sm text-slate-600 leading-relaxed">{faq.answer}</p>
+                    <p className="text-sm text-ink-muted leading-relaxed">{faq.answer}</p>
                   </div>
                 ) : (
                   <div className="px-3.5 sm:px-4 pb-3.5 sm:pb-4 hidden">
-                    <p className="text-sm text-slate-600 leading-relaxed">{faq.answer}</p>
+                    <p className="text-sm text-ink-muted leading-relaxed">{faq.answer}</p>
                   </div>
                 )}
               </div>
@@ -97,27 +97,21 @@ export default function Faqs({ faqs = null, onNavigate }) {
         </div>
 
         <aside className="lg:col-span-4 min-h-0">
-          <div className="h-full min-h-[160px] rounded-2xl bg-gradient-to-br from-[#7C3AED] to-[#5B21B6] p-5 sm:p-6 text-white flex flex-col justify-between shadow-lg">
+          <div className="h-full min-h-[160px] rounded-card bg-brand p-5 sm:p-6 text-white flex flex-col justify-between shadow-neu-md">
             <div>
-              <p className="text-xs font-[700] tracking-[0.18em] uppercase text-purple-100 mb-2">
+              <p className="text-xs font-semibold tracking-[0.16em] uppercase text-white/80 mb-2">
                 Still have questions?
               </p>
-              <h3 className="text-xl sm:text-2xl font-[800] leading-tight mb-2">
+              <h3 className="text-xl sm:text-2xl font-bold leading-tight mb-2">
                 Talk to our flooring experts.
               </h3>
-              <p className="text-sm text-purple-100/90 leading-relaxed">
+              <p className="text-sm text-white/85 leading-relaxed">
                 Share your site details and we&apos;ll recommend the right system.
               </p>
             </div>
             <Link
               href="/contact"
-              onClick={(e) => {
-                if (onNavigate) {
-                  e.preventDefault();
-                  onNavigate('Contact Us');
-                }
-              }}
-              className="mt-4 inline-flex items-center justify-center gap-2 self-start bg-white text-[#5B21B6] text-sm font-[700] px-5 py-3 rounded-xl"
+              className="mt-4 inline-flex items-center justify-center gap-2 self-start bg-white text-brand-strong text-sm font-semibold px-5 py-3 rounded-control transition-colors hover:bg-brand-soft"
             >
               Contact Us
               <ArrowRight className="w-4 h-4" />

@@ -53,7 +53,7 @@ export default function QuadCarousel({
   if (!list.length) {
     return (
       <div className="h-full flex items-center justify-center">
-        <p className="text-sm text-slate-500">Nothing to show yet.</p>
+        <p className="text-sm text-ink-muted">Nothing to show yet.</p>
       </div>
     );
   }
@@ -85,7 +85,7 @@ export default function QuadCarousel({
             type="button"
             aria-label="Previous"
             onClick={prev}
-            className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white neu-sm flex items-center justify-center text-slate-700 hover:text-[#7C3AED] transition-colors"
+            className="icon-well w-10 h-10 sm:w-11 sm:h-11 text-ink transition-colors hover:text-brand"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -93,7 +93,7 @@ export default function QuadCarousel({
             type="button"
             aria-label="Next"
             onClick={next}
-            className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white neu-sm flex items-center justify-center text-slate-700 hover:text-[#7C3AED] transition-colors"
+            className="icon-well w-10 h-10 sm:w-11 sm:h-11 text-ink transition-colors hover:text-brand"
           >
             <ChevronRight className="w-5 h-5" />
           </button>

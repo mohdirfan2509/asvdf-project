@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
+  Inbox,
   Settings,
   Info,
   Briefcase,
@@ -23,6 +24,7 @@ import {
 
 const LINKS = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/admin/enquiries', label: 'Enquiries', icon: Inbox },
   { href: '/admin/settings', label: 'Site Info', icon: Settings },
   { href: '/admin/about', label: 'About', icon: Info },
   { href: '/admin/projects', label: 'Projects', icon: Briefcase },
