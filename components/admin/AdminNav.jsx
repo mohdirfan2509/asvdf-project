@@ -52,9 +52,7 @@ export default function AdminNav() {
     <aside className="w-full lg:w-56 shrink-0">
       <div className="bg-white border border-zinc-200 rounded-lg">
         <div className="flex items-center gap-3 px-4 py-4 border-b border-zinc-100">
-          <div className="w-9 h-9 rounded-md bg-zinc-900 text-white flex items-center justify-center text-xs font-semibold tracking-wide">
-            AS
-          </div>
+          <img src="/asvdf-logo.png" alt="AS VDF Flooring" className="h-10 w-auto object-contain rounded-md bg-black" />
           <div>
             <p className="text-sm font-semibold text-zinc-900 leading-tight">ASVDF Admin</p>
             <p className="text-[11px] text-zinc-500">Website editor</p>

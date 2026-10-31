@@ -67,9 +67,7 @@ export default function AdminLoginForm() {
       className="w-full max-w-sm bg-white border border-zinc-200 rounded-lg p-7 sm:p-8 space-y-4"
     >
       <div className="mb-1">
-        <div className="w-10 h-10 rounded-md bg-zinc-900 text-white flex items-center justify-center text-xs font-semibold tracking-wide mb-4">
-          AS
-        </div>
+        <img src="/asvdf-logo.png" alt="AS VDF Flooring" className="h-16 w-auto object-contain rounded-lg bg-black mb-4" />
         <h1 className="text-xl font-semibold text-zinc-900 tracking-tight">Sign in</h1>
         <p className="text-sm text-zinc-500 mt-1">ASVDF website admin</p>
       </div>

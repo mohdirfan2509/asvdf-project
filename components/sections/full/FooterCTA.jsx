@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, Phone } from 'lucide-react';
 import SectionFrame from '@/components/layout/SectionFrame';
+import BrandLogo from '@/components/brand/BrandLogo';
 
 const BG =
   'https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=1600&auto=format&fit=crop';
@@ -68,9 +69,10 @@ export default function FooterCTA({ onNavigate, settings = null }) {
                 onNavigate('Home');
               }
             }}
-            className="text-sm font-[800] text-slate-900"
+            className="flex items-center"
+            aria-label="AS VDF Flooring home"
           >
-            ASVDF <span className="text-slate-400 font-[600] tracking-[0.18em] text-[10px]">FLOORING</span>
+            <BrandLogo />
           </Link>
           <p className="text-[11px] sm:text-xs text-slate-500">
             © {year} ASVDF Flooring. All rights reserved.

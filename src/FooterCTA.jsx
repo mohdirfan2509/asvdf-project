@@ -9,6 +9,7 @@ import {
   Video
 } from 'lucide-react';
 import Navbar from './Navbar';
+import BrandLogo from '../components/brand/BrandLogo';
 
 export default function FooterCTA({ onNavigate, showNavbar = true }) {
   return (
@@ -89,27 +90,8 @@ export default function FooterCTA({ onNavigate, showNavbar = true }) {
             {/* Left: Logo & Copyright Info */}
             <div className="flex items-center gap-4 sm:gap-6 divide-x divide-slate-300/70">
               {/* Logo */}
-              <div className="flex items-center gap-3 cursor-pointer" onClick={() => onNavigate && onNavigate("Home")}>
-                <div className="w-8 h-8 rounded-xl bg-[#F6F7FB] neu-inset flex items-center justify-center p-1">
-                  <svg viewBox="0 0 40 40" className="w-6 h-6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                      <linearGradient id="logoGradFooter" x1="0%" y1="100%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor="#2563EB" />
-                        <stop offset="50%" stopColor="#7C3AED" />
-                        <stop offset="100%" stopColor="#A855F7" />
-                      </linearGradient>
-                    </defs>
-                    <path d="M20 4L36 34H26L20 22L14 34H4L20 4Z" fill="url(#logoGradFooter)" />
-                  </svg>
-                </div>
-                <div className="flex flex-col leading-none">
-                  <span className="font-[800] text-base tracking-tight text-slate-900">
-                    ASVDF
-                  </span>
-                  <span className="text-[9px] font-[600] tracking-[0.2em] text-slate-400 mt-0.5">
-                    FLOORING
-                  </span>
-                </div>
+              <div className="flex items-center cursor-pointer" onClick={() => onNavigate && onNavigate("Home")}>
+                <BrandLogo />
               </div>
 
               {/* Copyright Text */}

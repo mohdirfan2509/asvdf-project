@@ -23,6 +23,7 @@ import {
   Image,
   HelpCircle
 } from 'lucide-react';
+import BrandLogo from '@/components/brand/BrandLogo';
 
 export default function Navbar({ activePage = "Home", onNavigate }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -83,27 +84,8 @@ export default function Navbar({ activePage = "Home", onNavigate }) {
         {/* Left Floating Navigation Container (#EBECF0 background surface) */}
         <div className="flex items-center justify-between bg-[#EBECF0] px-5 sm:px-6 h-full rounded-xl neu-lvl-1 flex-1">
           {/* Logo Area */}
-          <Link href="/" className="flex items-center gap-2.5 shrink-0" onClick={(e) => goSpa(e, "Home")}>
-            <div className="w-8 h-8 rounded-lg bg-[#EBECF0] neu-inset flex items-center justify-center p-1">
-              <svg viewBox="0 0 40 40" className="w-6 h-6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient id="logoGradNav" x1="0%" y1="100%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#2563EB" />
-                    <stop offset="50%" stopColor="#7C3AED" />
-                    <stop offset="100%" stopColor="#A855F7" />
-                  </linearGradient>
-                </defs>
-                <path d="M20 4L36 34H26L20 22L14 34H4L20 4Z" fill="url(#logoGradNav)" />
-              </svg>
-            </div>
-            <div className="flex flex-col leading-none">
-              <span className="font-[800] text-base sm:text-lg tracking-tight text-slate-900">
-                ASVDF
-              </span>
-              <span className="text-[9px] font-[600] tracking-[0.2em] text-slate-400 mt-0.5">
-                FLOORING
-              </span>
-            </div>
+          <Link href="/" className="flex items-center shrink-0" aria-label="AS VDF Flooring home" onClick={(e) => goSpa(e, "Home")}>
+            <BrandLogo />
           </Link>
 
           {/* Navigation Items with Soft Purple Neumorphic Tint Active Box */}
