@@ -2,8 +2,6 @@ import { Award, Building2, ShieldCheck, Users } from 'lucide-react';
 import StatCards from '@/components/ui/StatCards';
 import ServicesSection from '@/components/services/ServicesSection';
 import { SERVICES_HUB } from '@/lib/seo/page-content';
-import { serviceHref } from '@/lib/seo/slug';
-
 const STATS = [
   { key: 'stat_projects', label: 'Projects Completed', icon: Award },
   { key: 'stat_clients', label: 'Happy Clients', icon: Users },
@@ -13,17 +11,20 @@ const STATS = [
 
 /** Services intro, stats and card grid; shared by /services and the homepage. */
 export default function ServicesOverview({ settings, services = [], id, headingAs: Heading = 'h2', className = '' }) {
-  // Arrows link only to services that have a dedicated landing page.
-  const cards = services.map(({ id: serviceId, title, description, image }) => {
-    const href = serviceHref(title);
-    return { id: serviceId, title, description, image, href: href === '/services' ? null : href };
-  });
+  const cards = services.map(({ id: serviceId, title, description, image, imageAlt, path }) => ({
+    id: serviceId,
+    title,
+    description,
+    image,
+    imageAlt,
+    href: path || null,
+  }));
 
   return (
     <section
       id={id}
       aria-labelledby="services-title"
-      className={`space-y-4 short-desktop:space-y-3 rounded-panel border border-white/80 bg-surface p-4 sm:p-6 short-desktop:p-4 shadow-neu-sm ${className}`}
+      className={`space-y-4 short-desktop:space-y-3 rounded-panel border border-edge bg-surface p-4 sm:p-6 short-desktop:p-4 shadow-neu-sm ${className}`}
     >
       <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
         <div className="max-w-2xl">

@@ -1,3 +1,5 @@
+import CountUp from '@/components/ui/CountUp';
+
 const DESKTOP_COLUMNS = { 1: 'lg:grid-cols-1', 2: 'lg:grid-cols-2', 3: 'lg:grid-cols-3', 4: 'lg:grid-cols-4' };
 
 /** Vertical statistic cards (icon disc, purple figure, label); items without a value are omitted. */
@@ -18,7 +20,9 @@ export default function OrbStatCards({ items, className = '', cardClassName = ''
           <span className={`${iconClassName} h-12 w-12`}>
             <Icon className="h-5 w-5" strokeWidth={1.75} aria-hidden />
           </span>
-          <dd className="mt-3 text-xl sm:text-2xl font-bold leading-none text-brand">{value}</dd>
+          <dd className="mt-3 text-xl sm:text-2xl font-bold leading-none text-brand">
+            <CountUp value={value} />
+          </dd>
         </div>
       ))}
     </dl>

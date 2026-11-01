@@ -1,14 +1,14 @@
 import AdminLoginForm from '@/components/admin/AdminLoginForm';
 
 export const metadata = {
-  title: 'Admin Login',
+  title: 'Sign in',
   robots: { index: false, follow: false },
 };
 
 export default function AdminLoginPage() {
   return (
-    <div className="min-h-screen bg-zinc-100 flex items-center justify-center p-4">
+    <main id="main" className="flex min-h-screen items-center justify-center bg-surface p-4">
       <AdminLoginForm />
-    </div>
+    </main>
   );
 }

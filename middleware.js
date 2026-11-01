@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { ADMIN_COOKIE, verifyAdminSessionToken } from '@/lib/admin/session';
 import { SESSION_COOKIE } from '@/lib/firebase/config';
 
 function envFirebaseReady() {
@@ -15,30 +16,26 @@ function envFirebaseReady() {
   );
 }
 
+function toLogin(request) {
+  const url = request.nextUrl.clone();
+  url.pathname = '/admin/login';
+  return NextResponse.redirect(url);
+}
+
+/**
+ * First gate for /admin pages. Firebase session cookies can only be verified with firebase-admin (Node),
+ * so here they are checked for presence; the panel layout and every admin API verify them fully.
+ */
 export async function middleware(request) {
   const { pathname } = request.nextUrl;
-
-  if (!pathname.startsWith('/admin') || pathname === '/admin/login') {
-    return NextResponse.next();
-  }
+  if (pathname === '/admin/login') return NextResponse.next();
 
   if (envFirebaseReady()) {
-    const session = request.cookies.get(SESSION_COOKIE)?.value;
-    if (!session) {
-      const url = request.nextUrl.clone();
-      url.pathname = '/admin/login';
-      return NextResponse.redirect(url);
-    }
-    return NextResponse.next();
+    return request.cookies.get(SESSION_COOKIE)?.value ? NextResponse.next() : toLogin(request);
   }
 
-  const token = request.cookies.get('asvdf_admin_session')?.value;
-  if (token !== 'ok') {
-    const url = request.nextUrl.clone();
-    url.pathname = '/admin/login';
-    return NextResponse.redirect(url);
-  }
-  return NextResponse.next();
+  const valid = await verifyAdminSessionToken(request.cookies.get(ADMIN_COOKIE)?.value);
+  return valid ? NextResponse.next() : toLogin(request);
 }
 
 export const config = {

@@ -22,7 +22,7 @@ export default function ContactLocation({ heading, companyName, address }) {
           </a>
         </div>
 
-        <div className="relative h-[18rem] sm:h-full sm:min-h-[26rem] overflow-hidden rounded-card border border-white/80 bg-surface-sunken shadow-neu-sm">
+        <div className="relative h-[18rem] sm:h-full sm:min-h-[26rem] overflow-hidden rounded-card border border-edge bg-surface-sunken shadow-neu-sm">
           <iframe
             title={`Map of Shamshabad, Telangana, where the registered office of ${companyName} is located`}
             src={mapsEmbedUrl(COMPANY.mapsArea)}

@@ -80,7 +80,7 @@ export default async function BlogArticlePage({ params }) {
     <SiteShell settings={settings} activePath="/blog">
       <JsonLd data={jsonLd} />
       <Breadcrumbs items={breadcrumbs} />
-      <article className="mb-4 overflow-hidden rounded-panel border border-white/80 bg-surface shadow-neu-sm">
+      <article className="mb-4 overflow-hidden rounded-panel border border-edge bg-surface shadow-neu-sm">
         {blog.cover ? (
           <div className="relative aspect-[16/9] sm:aspect-[21/8] w-full bg-surface-sunken">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -138,7 +138,7 @@ export default async function BlogArticlePage({ params }) {
       </article>
 
       {related.length ? (
-        <section aria-labelledby="related-articles" className="mb-4 rounded-panel border border-white/80 bg-surface p-4 sm:p-6 shadow-neu-sm">
+        <section aria-labelledby="related-articles" className="mb-4 rounded-panel border border-edge bg-surface p-4 sm:p-6 shadow-neu-sm">
           <h2 id="related-articles" className="text-xl sm:text-2xl font-bold tracking-tight text-ink">
             {BLOGS_COPY.relatedHeading}
           </h2>

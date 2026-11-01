@@ -6,22 +6,15 @@ import PartnershipFeatures from '@/components/clients/PartnershipFeatures';
 import { CLIENTS_BACKGROUND_IMAGE } from '@/lib/content/media';
 import { CLIENTS_COPY } from '@/lib/seo/page-content';
 
-/** Clients intro, testimonials, logo gallery and partnership; shared by /clients and the homepage. */
-export default function ClientsSection({
-  settings,
-  clients = [],
-  testimonials = [],
-  id,
-  headingAs: Heading = 'h2',
-  className = '',
-}) {
-  const [featured, secondary] = testimonials;
+/** Clients intro, featured quotes, logo marquee and partnership; shared by /clients and the homepage. */
+export default function ClientsSection({ settings, clients = [], id, headingAs: Heading = 'h2', className = '' }) {
+  const { featuredQuote: featured, secondaryQuote: secondary } = CLIENTS_COPY;
 
   return (
     <section
       id={id}
       aria-labelledby="clients-title"
-      className={`space-y-5 sm:space-y-6 rounded-panel border border-white/80 bg-surface p-4 sm:p-6 lg:p-8 shadow-neu-sm ${className}`}
+      className={`space-y-5 sm:space-y-6 rounded-panel border border-edge bg-surface p-4 sm:p-6 lg:p-8 shadow-neu-sm ${className}`}
     >
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-10">
         <div className="flex flex-col justify-center">

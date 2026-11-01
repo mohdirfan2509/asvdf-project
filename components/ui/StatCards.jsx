@@ -1,3 +1,4 @@
+import CountUp from '@/components/ui/CountUp';
 import { statValue } from '@/lib/stats';
 
 /** Compact horizontal statistic cards; stats without a value (e.g. an unset CMS field) are omitted. */
@@ -21,7 +22,9 @@ export default function StatCards({ settings, stats, className = '', cardClassNa
           </span>
           <div className="flex min-w-0 flex-col-reverse">
             <dt className="mt-1 text-xs text-ink-muted">{label}</dt>
-            <dd className="text-2xl font-bold leading-none text-brand">{value}</dd>
+            <dd className="text-2xl font-bold leading-none text-brand">
+              <CountUp value={value} />
+            </dd>
           </div>
         </div>
       ))}

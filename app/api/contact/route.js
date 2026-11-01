@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server';
-import { isFirebaseConfigured, isFirebaseAdminConfigured } from '@/lib/firebase/config';
-import { firestoreUpsert } from '@/lib/firebase/firestore';
-import { upsertLocalRow } from '@/lib/content/local-store';
+import { getSiteSettings } from '@/lib/content/queries';
+import { isEmailConfigured, sendEnquiryNotification } from '@/lib/email';
 import { validateInquiry } from '@/lib/inquiry';
+import { clientIp, rateLimit } from '@/lib/rate-limit';
 
-const COLLECTION = 'inquiries';
+const RATE_LIMIT = { limit: 5, windowMs: 10 * 60 * 1000 };
+const SEND_FAILED = 'We could not send your message right now. Please call or WhatsApp us instead.';
 
+/** Contact-form enquiries are not stored; the notification email is the only record, so a failed send is reported. */
 export async function POST(request) {
   let body;
   try {
@@ -19,13 +21,25 @@ export async function POST(request) {
     return NextResponse.json({ ok: true });
   }
 
+  const limited = rateLimit(`contact:${clientIp(request)}`, RATE_LIMIT);
+  if (!limited.allowed) {
+    return NextResponse.json(
+      { error: 'Too many messages in a short time. Please try again later, or call or WhatsApp us.' },
+      { status: 429, headers: { 'Retry-After': String(limited.retryAfterSeconds) } }
+    );
+  }
+
   const { value, errors, valid } = validateInquiry(body);
   if (!valid) {
     return NextResponse.json({ error: 'Please correct the highlighted fields.', errors }, { status: 422 });
   }
 
-  const now = new Date().toISOString();
-  const row = {
+  if (!isEmailConfigured()) {
+    console.error('Contact enquiry not sent: RESEND_API_KEY is not set.');
+    return NextResponse.json({ error: SEND_FAILED }, { status: 503 });
+  }
+
+  const enquiry = {
     full_name: value.fullName,
     company_name: value.companyName,
     email: value.email,
@@ -33,23 +47,15 @@ export async function POST(request) {
     service: value.service,
     location: value.location,
     message: value.message,
-    status: 'new',
-    created_at: now,
-    updated_at: now,
+    created_at: new Date().toISOString(),
   };
 
   try {
-    if (isFirebaseConfigured() && isFirebaseAdminConfigured()) {
-      await firestoreUpsert(COLLECTION, row);
-    } else {
-      await upsertLocalRow(COLLECTION, { id: crypto.randomUUID(), ...row });
-    }
+    const settings = await getSiteSettings();
+    await sendEnquiryNotification(enquiry, process.env.CONTACT_NOTIFY_TO || settings.email);
   } catch (err) {
-    console.error('Contact enquiry could not be saved:', err.message);
-    return NextResponse.json(
-      { error: 'We could not send your message right now. Please call or WhatsApp us instead.' },
-      { status: 500 }
-    );
+    console.error('Enquiry email could not be sent:', err.message);
+    return NextResponse.json({ error: SEND_FAILED }, { status: 502 });
   }
 
   return NextResponse.json({ ok: true });

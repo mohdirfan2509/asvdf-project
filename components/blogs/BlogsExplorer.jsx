@@ -109,7 +109,7 @@ function FilterMenu({ filters, onChange }) {
         <Funnel className="h-4 w-4" strokeWidth={1.75} />
         <span>Filter</span>
         {activeCount ? (
-          <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-brand px-1 text-[11px] font-semibold text-white">
+          <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-solid px-1 text-[11px] font-semibold text-white">
             {activeCount}
           </span>
         ) : null}
@@ -267,7 +267,7 @@ export default function BlogsExplorer({ posts = [] }) {
                       onClick={() => update({ tag: active ? '' : tag })}
                       className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
                         active
-                          ? 'bg-brand text-white shadow-brand'
+                          ? 'bg-brand-solid text-white shadow-brand'
                           : 'bg-surface text-ink-muted shadow-neu-sm hover:text-brand'
                       }`}
                     >
@@ -299,7 +299,7 @@ export default function BlogsExplorer({ posts = [] }) {
                 value={filters.query}
                 onChange={(e) => update({ query: e.target.value })}
                 placeholder={BLOGS_COPY.searchPlaceholder}
-                className="h-10 w-full rounded-control border border-white/80 bg-surface-raised pl-4 pr-10 text-sm text-ink shadow-neu-sm placeholder:text-ink-muted/80 focus:outline-none focus:ring-2 focus:ring-brand/30 [&::-webkit-search-cancel-button]:hidden"
+                className="h-10 w-full rounded-control border border-edge bg-surface-raised pl-4 pr-10 text-sm text-ink shadow-neu-sm placeholder:text-ink-muted/80 focus:outline-none focus:ring-2 focus:ring-brand/30 [&::-webkit-search-cancel-button]:hidden"
               />
               {filters.query ? (
                 <button

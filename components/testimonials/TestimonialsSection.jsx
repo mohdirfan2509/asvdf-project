@@ -1,8 +1,10 @@
 import { ArrowRight, Award, MessageSquareText, Quote, ShieldCheck, Star, Users } from 'lucide-react';
 import RequestQuoteLink from '@/components/contact/RequestQuoteLink';
 import TestimonialCard from '@/components/testimonials/TestimonialCard';
+import CountUp from '@/components/ui/CountUp';
+import Marquee from '@/components/ui/Marquee';
 import StarRating from '@/components/ui/StarRating';
-import { COMPANY_VIDEO } from '@/lib/content/media';
+import { TESTIMONIALS_HERO_IMAGE } from '@/lib/content/media';
 import { TESTIMONIALS_COPY } from '@/lib/seo/page-content';
 import { statValue } from '@/lib/stats';
 
@@ -15,34 +17,20 @@ const STATS = [
 
 const STAT_COLUMNS = { 1: 'sm:grid-cols-1', 2: 'sm:grid-cols-2', 3: 'sm:grid-cols-3', 4: 'sm:grid-cols-4' };
 
-/** Resolves a review's optional `company` to a client record (for its logo), or to the typed name. */
-function companyFor(testimonial, clients) {
-  const name = String(testimonial.company || '').trim();
-  if (!name) return null;
-  const client = clients.find((c) => String(c.name || '').trim().toLowerCase() === name.toLowerCase());
-  return { name: client?.name || name, logo: client?.logo || '' };
-}
-
-function averageRating(testimonials) {
-  const ratings = testimonials.map((t) => Number(t.rating)).filter((r) => r > 0);
+function averageRating(reviews) {
+  const ratings = reviews.map((review) => Number(review.rating)).filter((r) => r > 0);
   return ratings.length ? ratings.reduce((sum, r) => sum + r, 0) / ratings.length : 0;
 }
 
-/** Testimonials hero, review grid, statistics and quote CTA. */
-export default function TestimonialsSection({
-  settings,
-  testimonials = [],
-  clients = [],
-  id,
-  headingAs: Heading = 'h2',
-  className = '',
-}) {
+/** Testimonials hero, hard-coded review marquee, statistics and quote CTA. */
+export default function TestimonialsSection({ settings, id, headingAs: Heading = 'h2', className = '' }) {
+  const testimonials = TESTIMONIALS_COPY.reviews;
   const stats = STATS.map((stat) => ({ ...stat, value: statValue(settings, stat.key) })).filter((stat) => stat.value);
   const rating = averageRating(testimonials);
 
   return (
     <section id={id} aria-labelledby="testimonials-title" className={`space-y-4 lg:space-y-5 ${className}`}>
-      <div className="relative isolate overflow-hidden rounded-panel border border-white/80 bg-surface shadow-neu-sm lg:grid lg:min-h-[19rem] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
+      <div className="relative isolate overflow-hidden rounded-panel border border-edge bg-surface shadow-neu-sm lg:grid lg:min-h-[19rem] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
         <div className="relative z-10 p-5 sm:p-7 lg:py-9 lg:pl-9 lg:pr-4">
           <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-brand">{TESTIMONIALS_COPY.eyebrow}</p>
           <Heading
@@ -62,11 +50,11 @@ export default function TestimonialsSection({
           <div className="relative h-56 sm:h-72 overflow-hidden rounded-card lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[60%] lg:rounded-none">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={COMPANY_VIDEO.poster}
-              alt="ASVDF Flooring team finishing a concrete floor"
+              src={TESTIMONIALS_HERO_IMAGE}
+              alt="Warehouse aisle with a polished industrial concrete floor"
               loading="lazy"
               decoding="async"
-              className="absolute inset-0 h-full w-full object-cover object-[50%_40%]"
+              className="absolute inset-0 h-full w-full object-cover object-center"
             />
             <div
               aria-hidden
@@ -89,13 +77,19 @@ export default function TestimonialsSection({
       <div>
         <h3 className="sr-only">{TESTIMONIALS_COPY.gridHeading}</h3>
         {testimonials.length ? (
-          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
-            {testimonials.map((testimonial) => (
-              <li key={testimonial.id || testimonial.name} className="h-full">
-                <TestimonialCard testimonial={testimonial} company={companyFor(testimonial, clients)} />
-              </li>
-            ))}
-          </ul>
+          <Marquee
+            items={testimonials}
+            getKey={(testimonial) => testimonial.id || testimonial.name}
+            renderItem={(testimonial) => (
+              <div className="h-full w-[min(19rem,calc(100vw-4rem))] sm:w-[22rem]">
+                <TestimonialCard testimonial={testimonial} />
+              </div>
+            )}
+            duration={Math.max(45, testimonials.length * 15)}
+            minItems={6}
+            label={TESTIMONIALS_COPY.gridHeading}
+            className="-my-3"
+          />
         ) : (
           <p className="surface-raised shadow-neu-sm rounded-panel px-6 py-10 text-center text-sm text-ink-muted">
             {TESTIMONIALS_COPY.emptyText}
@@ -103,7 +97,7 @@ export default function TestimonialsSection({
         )}
       </div>
 
-      <div className="grid gap-3 rounded-panel border border-white/80 bg-surface p-3 shadow-neu-sm lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] lg:items-stretch">
+      <div className="grid gap-3 rounded-panel border border-edge bg-surface p-3 shadow-neu-sm lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] lg:items-stretch">
         {stats.length ? (
           <dl className={`grid grid-cols-2 gap-y-5 px-2 py-4 sm:gap-y-0 sm:divide-x sm:divide-line ${STAT_COLUMNS[stats.length]}`}>
             {stats.map(({ key, label, icon: Icon, value }, index) => (
@@ -118,7 +112,9 @@ export default function TestimonialsSection({
                 </span>
                 <span className="flex min-w-0 flex-col-reverse">
                   <dt className="mt-1 text-xs text-ink-muted">{label}</dt>
-                  <dd className="text-xl sm:text-2xl font-bold leading-none text-ink">{value}</dd>
+                  <dd className="text-xl sm:text-2xl font-bold leading-none text-ink">
+                    <CountUp value={value} />
+                  </dd>
                 </span>
               </div>
             ))}
@@ -134,7 +130,7 @@ export default function TestimonialsSection({
           <div className="min-w-0">
             <p className="text-[15px] font-semibold leading-snug">{TESTIMONIALS_COPY.ctaHeading}</p>
             <p className="mt-1 text-xs sm:text-[13px] text-white/80">{TESTIMONIALS_COPY.ctaText}</p>
-            <RequestQuoteLink className="group mt-3 inline-flex h-10 items-center gap-2 rounded-control bg-white px-4 text-sm font-semibold text-brand shadow-float transition-colors hover:bg-brand-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+            <RequestQuoteLink className="group mt-3 inline-flex h-10 items-center gap-2 rounded-control bg-white px-4 text-sm font-semibold text-brand-solid shadow-float transition-colors hover:bg-brand-soft dark:hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
               {TESTIMONIALS_COPY.ctaButton}
               <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden />
             </RequestQuoteLink>

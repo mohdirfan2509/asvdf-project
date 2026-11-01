@@ -18,6 +18,8 @@ dist/
 public/uploads/
 # data/cms.json is generated — ignore if desired; commit seed via lib/content/seed.js
 data/cms.json
+data/cms.backup*.json
+data/firestore-backup*.json
 
 # debug / os
 npm-debug.log*

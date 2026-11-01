@@ -6,34 +6,26 @@ import { ArrowRight } from 'lucide-react';
 import HeroVideo from '@/components/sections/full/HeroVideo';
 import HomeFeatures from '@/components/sections/full/HomeFeatures';
 import HomeStats from '@/components/sections/full/HomeStats';
-
-const DEFAULT = {
-  badgeText: 'PREMIUM FLOORING SOLUTIONS',
-  headingLine1: 'Stronger Floors.',
-  headingLine2: 'Stronger ',
-  headingHighlight: 'Foundations.',
-  subtext:
-    'High-performance flooring solutions for industrial, commercial and infrastructure projects. Built for durability. Designed to last.',
-  ctaPrimary: 'Explore Our Services',
-  ctaSecondary: 'View Our Projects',
-};
+import { HOME_HERO_COPY } from '@/lib/seo/page-content';
 
 export default function Home({ settings = null }) {
-  const badge = settings?.hero_badge || DEFAULT.badgeText;
-  const h1 = settings?.hero_heading_1 || DEFAULT.headingLine1;
-  const h2 = settings?.hero_heading_2 || DEFAULT.headingLine2;
-  const highlight = settings?.hero_highlight || DEFAULT.headingHighlight;
-  const subtext = settings?.hero_subtext || DEFAULT.subtext;
-  const cta1 = settings?.cta_primary || DEFAULT.ctaPrimary;
-  const cta2 = settings?.cta_secondary || DEFAULT.ctaSecondary;
+  const {
+    badge,
+    headingLine1: h1,
+    headingLine2: h2,
+    headingHighlight: highlight,
+    subtext,
+    ctaPrimary: cta1,
+    ctaSecondary: cta2,
+  } = HOME_HERO_COPY;
 
   return (
     <div>
-      <div className="relative isolate overflow-hidden bg-slate-950">
+      <div className="relative isolate overflow-hidden rounded-panel bg-slate-950 shadow-neu-md">
         <HeroVideo className="absolute inset-0 -z-20 h-full w-full object-cover object-[50%_60%]" />
         <div className="hero-scrim absolute inset-0 -z-10" aria-hidden />
 
-        <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-8 lg:px-12 pt-12 pb-20 sm:pt-16 sm:pb-24 lg:pt-20 lg:pb-32 min-h-[28rem] sm:min-h-[32rem] lg:min-h-[clamp(34rem,46vw,46rem)] flex flex-col justify-center">
+        <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12 pt-12 pb-20 sm:pt-16 sm:pb-24 lg:pt-20 lg:pb-32 min-h-[28rem] sm:min-h-[32rem] lg:min-h-[clamp(34rem,46vw,46rem)] flex flex-col justify-center">
           <div className="max-w-3xl">
             <p className="inline-flex items-center rounded-full border border-brand-light/40 bg-slate-950/30 px-3.5 py-1.5 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.12em] text-brand-light mb-5 sm:mb-6">
               {badge}
@@ -57,7 +49,7 @@ export default function Home({ settings = null }) {
               </Link>
               <Link
                 href="/#projects"
-                className="group btn-secondary bg-white shadow-float h-12 px-6 text-[15px]"
+                className="group btn-secondary bg-white text-slate-900 hover:text-brand-solid shadow-float h-12 px-6 text-[15px]"
               >
                 {cta2}
                 <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />

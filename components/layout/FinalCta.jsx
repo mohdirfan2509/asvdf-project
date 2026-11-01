@@ -5,7 +5,7 @@ import { FINAL_CTA_COPY } from '@/lib/seo/page-content';
 import { formatDisplayPhone, getTelUrl } from '@/lib/contact';
 
 /** Curved left edge of the photo (objectBoundingBox units, so it scales with the banner). */
-const CURVE = 'M0.03,0 C0.005,0.22 0,0.48 0.03,0.68 C0.055,0.84 0.085,0.95 0.12,1';
+const CURVE = 'M0.052,0 C0.03,0.04 0.02,0.1 0.016,0.2 C0.012,0.35 0.012,0.5 0.02,0.62 C0.03,0.78 0.055,0.92 0.1,1';
 const CLIP = `${CURVE} L1,1 L1,0 Z`;
 
 export default function FinalCta({ settings, className = '' }) {
@@ -40,7 +40,7 @@ export default function FinalCta({ settings, className = '' }) {
         </h2>
         <p className="mt-4 max-w-md text-sm sm:text-[15px] leading-relaxed text-white/85">{FINAL_CTA_COPY.text}</p>
         <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-          <RequestQuoteLink className="group inline-flex h-12 items-center justify-center gap-2.5 rounded-control bg-gradient-to-b from-brand-highlight to-brand px-6 text-sm sm:text-[15px] font-semibold text-white ring-1 ring-white/15 shadow-[0_14px_30px_-12px_rgb(129_92_235/0.95)] transition-[filter,transform] duration-200 hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+          <RequestQuoteLink className="group inline-flex h-12 items-center justify-center gap-2.5 rounded-control bg-gradient-to-b from-brand-highlight to-brand-solid px-6 text-sm sm:text-[15px] font-semibold text-white ring-1 ring-white/15 shadow-[0_14px_30px_-12px_rgb(129_92_235/0.95)] transition-[filter,transform] duration-200 hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
             {FINAL_CTA_COPY.button}
             <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden />
           </RequestQuoteLink>

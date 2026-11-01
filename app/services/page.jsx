@@ -3,7 +3,8 @@ import Breadcrumbs from '@/components/seo/Breadcrumbs';
 import JsonLd from '@/components/seo/JsonLd';
 import CrawlableFooter from '@/components/layout/CrawlableFooter';
 import ServicesOverview from '@/components/services/ServicesOverview';
-import { getServices, getSiteSettings } from '@/lib/content/queries';
+import { getSiteSettings } from '@/lib/content/queries';
+import { SERVICES } from '@/lib/content/services';
 import { buildMetadata } from '@/lib/seo/metadata';
 import { SERVICES_HUB } from '@/lib/seo/page-content';
 import { graph, organizationNode, breadcrumbNode } from '@/lib/seo/schema';
@@ -19,8 +20,7 @@ export async function generateMetadata() {
 }
 
 export default async function ServicesPage() {
-  // Only services marked Visible in the admin, matching the homepage section.
-  const [settings, services] = await Promise.all([getSiteSettings(), getServices({ homepageOnly: true })]);
+  const settings = await getSiteSettings();
   const breadcrumbs = [
     { name: 'Home', path: '/' },
     { name: 'Services', path: '/services' },
@@ -31,7 +31,7 @@ export default async function ServicesPage() {
     <SiteShell settings={settings} activePath="/services">
       <JsonLd data={jsonLd} />
       <Breadcrumbs items={breadcrumbs} />
-      <ServicesOverview settings={settings} services={services} headingAs="h1" className="mb-4" />
+      <ServicesOverview settings={settings} services={SERVICES} headingAs="h1" className="mb-4" />
       <CrawlableFooter settings={settings} />
     </SiteShell>
   );

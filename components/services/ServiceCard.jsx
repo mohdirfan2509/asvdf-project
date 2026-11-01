@@ -12,7 +12,7 @@ export default function ServiceCard({ service }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={service.image}
-            alt={service.title}
+            alt={service.imageAlt || service.title}
             loading="lazy"
             decoding="async"
             className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"

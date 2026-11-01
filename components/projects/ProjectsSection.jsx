@@ -14,7 +14,7 @@ export default function ProjectsSection({ settings, projects = [], id, headingAs
     <section
       id={id}
       aria-labelledby="projects-title"
-      className={`rounded-panel border border-white/80 bg-surface p-4 sm:p-6 lg:p-8 shadow-neu-sm ${className}`}
+      className={`rounded-panel border border-edge bg-surface p-4 sm:p-6 lg:p-8 shadow-neu-sm ${className}`}
     >
       <div className="grid gap-5 lg:grid-cols-[minmax(0,auto)_minmax(0,1fr)_auto] lg:items-center lg:gap-10 xl:gap-14">
         <div>

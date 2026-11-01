@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { ArrowRight, ChevronDown, LoaderCircle, ShieldCheck } from 'lucide-react';
+import { markCallbackDone } from '@/lib/callback';
 import { validateInquiry } from '@/lib/inquiry';
 
 export const CONTACT_FORM_ID = 'contact-form';
@@ -17,11 +18,11 @@ function Field({ id, label, required, error, children }) {
     <div>
       <label htmlFor={id} className="mb-2 block text-sm font-medium text-ink">
         {label}
-        {required ? <span className="text-red-600" aria-hidden> *</span> : null}
+        {required ? <span className="text-red-600 dark:text-red-400" aria-hidden> *</span> : null}
       </label>
       {children}
       {error ? (
-        <p id={`${id}-error`} className="mt-1.5 text-xs font-medium text-red-600">
+        <p id={`${id}-error`} className="mt-1.5 text-xs font-medium text-red-600 dark:text-red-400">
           {error}
         </p>
       ) : null}
@@ -77,6 +78,7 @@ export default function ContactForm({ heading, services = [], privacyTitle, priv
         return;
       }
       setValues(EMPTY);
+      markCallbackDone();
       setStatus({
         state: 'success',
         message: 'Thank you. Your enquiry has been received and our team will contact you shortly.',
@@ -94,7 +96,7 @@ export default function ContactForm({ heading, services = [], privacyTitle, priv
     onChange,
     'aria-invalid': errors[name] ? true : undefined,
     'aria-describedby': describedBy(name),
-    className: `${inputClass} ${errors[name] ? 'border-red-400' : 'border-white/80'}`,
+    className: `${inputClass} ${errors[name] ? 'border-red-400' : 'border-edge'}`,
   });
 
   return (
@@ -108,18 +110,16 @@ export default function ContactForm({ heading, services = [], privacyTitle, priv
         <Field id="contact-companyName" label="Company Name" error={errors.companyName}>
           <input {...fieldProps('companyName')} type="text" autoComplete="organization" placeholder="Enter company name" />
         </Field>
-        <Field id="contact-email" label="Email Address" required error={errors.email}>
-          <input {...fieldProps('email')} type="email" autoComplete="email" placeholder="Enter your email" required />
+        <Field id="contact-email" label="Email Address" error={errors.email}>
+          <input {...fieldProps('email')} type="email" autoComplete="email" placeholder="Enter your email" />
         </Field>
         <Field id="contact-phone" label="Phone Number" required error={errors.phone}>
           <input {...fieldProps('phone')} type="tel" autoComplete="tel" placeholder="Enter your phone number" required />
         </Field>
-        <Field id="contact-service" label="Service Required" required error={errors.service}>
+        <Field id="contact-service" label="Service Required" error={errors.service}>
           <div className="relative">
-            <select {...fieldProps('service')} required className={`${fieldProps('service').className} appearance-none pr-10 ${values.service ? '' : 'text-ink-muted/70'}`}>
-              <option value="" disabled>
-                Select a service
-              </option>
+            <select {...fieldProps('service')} className={`${fieldProps('service').className} appearance-none pr-10 ${values.service ? '' : 'text-ink-muted/70'}`}>
+              <option value="">Select a service</option>
               {services.map((service) => (
                 <option key={service} value={service} className="text-ink">
                   {service}
@@ -133,8 +133,8 @@ export default function ContactForm({ heading, services = [], privacyTitle, priv
           <input {...fieldProps('location')} type="text" placeholder="Enter project location" />
         </Field>
         <div className="sm:col-span-2">
-          <Field id="contact-message" label="Message" required error={errors.message}>
-            <textarea {...fieldProps('message')} rows={4} placeholder="Tell us about your project..." required className={`${fieldProps('message').className} h-auto min-h-[7rem] resize-y py-3`} />
+          <Field id="contact-message" label="Message" error={errors.message}>
+            <textarea {...fieldProps('message')} rows={4} placeholder="Tell us about your project..." className={`${fieldProps('message').className} h-auto min-h-[7rem] resize-y py-3`} />
           </Field>
         </div>
 
@@ -170,10 +170,10 @@ export default function ContactForm({ heading, services = [], privacyTitle, priv
 
       <div aria-live="polite" className="mt-5 empty:mt-0">
         {status.state === 'success' ? (
-          <p className="rounded-control border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800">{status.message}</p>
+          <p className="rounded-control border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300">{status.message}</p>
         ) : null}
         {status.state === 'error' ? (
-          <p role="alert" className="rounded-control border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">{status.message}</p>
+          <p role="alert" className="rounded-control border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300">{status.message}</p>
         ) : null}
       </div>
     </div>

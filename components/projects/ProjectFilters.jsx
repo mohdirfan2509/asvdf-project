@@ -103,7 +103,7 @@ export default function ProjectFilters({
           <span className="hidden sm:inline">Filter</span>
           <span className="sr-only sm:hidden">Filter</span>
           {extraCount ? (
-            <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-brand px-1 text-[11px] font-semibold text-white">
+            <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-solid px-1 text-[11px] font-semibold text-white">
               {extraCount}
             </span>
           ) : null}

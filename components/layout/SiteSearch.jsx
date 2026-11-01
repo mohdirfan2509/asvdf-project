@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowRight, Search, X } from 'lucide-react';
+import { openProjectInPlace } from '@/lib/project-link';
 import { searchSite } from '@/lib/search';
 
 export default function SiteSearch({ open, onClose, index }) {
@@ -11,6 +12,17 @@ export default function SiteSearch({ open, onClose, index }) {
   const router = useRouter();
   const [query, setQuery] = useState('');
   const results = useMemo(() => searchSite(index, query), [index, query]);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
+
+  // Escape and dialog.close() fire the native event; keep the parent's open state in sync.
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return undefined;
+    const handleClose = () => onCloseRef.current();
+    dialog.addEventListener('close', handleClose);
+    return () => dialog.removeEventListener('close', handleClose);
+  }, []);
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -27,18 +39,17 @@ export default function SiteSearch({ open, onClose, index }) {
     e.preventDefault();
     if (!results.length) return;
     onClose();
-    router.push(results[0].href);
+    if (!openProjectInPlace(results[0].href)) router.push(results[0].href);
   }
 
   return (
     <dialog
       ref={dialogRef}
-      onClose={onClose}
       onClick={(e) => {
         if (e.target === dialogRef.current) onClose();
       }}
       aria-label="Search the site"
-      className="mx-auto mt-[10vh] w-[min(36rem,calc(100vw-1.5rem))] max-h-[75vh] overflow-hidden rounded-panel bg-surface-raised p-0 text-ink border border-white/80 shadow-neu-lg backdrop:bg-slate-950/40 backdrop:backdrop-blur-[2px]"
+      className="mx-auto mt-[10vh] w-[min(36rem,calc(100vw-1.5rem))] max-h-[75vh] overflow-hidden rounded-panel bg-surface-raised p-0 text-ink border border-edge shadow-neu-lg backdrop:bg-slate-950/40 backdrop:backdrop-blur-[2px]"
     >
       <form role="search" onSubmit={onSubmit} className="flex items-center gap-3 border-b border-line px-4 sm:px-5">
         <Search className="w-5 h-5 text-ink-muted shrink-0" aria-hidden />
@@ -52,6 +63,13 @@ export default function SiteSearch({ open, onClose, index }) {
           autoComplete="off"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => {
+            // A search input otherwise spends the first Escape on clearing its text.
+            if (e.key === 'Escape') {
+              e.preventDefault();
+              onClose();
+            }
+          }}
           placeholder="Search services, locations, guides…"
           className="h-14 flex-1 min-w-0 bg-transparent text-[15px] text-ink placeholder:text-ink-muted/70 focus:outline-none"
         />
@@ -76,7 +94,11 @@ export default function SiteSearch({ open, onClose, index }) {
               <li key={result.href}>
                 <Link
                   href={result.href}
-                  onClick={onClose}
+                  onClick={(e) => {
+                    onClose();
+                    const newTab = e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0;
+                    if (!newTab && openProjectInPlace(result.href)) e.preventDefault();
+                  }}
                   className="group flex items-center justify-between gap-3 rounded-control px-3 py-2.5 transition-colors hover:bg-surface focus-visible:bg-surface"
                 >
                   <span className="min-w-0">

@@ -42,7 +42,7 @@ function AccordionItem({ item, open, hidden, onToggle }) {
     <li
       hidden={hidden}
       className={`rounded-card border transition-colors duration-200 ${
-        open ? 'border-brand-line bg-brand-soft/70 shadow-neu-sm' : 'border-white/80 bg-surface-raised shadow-neu-sm'
+        open ? 'border-brand-line bg-brand-soft/70 shadow-neu-sm' : 'border-edge bg-surface-raised shadow-neu-sm'
       }`}
     >
       <h4>
@@ -56,7 +56,7 @@ function AccordionItem({ item, open, hidden, onToggle }) {
         >
           <span
             className={`inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full transition-colors ${
-              open ? 'bg-brand text-white shadow-brand' : 'bg-brand-soft text-brand'
+              open ? 'bg-brand-solid text-white shadow-brand' : 'bg-brand-soft text-brand'
             }`}
           >
             {open ? <Minus className="h-4 w-4" aria-hidden /> : <Plus className="h-4 w-4" aria-hidden />}
@@ -64,7 +64,7 @@ function AccordionItem({ item, open, hidden, onToggle }) {
           <span className={`min-w-0 flex-1 text-sm sm:text-[15px] font-semibold leading-snug ${open ? 'text-brand' : 'text-ink'}`}>
             {item.question}
           </span>
-          <span className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${open ? 'bg-white shadow-neu-sm text-ink' : 'text-ink'}`}>
+          <span className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${open ? 'bg-white dark:bg-surface-raised shadow-neu-sm text-ink' : 'text-ink'}`}>
             <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${open ? 'rotate-180' : ''}`} aria-hidden />
           </span>
         </button>
@@ -183,7 +183,7 @@ export default function FaqExplorer({ items = [] }) {
               value={query}
               onChange={(e) => search(e.target.value)}
               placeholder={FAQS_COPY.searchPlaceholder}
-              className="h-10 w-full rounded-control border border-white/80 bg-surface-raised pl-4 pr-10 text-sm text-ink shadow-neu-sm placeholder:text-ink-muted/80 focus:outline-none focus:ring-2 focus:ring-brand/30 [&::-webkit-search-cancel-button]:hidden"
+              className="h-10 w-full rounded-control border border-edge bg-surface-raised pl-4 pr-10 text-sm text-ink shadow-neu-sm placeholder:text-ink-muted/80 focus:outline-none focus:ring-2 focus:ring-brand/30 [&::-webkit-search-cancel-button]:hidden"
             />
             {query ? (
               <button

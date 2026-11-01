@@ -15,7 +15,7 @@ export default function ContactSection({ settings, services = [], id, headingAs:
     <section
       id={id}
       aria-labelledby="contact-title"
-      className={`space-y-6 rounded-panel border border-white/80 bg-surface p-4 sm:p-6 lg:p-8 shadow-neu-sm ${className}`}
+      className={`space-y-6 rounded-panel border border-edge bg-surface p-4 sm:p-6 lg:p-8 shadow-neu-sm ${className}`}
     >
       <Heading id="contact-title" className="sr-only">
         {CONTACT_COPY.h1}

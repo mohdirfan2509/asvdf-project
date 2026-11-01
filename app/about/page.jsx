@@ -5,9 +5,9 @@ import JsonLd from '@/components/seo/JsonLd';
 import CrawlableFooter from '@/components/layout/CrawlableFooter';
 import RelatedLinks from '@/components/marketing/RelatedLinks';
 import AboutSection from '@/components/about/AboutSection';
-import { getAbout, getCoreValues, getMilestones, getSiteSettings } from '@/lib/content/queries';
+import { getSiteSettings } from '@/lib/content/queries';
 import { buildMetadata } from '@/lib/seo/metadata';
-import { ABOUT_EXTRA } from '@/lib/seo/page-content';
+import { ABOUT_EXTRA, ABOUT_VALUES } from '@/lib/seo/page-content';
 import { graph, organizationNode, breadcrumbNode } from '@/lib/seo/schema';
 
 export const revalidate = 60;
@@ -21,12 +21,7 @@ export async function generateMetadata() {
 }
 
 export default async function AboutPage() {
-  const [settings, about, milestones, values] = await Promise.all([
-    getSiteSettings(),
-    getAbout(),
-    getMilestones(),
-    getCoreValues(),
-  ]);
+  const settings = await getSiteSettings();
 
   const breadcrumbs = [
     { name: 'Home', path: '/' },
@@ -39,7 +34,7 @@ export default async function AboutPage() {
     <SiteShell settings={settings} activePath="/about">
       <JsonLd data={jsonLd} />
       <Breadcrumbs items={breadcrumbs} />
-      <AboutSection image={about?.image} headingAs="h1" className="mb-4" />
+      <AboutSection headingAs="h1" className="mb-4" />
 
       <article className="surface-raised rounded-panel p-4 sm:p-8 mb-4">
         {ABOUT_EXTRA.sections.map((section) => (
@@ -54,34 +49,17 @@ export default async function AboutPage() {
         ))}
       </article>
 
-      {milestones?.length ? (
-        <section className="surface-raised rounded-panel p-4 sm:p-8 mb-4">
-          <h2 className="text-2xl font-bold text-ink mb-4">Milestones</h2>
-          <ol className="space-y-4">
-            {milestones.map((item) => (
-              <li key={item.id} className="border-l-2 border-brand-line pl-4">
-                <p className="text-xs font-semibold text-brand">{item.year}</p>
-                <h3 className="text-base font-semibold text-ink">{item.title}</h3>
-                <p className="text-sm text-ink-muted">{item.description}</p>
-              </li>
-            ))}
-          </ol>
-        </section>
-      ) : null}
-
-      {values?.length ? (
-        <section className="surface-raised rounded-panel p-4 sm:p-8 mb-4">
-          <h2 className="text-2xl font-bold text-ink mb-4">How we work</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {values.map((item) => (
-              <div key={item.id} className="bg-surface border border-line rounded-control p-4">
-                <h3 className="text-base font-semibold text-ink mb-1">{item.title}</h3>
-                <p className="text-sm text-ink-muted">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      ) : null}
+      <section className="surface-raised rounded-panel p-4 sm:p-8 mb-4">
+        <h2 className="text-2xl font-bold text-ink mb-4">How we work</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {ABOUT_VALUES.map((item) => (
+            <div key={item.title} className="bg-surface border border-line rounded-control p-4">
+              <h3 className="text-base font-semibold text-ink mb-1">{item.title}</h3>
+              <p className="text-sm text-ink-muted">{item.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       <div className="mb-4">
         <RelatedLinks

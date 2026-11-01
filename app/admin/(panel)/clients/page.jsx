@@ -2,22 +2,19 @@
 
 import CollectionManager from '@/components/admin/CollectionManager';
 
+const subtitle = (row) => (row.logo ? 'Logo shown on the website' : 'No logo yet — the name is shown instead');
+
 export default function AdminClientsPage() {
   return (
     <CollectionManager
       collection="clients"
-      title="Clients"
-      helpText="Add client names or logos. Turn ON — they scroll forever on the website."
-      emptyRow={{
-        name: '',
-        logo: '',
-        featured: true,
-        published: true,
-        sort_order: 0,
-      }}
+      description="Client logos in the scrolling list on the homepage and on /clients. Upload a logo with a transparent or white background for the best result."
+      emptyRow={{ name: '', logo: '' }}
+      subtitle={subtitle}
+      contain
       fields={[
-        { name: 'name', label: 'Client / company name' },
-        { name: 'logo', label: 'Logo photo (optional)', type: 'image' },
+        { name: 'name', label: 'Company name', required: true, hint: 'Used as the logo’s description, and shown on the card until a logo is added.' },
+        { name: 'logo', label: 'Logo', type: 'image', contain: true },
       ]}
     />
   );

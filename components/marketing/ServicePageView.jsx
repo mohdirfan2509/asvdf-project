@@ -13,12 +13,25 @@ export default function ServicePageView({
   breadcrumbs,
   jsonLd,
   activePath,
+  image,
 }) {
   return (
     <SiteShell settings={settings} activePath={activePath || copy.path}>
       {jsonLd ? <JsonLd data={jsonLd} /> : null}
       <Breadcrumbs items={breadcrumbs} />
       <article className="surface-raised rounded-panel p-4 sm:p-8 mb-4">
+        {image ? (
+          <div className="relative -mx-4 -mt-4 mb-6 aspect-[16/9] overflow-hidden rounded-t-panel bg-surface-sunken sm:-mx-8 sm:-mt-8 sm:mb-8 sm:aspect-[21/8]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={image.src}
+              alt={image.alt}
+              fetchPriority="high"
+              decoding="async"
+              className="absolute inset-0 h-full w-full object-cover object-center"
+            />
+          </div>
+        ) : null}
         {copy.eyebrow ? (
           <p className="text-[11px] font-semibold tracking-[0.14em] text-brand uppercase mb-2">{copy.eyebrow}</p>
         ) : null}

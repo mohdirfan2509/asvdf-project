@@ -11,7 +11,7 @@ export default function ContactUs02({ settings = null }) {
   const phoneDigits = String(settings?.phone || '9063222804').replace(/\D/g, '').slice(-10);
   const displayPhone = `+91 ${phoneDigits.slice(0, 5)} ${phoneDigits.slice(5)}`;
   const wa = String(settings?.whatsapp || `91${phoneDigits}`).replace(/\D/g, '');
-  const email = settings?.email || 'info@asvdf.com';
+  const email = settings?.email || 'asvdfflooringpvtltd@gmail.com';
   const address = settings?.address || COMPANY.address;
 
   const [formData, setFormData] = useState({

@@ -9,7 +9,7 @@ export default function BlogsSection({ blogs = [], id, headingAs: Heading = 'h2'
 
   return (
     <section id={id} aria-labelledby="blogs-title" className={`space-y-4 lg:space-y-5 ${className}`}>
-      <div className="relative isolate overflow-hidden rounded-panel border border-white/80 bg-surface shadow-neu-sm lg:min-h-[16rem]">
+      <div className="relative isolate overflow-hidden rounded-panel border border-edge bg-surface shadow-neu-sm lg:min-h-[16rem]">
         <div className="relative z-10 p-5 sm:p-7 lg:max-w-[46%] lg:py-9 lg:pl-9 lg:pr-4">
           <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-brand">{BLOGS_COPY.eyebrow}</p>
           <Heading
@@ -31,7 +31,7 @@ export default function BlogsSection({ blogs = [], id, headingAs: Heading = 'h2'
             alt={BLOGS_COPY.heroImageAlt}
             loading="lazy"
             decoding="async"
-            className="absolute inset-0 h-full w-full object-cover object-center"
+            className="absolute inset-0 h-full w-full object-cover object-[60%_55%]"
           />
           <div
             aria-hidden
@@ -40,7 +40,7 @@ export default function BlogsSection({ blogs = [], id, headingAs: Heading = 'h2'
         </div>
       </div>
 
-      <div className="rounded-panel border border-white/80 bg-surface p-4 sm:p-6 shadow-neu-sm">
+      <div className="rounded-panel border border-edge bg-surface p-4 sm:p-6 shadow-neu-sm">
         <BlogsExplorer posts={posts} />
       </div>
     </section>

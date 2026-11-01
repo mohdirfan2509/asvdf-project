@@ -5,7 +5,9 @@ import { DEFAULT_PHONE_E164 } from '@/lib/contact';
 import { BRAND_NAME } from '@/lib/seo/site';
 import { defaultTitleTemplate, metadataBaseUrl } from '@/lib/seo/metadata';
 import { graph, organizationNode, websiteNode } from '@/lib/seo/schema';
+import { THEME_COLORS, THEME_SCRIPT } from '@/lib/theme';
 import JsonLd from '@/components/seo/JsonLd';
+import CallbackDialog from '@/components/layout/CallbackDialog';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -55,7 +57,7 @@ export async function generateMetadata() {
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#F1F2F7',
+  themeColor: THEME_COLORS.light,
 };
 
 export default async function RootLayout({ children }) {
@@ -63,7 +65,11 @@ export default async function RootLayout({ children }) {
   const jsonLd = graph([organizationNode(settings), websiteNode(settings)]);
 
   return (
-    <html lang="en-IN" className={poppins.variable} data-scroll-behavior="smooth">
+    // The theme script adds the "dark" class before React hydrates, hence suppressHydrationWarning.
+    <html lang="en-IN" className={poppins.variable} data-scroll-behavior="smooth" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body className={`${poppins.className} bg-surface text-ink antialiased`}>
         <a
           href="#main"
@@ -73,6 +79,7 @@ export default async function RootLayout({ children }) {
         </a>
         <JsonLd data={jsonLd} />
         {children}
+        <CallbackDialog />
       </body>
     </html>
   );

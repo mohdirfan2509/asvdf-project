@@ -4,6 +4,7 @@ import RequestQuoteLink from '@/components/contact/RequestQuoteLink';
 import FaqExplorer from '@/components/faqs/FaqExplorer';
 import { toFaqItem } from '@/lib/faqs';
 import { formatDisplayPhone, getTelUrl } from '@/lib/contact';
+import { FAQ_ENTRIES } from '@/lib/content/faq-entries';
 import { FAQS_HERO_IMAGE } from '@/lib/content/media';
 import { FAQS_COPY } from '@/lib/seo/page-content';
 import { faqNode, graph } from '@/lib/seo/schema';
@@ -20,11 +21,8 @@ function StripItem({ icon: Icon, children }) {
 }
 
 /** FAQ hero, searchable categorised accordion, and the contact strip; content stays in the HTML for crawlers. */
-export default function FaqSection({ settings, faqs = [], id, headingAs: Heading = 'h2', className = '' }) {
-  const items = [...faqs]
-    .filter((faq) => faq.question && faq.answer)
-    .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
-    .map(toFaqItem);
+export default function FaqSection({ settings, id, headingAs: Heading = 'h2', className = '' }) {
+  const items = [...FAQ_ENTRIES].sort((a, b) => a.sort_order - b.sort_order).map(toFaqItem);
   const phone = settings?.phone;
   const email = settings?.email;
   const hours = String(settings?.working_hours || '').trim();
@@ -33,7 +31,7 @@ export default function FaqSection({ settings, faqs = [], id, headingAs: Heading
     <section id={id} aria-labelledby="faqs-title" className={`space-y-4 lg:space-y-5 ${className}`}>
       {items.length ? <JsonLd data={graph([faqNode(items)])} /> : null}
 
-      <div className="relative isolate overflow-hidden rounded-panel border border-white/80 bg-surface shadow-neu-sm lg:min-h-[16rem]">
+      <div className="relative isolate overflow-hidden rounded-panel border border-edge bg-surface shadow-neu-sm lg:min-h-[16rem]">
         <div className="relative z-10 p-5 sm:p-7 lg:max-w-[46%] lg:py-9 lg:pl-9 lg:pr-4">
           <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-brand">{FAQS_COPY.eyebrow}</p>
           <Heading
@@ -59,21 +57,19 @@ export default function FaqSection({ settings, faqs = [], id, headingAs: Heading
             decoding="async"
             className="absolute inset-0 h-full w-full object-cover object-center"
           />
+          {/* Narrower than the other heroes so the "FAQ" letters in the photo stay unfaded. */}
           <div
             aria-hidden
-            className="absolute inset-y-0 left-0 hidden w-2/5 bg-gradient-to-r from-surface via-surface/60 to-transparent lg:block"
+            className="absolute inset-y-0 left-0 hidden w-1/4 bg-gradient-to-r from-surface via-surface/60 to-transparent lg:block"
           />
-          <span aria-hidden className="faq-hero-word absolute bottom-[14%] right-[5%] select-none">
-            FAQ
-          </span>
         </div>
       </div>
 
-      <div className="rounded-panel border border-white/80 bg-surface p-4 sm:p-6 shadow-neu-sm">
+      <div className="rounded-panel border border-edge bg-surface p-4 sm:p-6 shadow-neu-sm">
         <FaqExplorer items={items} />
       </div>
 
-      <div className="grid gap-5 rounded-panel border border-white/80 bg-surface p-5 sm:grid-cols-2 sm:p-6 shadow-neu-sm lg:flex lg:items-center lg:gap-0 lg:divide-x lg:divide-line lg:py-5">
+      <div className="grid gap-5 rounded-panel border border-edge bg-surface p-5 sm:grid-cols-2 sm:p-6 shadow-neu-sm lg:flex lg:items-center lg:gap-0 lg:divide-x lg:divide-line lg:py-5">
         <div className="flex min-w-0 items-center gap-4 sm:col-span-2 lg:flex-1 lg:pr-6">
           <span className="icon-orb h-12 w-12">
             <FileText className="h-5 w-5" strokeWidth={1.75} aria-hidden />

@@ -79,7 +79,7 @@ export default function GalleryExplorer({ images = [] }) {
                   aria-label={`View ${photo.title || 'photo'} larger`}
                   className="absolute inset-0 rounded-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand"
                 >
-                  <span className="absolute bottom-2 right-2 sm:bottom-2.5 sm:right-2.5 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/95 text-brand shadow-float transition-transform duration-200 group-hover:scale-110">
+                  <span className="absolute bottom-2 right-2 sm:bottom-2.5 sm:right-2.5 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/95 text-brand-solid shadow-float transition-transform duration-200 group-hover:scale-110">
                     <Maximize2 className="h-4 w-4" strokeWidth={2} aria-hidden />
                   </span>
                 </button>

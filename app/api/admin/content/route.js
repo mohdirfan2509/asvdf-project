@@ -9,13 +9,9 @@ import {
   firestoreDelete,
   firestoreSetSingleton,
 } from '@/lib/firebase/firestore';
-import {
-  readLocalStore,
-  writeLocalStore,
-  upsertLocalRow,
-  deleteLocalRow,
-  updateLocalSettings,
-} from '@/lib/content/local-store';
+import { readLocalStore, upsertLocalRow, deleteLocalRow, updateLocalSettings } from '@/lib/content/local-store';
+import { COLLECTIONS, SETTINGS_COLLECTION as SETTINGS, sanitizeRow, sanitizeSettings } from '@/lib/content/schema';
+import { EDITABLE_STAT_KEYS } from '@/lib/stats';
 
 function revalidatePublic() {
   revalidatePath('/');
@@ -31,29 +27,21 @@ function useFirebase() {
   return isFirebaseConfigured() && isFirebaseAdminConfigured();
 }
 
+const unknownCollection = () => NextResponse.json({ error: 'Unknown collection' }, { status: 400 });
+
 export async function GET(request) {
   const session = await getAdminSession();
   if (!session.authenticated) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { searchParams } = new URL(request.url);
-  const collection = searchParams.get('collection');
+  const collection = new URL(request.url).searchParams.get('collection');
+  if (collection !== SETTINGS && !COLLECTIONS.includes(collection)) return unknownCollection();
 
   if (useFirebase()) {
     try {
-      if (collection === 'site_settings') {
-        const data = await firestoreGetSingleton('site_settings');
-        return NextResponse.json({ data, mode: 'firebase' });
-      }
-      if (collection === 'about_content') {
-        const data = await firestoreGetSingleton('about_content');
-        return NextResponse.json({ data, mode: 'firebase' });
-      }
-      if (!collection) {
-        return NextResponse.json({ error: 'collection required' }, { status: 400 });
-      }
-      const data = await firestoreGetCollection(collection);
+      const data =
+        collection === SETTINGS ? await firestoreGetSingleton(SETTINGS) : await firestoreGetCollection(collection);
       return NextResponse.json({ data, mode: 'firebase' });
     } catch (err) {
       return NextResponse.json({ error: err.message }, { status: 500 });
@@ -61,7 +49,6 @@ export async function GET(request) {
   }
 
   const store = await readLocalStore();
-  if (!collection) return NextResponse.json({ data: store, mode: 'local' });
   return NextResponse.json({ data: store[collection] ?? null, mode: 'local' });
 }
 
@@ -72,40 +59,31 @@ export async function POST(request) {
   }
 
   const body = await request.json();
-  const { collection, row, settings, about, sections, action, id } = body;
+  const { collection, row, action, id } = body;
+  // Only the editable numbers are stored; every other site detail is fixed in code.
+  const settings = body.settings
+    ? sanitizeSettings(Object.fromEntries(EDITABLE_STAT_KEYS.map((key) => [key, body.settings[key] ?? ''])))
+    : null;
+  const clean = row ? sanitizeRow(collection, row) : null;
+  if (!settings && !COLLECTIONS.includes(collection)) return unknownCollection();
 
   if (useFirebase()) {
     try {
-      if (action === 'delete' && collection && id) {
+      if (action === 'delete' && id) {
         await firestoreDelete(collection, id);
         revalidatePublic();
         return NextResponse.json({ ok: true, mode: 'firebase' });
       }
       if (settings) {
-        const data = await firestoreSetSingleton('site_settings', {
+        const data = await firestoreSetSingleton(SETTINGS, {
           ...settings,
           updated_at: new Date().toISOString(),
         });
         revalidatePublic();
         return NextResponse.json({ data, mode: 'firebase' });
       }
-      if (about) {
-        const data = await firestoreSetSingleton('about_content', {
-          ...about,
-          updated_at: new Date().toISOString(),
-        });
-        revalidatePublic();
-        return NextResponse.json({ data, mode: 'firebase' });
-      }
-      if (sections) {
-        for (const section of sections) {
-          await firestoreUpsert('page_sections', section);
-        }
-        revalidatePublic();
-        return NextResponse.json({ ok: true, mode: 'firebase' });
-      }
-      if (collection && row) {
-        const data = await firestoreUpsert(collection, row);
+      if (clean) {
+        const data = await firestoreUpsert(collection, clean);
         revalidatePublic();
         return NextResponse.json({ data, mode: 'firebase' });
       }
@@ -116,7 +94,7 @@ export async function POST(request) {
   }
 
   // Local JSON fallback
-  if (action === 'delete' && collection && id) {
+  if (action === 'delete' && id) {
     await deleteLocalRow(collection, id);
     revalidatePublic();
     return NextResponse.json({ ok: true, mode: 'local' });
@@ -126,22 +104,8 @@ export async function POST(request) {
     revalidatePublic();
     return NextResponse.json({ data, mode: 'local' });
   }
-  if (about) {
-    const store = await readLocalStore();
-    store.about_content = { ...store.about_content, ...about };
-    await writeLocalStore(store);
-    revalidatePublic();
-    return NextResponse.json({ data: store.about_content, mode: 'local' });
-  }
-  if (sections) {
-    const store = await readLocalStore();
-    store.page_sections = sections;
-    await writeLocalStore(store);
-    revalidatePublic();
-    return NextResponse.json({ ok: true, mode: 'local' });
-  }
-  if (collection && row) {
-    const withId = { ...row, id: row.id || crypto.randomUUID() };
+  if (clean) {
+    const withId = { ...clean, id: clean.id || crypto.randomUUID() };
     const data = await upsertLocalRow(collection, withId);
     revalidatePublic();
     return NextResponse.json({ data, mode: 'local' });

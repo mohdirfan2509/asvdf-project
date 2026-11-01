@@ -29,7 +29,7 @@ export default function ContactUs01({ onNavigate, showNavbar = true, settings = 
       title: "Email Us",
       icon: Mail,
       lines: [
-        settings?.email || "info@asvdf.com",
+        settings?.email || "asvdfflooringpvtltd@gmail.com",
       ]
     },
     {

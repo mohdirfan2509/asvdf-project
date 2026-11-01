@@ -1,4 +1,4 @@
-import { Award, Building2, Images, LayoutGrid } from 'lucide-react';
+import { Building2, Images, LayoutGrid } from 'lucide-react';
 import OrbStatCards from '@/components/ui/OrbStatCards';
 import GalleryExplorer from '@/components/gallery/GalleryExplorer';
 import { GALLERY_COPY } from '@/lib/seo/page-content';
@@ -10,12 +10,11 @@ export default function GallerySection({ settings, images = [], id, headingAs: H
     { key: 'images', label: 'Images', icon: Images, value: images.length ? String(images.length) : null },
     { key: 'stat_projects', label: 'Projects', icon: LayoutGrid, value: statValue(settings, 'stat_projects') },
     { key: 'stat_industries', label: 'Industries', icon: Building2, value: statValue(settings, 'stat_industries') },
-    { key: 'stat_quality', label: 'Quality', icon: Award, value: statValue(settings, 'stat_quality') },
   ];
 
   return (
     <section id={id} aria-labelledby="gallery-title" className={`space-y-4 lg:space-y-5 ${className}`}>
-      <div className="grid gap-6 rounded-panel border border-white/80 bg-surface p-5 sm:p-7 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-10 lg:px-9 lg:py-8 shadow-neu-sm">
+      <div className="grid gap-6 rounded-panel border border-edge bg-surface p-5 sm:p-7 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-10 lg:px-9 lg:py-8 shadow-neu-sm">
         <div>
           <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-brand">{GALLERY_COPY.eyebrow}</p>
           <Heading
@@ -37,7 +36,7 @@ export default function GallerySection({ settings, images = [], id, headingAs: H
         />
       </div>
 
-      <div className="rounded-panel border border-white/80 bg-surface p-4 sm:p-6 shadow-neu-sm">
+      <div className="rounded-panel border border-edge bg-surface p-4 sm:p-6 shadow-neu-sm">
         <GalleryExplorer images={images} />
       </div>
     </section>

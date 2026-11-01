@@ -237,7 +237,7 @@ export default function Navbar({ onNavigate, searchIndex = [] }) {
                   >
                     <span
                       className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
-                        active ? "bg-brand text-white" : "surface-inset text-ink-muted"
+                        active ? "bg-brand-solid text-white" : "surface-inset text-ink-muted"
                       }`}
                     >
                       <IconComp className="w-3.5 h-3.5" />

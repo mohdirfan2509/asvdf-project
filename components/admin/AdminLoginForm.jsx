@@ -3,13 +3,25 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { Eye, EyeOff, LoaderCircle, LogIn } from 'lucide-react';
+import { inputClass } from '@/components/admin/ui';
 import { getClientAuth } from '@/lib/firebase/client';
 
-const firebaseReady = Boolean(
-  process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
-    process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID &&
-    !process.env.NEXT_PUBLIC_FIREBASE_API_KEY.includes('your-api')
-);
+const FIREBASE_ERRORS = {
+  'auth/invalid-credential': 'Wrong email or password.',
+  'auth/invalid-email': 'Enter a valid email address.',
+  'auth/user-disabled': 'This account has been disabled.',
+  'auth/too-many-requests': 'Too many sign-in attempts. Please wait a few minutes and try again.',
+  'auth/network-request-failed': 'Network error. Check your connection and try again.',
+};
+
+/** With Firebase configured, signs in with Firebase first and sends its ID token; otherwise sends the password. */
+async function credentialsFor(email, password) {
+  const auth = getClientAuth();
+  if (!auth) return { email, password };
+  const { user } = await signInWithEmailAndPassword(auth, email, password);
+  return { idToken: await user.getIdToken() };
+}
 
 export default function AdminLoginForm() {
   const router = useRouter();
@@ -17,98 +29,97 @@ export default function AdminLoginForm() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   async function onSubmit(e) {
     e.preventDefault();
     setLoading(true);
     setError('');
-
     try {
-      let payload = { email, password };
-
-      if (firebaseReady) {
-        const auth = getClientAuth();
-        if (!auth) throw new Error('Login service not ready');
-        const cred = await signInWithEmailAndPassword(auth, email, password);
-        const idToken = await cred.user.getIdToken();
-        payload = { email, idToken };
-      }
-
       const res = await fetch('/api/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(await credentialsFor(email, password)),
       });
-      const raw = await res.text();
-      let data = {};
-      try {
-        data = raw ? JSON.parse(raw) : {};
-      } catch {
-        throw new Error(
-          res.ok
-            ? 'Unexpected server response'
-            : 'Server error during login. Redeploy after the Firebase fix.'
-        );
-      }
-      if (!res.ok) throw new Error(data.error || 'Wrong email or password');
-
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Could not sign in. Please try again.');
       router.replace('/admin');
       router.refresh();
     } catch (err) {
-      setError(err.message || 'Could not sign in');
-    } finally {
+      const message = FIREBASE_ERRORS[err.code] || (err.code?.startsWith('auth/') ? 'Could not sign in. Please try again.' : err.message);
+      setError(message === 'Failed to fetch' ? 'Network error. Check your connection and try again.' : message);
       setLoading(false);
     }
   }
 
   return (
-    <form
-      onSubmit={onSubmit}
-      className="w-full max-w-sm bg-white border border-zinc-200 rounded-lg p-7 sm:p-8 space-y-4"
-    >
-      <div className="mb-1">
-        <img src="/asvdf-logo.png" alt="AS VDF Flooring" className="h-16 w-auto object-contain rounded-lg bg-black mb-4" />
-        <h1 className="text-xl font-semibold text-zinc-900 tracking-tight">Sign in</h1>
-        <p className="text-sm text-zinc-500 mt-1">ASVDF website admin</p>
+    <form onSubmit={onSubmit} className="surface-raised w-full max-w-sm rounded-panel p-7 shadow-neu-lg sm:p-8">
+      <div className="flex flex-col items-center text-center">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/asvdf-logo.png" alt="AS VDF Flooring" className="h-16 w-auto rounded-[12px] bg-black object-contain" />
+        <h1 className="mt-5 text-2xl font-bold tracking-tight text-ink">Welcome back</h1>
+        <p className="mt-1 text-sm text-ink-muted">Sign in to manage the ASVDF website</p>
       </div>
 
-      <div>
-        <label className="text-xs font-medium text-zinc-600 block mb-1.5">Email</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="admin@company.com"
-          required={firebaseReady}
-          className="w-full bg-white border border-zinc-300 rounded-md px-3 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-zinc-900 focus:border-zinc-900"
-        />
-      </div>
-
-      <div>
-        <label className="text-xs font-medium text-zinc-600 block mb-1.5">Password</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="••••••••"
-          required
-          className="w-full bg-white border border-zinc-300 rounded-md px-3 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-zinc-900 focus:border-zinc-900"
-        />
-      </div>
-
-      {error && (
-        <div className="rounded-md border border-red-200 bg-red-50 text-red-700 px-3 py-2.5 text-sm">
-          {error}
+      <div className="mt-7 space-y-4">
+        <div>
+          <label htmlFor="admin-email" className="mb-1.5 block text-sm font-semibold text-ink">
+            Email
+          </label>
+          <input
+            id="admin-email"
+            type="email"
+            autoComplete="username"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@company.com"
+            required
+            className={inputClass}
+          />
         </div>
-      )}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full bg-zinc-900 text-white rounded-md py-2.5 text-sm font-medium hover:bg-zinc-800 disabled:opacity-60"
-      >
-        {loading ? 'Signing in…' : 'Sign in'}
-      </button>
+        <div>
+          <label htmlFor="admin-password" className="mb-1.5 block text-sm font-semibold text-ink">
+            Password
+          </label>
+          <div className="relative">
+            <input
+              id="admin-password"
+              type={showPassword ? 'text' : 'password'}
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              required
+              className={`${inputClass} pr-12`}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+              aria-pressed={showPassword}
+              className="absolute right-1.5 top-1/2 inline-flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full text-ink-muted transition-colors hover:text-brand"
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
+        </div>
+
+        {error ? (
+          <div role="alert" className="rounded-control border border-red-200 bg-red-50 px-3.5 py-2.5 text-sm font-medium text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300">
+            {error}
+          </div>
+        ) : null}
+
+        <button type="submit" disabled={loading} className="btn-primary h-12 w-full text-sm disabled:opacity-70">
+          {loading ? <LoaderCircle className="h-4 w-4 animate-spin" aria-hidden /> : <LogIn className="h-4 w-4" aria-hidden />}
+          {loading ? 'Signing in…' : 'Sign in'}
+        </button>
+      </div>
+
+      <a href="/" className="mt-6 block text-center text-sm font-medium text-ink-muted transition-colors hover:text-brand">
+        ← Back to website
+      </a>
     </form>
   );
 }

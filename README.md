@@ -1,76 +1,57 @@
-# ASVDF Flooring — Firebase + Cloudinary CMS
+# ASVDF Flooring — website + small admin panel
 
-Mobile-first marketing site with admin control tower.
+**Stack:** Next.js · Firestore (admin content) · Firebase Auth (admin sign-in) · Cloudinary (uploaded images) · Resend (form emails)
 
-**Stack:** Next.js · **Firestore** (content) · **Firebase Auth** (admin) · **Cloudinary** (images)
+Most of the site (services, testimonials, FAQs, company details, page text, images) is fixed in code.
+The admin panel manages only:
 
-## Quick start (local without Firebase)
+| Admin area | Firestore | Fields |
+|---|---|---|
+| Numbers | `site_settings/main` | `stat_projects`, `stat_clients`, `stat_industries` |
+| Projects | `projects` | `title`, `slug`, `category`, `location`, `area`, `flooring_type`, `image` |
+| Clients | `clients` | `name`, `logo` |
+| Gallery | `gallery_images` | `title`, `image`, `category`, `location` |
+| Blogs | `blogs` | `title`, `slug`, `category`, `tags`, `excerpt`, `body`, `cover`, `seo_title`, `seo_description`, `published_at` |
+
+Every list item also has `id`, `featured` (the admin's Visible/Hidden switch), `published`, `sort_order`,
+`created_at`, `updated_at`. The schema lives in `lib/content/schema.js`; saves keep only these fields.
+
+## Local development
 
 ```bash
 npm install
 npm run dev
 ```
 
-- Site: http://localhost:3000  
-- Admin: http://localhost:3000/admin/login — password `asvdf-admin-2026`
+Copy `.env.example` to `.env.local` and fill in the values. Without the Firebase values, admin content is
+stored in `data/cms.json` and the admin signs in with `ADMIN_PASSWORD` (12+ characters) — sessions are
+signed with `ADMIN_SESSION_SECRET`.
 
-## Production setup: Firebase + Cloudinary
+## Firebase setup
 
-### 1. Cloudinary (images)
-1. Create account at cloudinary.com  
-2. Copy Cloud name, API Key, API Secret into `.env.local`
+1. [Firebase Console](https://console.firebase.google.com) → your project.
+2. **Firestore Database** → create it if needed. **Rules** tab → paste `firestore.rules` → Publish.
+   (The site uses Firestore only from its server via the Admin SDK, so browsers are denied all access.)
+3. **Authentication → Sign-in method** → enable Email/Password. **Users** → add the admin user
+   (its email must be in `ADMIN_EMAILS`).
+4. **Project settings → General → Your apps** → web app config → `NEXT_PUBLIC_FIREBASE_*` in `.env.local`.
+5. **Project settings → Service accounts** → Generate new private key → `FIREBASE_CLIENT_EMAIL` and
+   `FIREBASE_PRIVATE_KEY` (keep the `\n` sequences, in double quotes). Never commit this key.
+6. Restart `npm run dev`.
 
-### 2. Firebase (Auth + Firestore)
-1. Create a project at [Firebase Console](https://console.firebase.google.com) (Spark / free)  
-2. Enable **Authentication → Email/Password**  
-3. Create one admin user (Authentication → Users → Add user)  
-4. Create **Firestore** database (start in test mode, then lock rules for production)  
-5. Project settings → Your apps → Web app → copy config into `NEXT_PUBLIC_FIREBASE_*`  
-6. Project settings → Service accounts → Generate new private key → set:
-   - `FIREBASE_CLIENT_EMAIL`
-   - `FIREBASE_PRIVATE_KEY` (keep `\n` newlines in the env string)
-
-### 3. Seed starter content
+### Move local content into Firestore
 
 ```bash
-npm run seed:firebase
+npm run migrate:firebase                         # dry run: shows what would change
+npm run migrate:firebase -- --apply              # copy data/cms.json into Firestore
+npm run migrate:firebase -- --apply --prune      # ...and delete Firestore items not in the local data
+npm run migrate:firebase -- --delete-obsolete    # delete collections the site no longer uses
 ```
 
-Or while logged into admin: `POST /api/admin/seed`
-
-### 4. Firestore security rules (production)
-
-```
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /{document=**} {
-      allow read: if true;
-      allow write: if request.auth != null;
-    }
-  }
-}
-```
-
-(Public site reads via Admin SDK on the server; browser admin writes go through Next.js API with session cookie.)
-
-## How visibility works
-
-| Toggle | Meaning |
-|--------|---------|
-| Show on website | Listing pages |
-| Show on homepage | Selected featured items only |
-
-Keep adding clients/projects forever — toggle visibility instead of deleting.
-
-## Contact
-
-Default: **+91 9063222804** (WhatsApp + Call). Edit in Admin → Site Settings.
+Every run that changes Firestore first writes a backup to `data/firestore-backup-*.json`.
+`npm run seed:firebase` loads the built-in starter content instead.
 
 ## Deploy (Vercel)
 
-1. Push repo  
-2. Set all env vars from `.env.example`  
-3. Deploy  
-4. Run seed once  
-5. Login at `/admin/login` with the Firebase admin email/password  
+Set every variable from `.env.example` in the Vercel project (with a fresh `ADMIN_SESSION_SECRET`), set up
+Cloudinary for image uploads, then deploy. Sign in at `/admin/login` with the Firebase admin user.

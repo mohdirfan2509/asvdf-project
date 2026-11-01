@@ -4,7 +4,8 @@ import JsonLd from '@/components/seo/JsonLd';
 import CrawlableFooter from '@/components/layout/CrawlableFooter';
 import RelatedLinks from '@/components/marketing/RelatedLinks';
 import ContactSection from '@/components/contact/ContactSection';
-import { getServices, getSiteSettings } from '@/lib/content/queries';
+import { getSiteSettings } from '@/lib/content/queries';
+import { SERVICES } from '@/lib/content/services';
 import { buildMetadata } from '@/lib/seo/metadata';
 import { CONTACT_COPY } from '@/lib/seo/page-content';
 import { COMPANY, SERVICE_AREAS } from '@/lib/seo/company';
@@ -21,7 +22,7 @@ export async function generateMetadata() {
 }
 
 export default async function ContactPage() {
-  const [settings, services] = await Promise.all([getSiteSettings(), getServices({ homepageOnly: true })]);
+  const settings = await getSiteSettings();
   const breadcrumbs = [
     { name: 'Home', path: '/' },
     { name: 'Contact', path: '/contact' },
@@ -35,7 +36,7 @@ export default async function ContactPage() {
     <SiteShell settings={settings} activePath="/contact">
       <JsonLd data={jsonLd} />
       <Breadcrumbs items={breadcrumbs} />
-      <ContactSection settings={settings} services={services} headingAs="h1" className="mb-4" />
+      <ContactSection settings={settings} services={SERVICES} headingAs="h1" className="mb-4" />
 
       <section className="surface-raised rounded-panel p-4 sm:p-8 mb-4 grid gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
         <div>
@@ -51,7 +52,7 @@ export default async function ContactPage() {
       </section>
       <div className="mb-4">
         <RelatedLinks
-          heading="Service areas"
+          heading="Service areas · All over India"
           links={SERVICE_AREAS.map((area) => ({ href: area.path, label: `VDF flooring in ${area.name}` }))}
         />
       </div>

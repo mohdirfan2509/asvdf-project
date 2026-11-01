@@ -9,7 +9,7 @@ export default function MobileContactBar({ settings }) {
 
   return (
     <div className="fixed bottom-0 inset-x-0 z-[55] md:hidden pointer-events-none">
-      <div className="pointer-events-auto mx-3 mb-3 grid grid-cols-2 gap-2 rounded-card bg-surface-raised/95 backdrop-blur-md p-2 border border-white/80 shadow-neu-lg">
+      <div className="pointer-events-auto mx-3 mb-3 grid grid-cols-2 gap-2 rounded-card bg-surface-raised/95 backdrop-blur-md p-2 border border-edge shadow-neu-lg">
         <a
           href={getWhatsAppUrl(whatsapp)}
           target="_blank"

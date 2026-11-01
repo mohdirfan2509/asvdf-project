@@ -10,11 +10,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed:firebase": "node --env-file=.env.local scripts/seed-firebase.mjs"
+    "seed:firebase": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local scripts/seed-firebase.mjs",
+    "migrate:firebase": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local scripts/migrate-to-firebase.mjs"
   },
   "dependencies": {
-    "@supabase/ssr": "^0.7.0",
-    "@supabase/supabase-js": "^2.57.4",
     "cloudinary": "^2.10.1",
     "firebase": "^12.18.0",
     "firebase-admin": "^14.3.0",

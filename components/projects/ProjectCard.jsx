@@ -1,9 +1,7 @@
-import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { projectSlug } from '@/lib/seo/slug';
 
-export default function ProjectCard({ project, eager = false }) {
-  const href = `/projects/${projectSlug(project)}`;
+/** Project tile; the whole card (including the arrow) opens the project's details pop-up. */
+export default function ProjectCard({ project, eager = false, onOpen }) {
   const alt = [project.title, project.location].filter(Boolean).join(' in ') || 'Flooring project';
 
   return (
@@ -20,7 +18,7 @@ export default function ProjectCard({ project, eager = false }) {
           />
         ) : null}
         {project.category ? (
-          <span className="absolute left-3 top-3 rounded-md border border-white/80 bg-white/95 px-2 py-0.5 text-[11px] font-semibold text-brand shadow-neu-sm">
+          <span className="absolute left-3 top-3 rounded-md border border-edge bg-white/95 px-2 py-0.5 text-[11px] font-semibold text-brand-solid shadow-neu-sm">
             {project.category}
           </span>
         ) : null}
@@ -29,9 +27,14 @@ export default function ProjectCard({ project, eager = false }) {
       <div className="flex flex-1 items-end justify-between gap-2 p-3.5 min-[1400px]:p-4">
         <div className="min-w-0">
           <h2 className="text-[13px] min-[1400px]:text-sm font-semibold leading-snug text-ink">
-            <Link href={href} className="after:absolute after:inset-0 focus-visible:outline-none">
+            <button
+              type="button"
+              onClick={() => onOpen(project)}
+              aria-haspopup="dialog"
+              className="text-left after:absolute after:inset-0 after:cursor-pointer focus-visible:outline-none"
+            >
               {project.title}
-            </Link>
+            </button>
           </h2>
           {project.location ? <p className="mt-1 text-xs text-ink-muted">{project.location}</p> : null}
           {project.area ? <p className="mt-1 text-xs font-semibold text-brand">{project.area}</p> : null}

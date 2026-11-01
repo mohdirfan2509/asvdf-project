@@ -1,7 +1,6 @@
-import { getBlogs, getProjects } from '@/lib/content/queries';
+import { getBlogs } from '@/lib/content/queries';
 import { getSiteUrl } from '@/lib/seo/site';
 import { INDEXABLE_PATHS } from '@/lib/seo/routes';
-import { projectSlug } from '@/lib/seo/slug';
 
 export default async function sitemap() {
   const siteUrl = getSiteUrl();
@@ -14,7 +13,6 @@ export default async function sitemap() {
   }));
 
   let blogRoutes = [];
-  let projectRoutes = [];
 
   try {
     const blogs = await getBlogs();
@@ -30,17 +28,5 @@ export default async function sitemap() {
     console.error('sitemap blogs:', err.message);
   }
 
-  try {
-    const projects = await getProjects();
-    projectRoutes = (projects || []).map((project) => ({
-      url: `${siteUrl}/projects/${projectSlug(project)}`,
-      lastModified: project.updated_at ? new Date(project.updated_at) : new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.55,
-    }));
-  } catch (err) {
-    console.error('sitemap projects:', err.message);
-  }
-
-  return [...staticRoutes, ...blogRoutes, ...projectRoutes];
+  return [...staticRoutes, ...blogRoutes];
 }

@@ -50,7 +50,7 @@ export default function ProjectPagination({ page, totalPages, onChange, label = 
                 aria-current={item === page ? 'page' : undefined}
                 className={
                   item === page
-                    ? `${pageButton} bg-brand text-white shadow-brand`
+                    ? `${pageButton} bg-brand-solid text-white shadow-brand`
                     : `${pageButton} bg-surface-raised text-ink shadow-neu-sm hover:text-brand`
                 }
               >

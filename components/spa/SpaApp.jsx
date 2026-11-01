@@ -15,43 +15,47 @@ import FaqSection from '@/components/faqs/FaqSection';
 
 /** Continuous homepage: shared header, every main section in document flow, shared footer. */
 export default function SpaApp({ content }) {
-  const { settings, projects, clients, testimonials, services, about, gallery, blogs, faqs } = content || {};
+  const { settings, projects, clients, services, gallery, blogs } = content || {};
+  // Only the fields the header search needs, so article bodies are not sent to the client twice.
+  const searchData = {
+    blogs: (blogs || []).map(({ slug, title, category, excerpt }) => ({ slug, title, category, excerpt })),
+    projects: (projects || []).map(({ id, slug, title, location, category, flooring_type }) => ({
+      id,
+      slug,
+      title,
+      location,
+      category,
+      flooring_type,
+    })),
+  };
 
   return (
-    <div className="spa-shell font-sans antialiased text-ink selection:bg-brand selection:text-white">
+    <div className="spa-shell font-sans antialiased text-ink selection:bg-brand-solid selection:text-white">
       <div className="spa-nav-sticky">
         <div className="w-full max-w-[1440px] mx-auto">
-          <Navbar settings={settings} activePath="/" />
+          <Navbar settings={settings} activePath="/" searchData={searchData} />
         </div>
       </div>
 
       <main id="main">
-        <section id="home" aria-label="Home" className="spa-section spa-section--auto">
+        <section
+          id="home"
+          aria-label="Home"
+          className="spa-section spa-section--auto mx-auto w-full max-w-[1440px] px-3 sm:px-4 pt-2"
+        >
           <Home settings={settings} />
         </section>
 
         <div className="w-full max-w-[1440px] mx-auto px-3 sm:px-4 pt-6 lg:pt-8 space-y-6 lg:space-y-8">
-          <ProjectsSection id="projects" settings={settings} projects={projects} className="home-section" />
-          <ClientsSection
-            id="clients"
-            settings={settings}
-            clients={clients}
-            testimonials={testimonials}
-            className="home-section"
-          />
           <ServicesOverview id="services" settings={settings} services={services} className="home-section" />
-          <AboutSection id="about" image={about?.image} className="home-section" />
+          <ClientsSection id="clients" settings={settings} clients={clients} className="home-section" />
+          <ProjectsSection id="projects" settings={settings} projects={projects} className="home-section" />
+          <AboutSection id="about" className="home-section" />
           <ContactSection id="contact" settings={settings} services={services} className="home-section" />
           <GallerySection id="gallery" settings={settings} images={gallery} className="home-section" />
-          <TestimonialsSection
-            id="testimonials"
-            settings={settings}
-            testimonials={testimonials}
-            clients={clients}
-            className="home-section"
-          />
+          <TestimonialsSection id="testimonials" settings={settings} className="home-section" />
           <BlogsSection id="blogs" blogs={blogs} className="home-section" />
-          <FaqSection id="faqs" settings={settings} faqs={faqs} className="home-section" />
+          <FaqSection id="faqs" settings={settings} className="home-section" />
         </div>
       </main>
 

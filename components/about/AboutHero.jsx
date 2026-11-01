@@ -37,7 +37,7 @@ export default function AboutHero({ copy, image, headingAs: Heading = 'h1', head
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={image}
-              alt="Industrial flooring by ASVDF Flooring"
+              alt="Industrial warehouse with a polished concrete floor"
               className="absolute inset-0 h-full w-full object-cover object-center"
             />
           ) : null}

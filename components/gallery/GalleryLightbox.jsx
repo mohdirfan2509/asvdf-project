@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 
 const navButton =
-  'absolute top-1/2 -translate-y-1/2 inline-flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-white/90 text-ink shadow-float transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand';
+  'absolute top-1/2 -translate-y-1/2 inline-flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-white/90 text-slate-900 shadow-float transition-colors hover:text-brand-solid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand';
 
 /** Full-size viewer for the filtered gallery; `index` is null while closed. */
 export default function GalleryLightbox({ images, index, onIndexChange, onClose }) {
@@ -63,7 +63,7 @@ export default function GalleryLightbox({ images, index, onIndexChange, onClose 
             type="button"
             onClick={() => dialogRef.current?.close()}
             aria-label="Close image viewer"
-            className="absolute right-2 top-2 sm:right-3 sm:top-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-ink shadow-float transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            className="absolute right-2 top-2 sm:right-3 sm:top-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-slate-900 shadow-float transition-colors hover:text-brand-solid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           >
             <X className="h-5 w-5" />
           </button>

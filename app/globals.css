@@ -6,8 +6,12 @@
   --color-surface-raised: #F5F6FA;
   --color-surface-sunken: #EAECF3;
   --color-line: #E1E4EE;
+  /* Light top-left edge of raised neumorphic surfaces. */
+  --color-edge: rgb(255 255 255 / 0.8);
 
   --color-brand: #6845E8;
+  /* Solid purple behind white text; unlike `brand`, it stays the same in dark mode. */
+  --color-brand-solid: #6845E8;
   --color-brand-highlight: #815CEB;
   --color-brand-strong: #5534D4;
   --color-brand-light: #BBA8F8;
@@ -21,22 +25,59 @@
   --radius-card: 1rem;
   --radius-panel: 1.25rem;
 
-  --shadow-neu-sm: -3px -3px 8px rgb(255 255 255 / 0.9), 3px 3px 9px rgb(17 24 39 / 0.07);
-  --shadow-neu-md: -6px -6px 16px rgb(255 255 255 / 0.85), 6px 6px 18px rgb(17 24 39 / 0.07);
-  --shadow-neu-lg: -10px -10px 26px rgb(255 255 255 / 0.8), 12px 12px 30px rgb(17 24 39 / 0.09);
-  --shadow-neu-inset: inset 2px 2px 5px rgb(17 24 39 / 0.07), inset -2px -2px 5px rgb(255 255 255 / 0.9);
+  /* Tailwind inlines literal shadow values into utilities; these indirections let `.dark` swap them. */
+  --shadow-neu-sm: var(--neu-shadow-sm);
+  --shadow-neu-md: var(--neu-shadow-md);
+  --shadow-neu-lg: var(--neu-shadow-lg);
+  --shadow-neu-inset: var(--neu-shadow-inset);
   --shadow-brand: 0 10px 22px -8px rgb(104 69 232 / 0.6);
   /* For raised elements resting on photography, where a white highlight would read as a halo. */
-  --shadow-float: 0 14px 32px -14px rgb(17 24 39 / 0.35), 0 2px 6px rgb(17 24 39 / 0.06);
+  --shadow-float: var(--float-shadow);
 
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
 }
+
+/* Dark mode is a class on <html>, set before paint by the theme script in app/layout.jsx. */
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* Wide but short screens (e.g. 1366×768 laptops), for layouts that must fit one viewport. */
 @custom-variant short-desktop (@media (min-width: 1280px) and (max-height: 860px));
 
 @theme inline {
   --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --neu-shadow-sm: -3px -3px 8px rgb(255 255 255 / 0.9), 3px 3px 9px rgb(17 24 39 / 0.07);
+  --neu-shadow-md: -6px -6px 16px rgb(255 255 255 / 0.85), 6px 6px 18px rgb(17 24 39 / 0.07);
+  --neu-shadow-lg: -10px -10px 26px rgb(255 255 255 / 0.8), 12px 12px 30px rgb(17 24 39 / 0.09);
+  --neu-shadow-inset: inset 2px 2px 5px rgb(17 24 39 / 0.07), inset -2px -2px 5px rgb(255 255 255 / 0.9);
+  --float-shadow: 0 14px 32px -14px rgb(17 24 39 / 0.35), 0 2px 6px rgb(17 24 39 / 0.06);
+}
+
+/* Dark palette: the same tokens, so every component follows without per-component overrides. */
+.dark {
+  color-scheme: dark;
+
+  --color-surface: #151821;
+  --color-surface-raised: #1B1F2A;
+  --color-surface-sunken: #11141B;
+  --color-line: #2A2F3D;
+  --color-edge: rgb(255 255 255 / 0.06);
+
+  /* Lighter purple so brand-coloured text stays readable (about 5:1) on the dark surfaces. */
+  --color-brand: #9479F4;
+  --color-brand-soft: #262046;
+  --color-brand-line: #41377A;
+
+  --color-ink: #E7E9F1;
+  --color-ink-muted: #9AA3B8;
+
+  --neu-shadow-sm: -3px -3px 8px rgb(255 255 255 / 0.03), 3px 3px 9px rgb(0 0 0 / 0.45);
+  --neu-shadow-md: -6px -6px 16px rgb(255 255 255 / 0.03), 6px 6px 18px rgb(0 0 0 / 0.5);
+  --neu-shadow-lg: -10px -10px 26px rgb(255 255 255 / 0.03), 12px 12px 30px rgb(0 0 0 / 0.55);
+  --neu-shadow-inset: inset 2px 2px 5px rgb(0 0 0 / 0.5), inset -2px -2px 5px rgb(255 255 255 / 0.03);
+  --float-shadow: 0 14px 32px -14px rgb(0 0 0 / 0.7), 0 2px 6px rgb(0 0 0 / 0.3);
 }
 
 :root {
@@ -93,7 +134,7 @@
 @layer components {
   .surface-raised {
     background-color: var(--color-surface-raised);
-    border: 1px solid rgb(255 255 255 / 0.75);
+    border: 1px solid var(--color-edge);
     box-shadow: var(--shadow-neu-md);
   }
 
@@ -110,7 +151,7 @@
     flex-shrink: 0;
     border-radius: 9999px;
     background-color: var(--color-surface-raised);
-    border: 1px solid rgb(255 255 255 / 0.85);
+    border: 1px solid var(--color-edge);
     box-shadow: var(--shadow-neu-sm);
     color: var(--color-brand);
   }
@@ -122,7 +163,7 @@
     justify-content: center;
     flex-shrink: 0;
     border-radius: 9999px;
-    background-color: var(--color-brand);
+    background-color: var(--color-brand-solid);
     color: #fff;
     box-shadow: var(--shadow-brand), inset 0 1px 0 rgb(255 255 255 / 0.25);
   }
@@ -143,7 +184,7 @@
   }
 
   .btn-primary {
-    background-color: var(--color-brand);
+    background-color: var(--color-brand-solid);
     color: #fff;
     box-shadow: var(--shadow-brand);
   }
@@ -161,7 +202,7 @@
   .btn-secondary {
     background-color: var(--color-surface-raised);
     color: var(--color-ink);
-    border: 1px solid rgb(255 255 255 / 0.85);
+    border: 1px solid var(--color-edge);
     box-shadow: var(--shadow-neu-sm);
   }
 
@@ -207,7 +248,7 @@
   align-items: center;
   padding-left: var(--spa-rail);
   padding-right: var(--spa-rail);
-  background: rgb(241 242 247 / 0.9);
+  background: color-mix(in srgb, var(--color-surface) 90%, transparent);
   backdrop-filter: blur(10px);
 }
 
@@ -255,21 +296,6 @@
   scroll-margin-top: calc(var(--spa-nav-h) + 0.5rem);
 }
 
-/* Dimensional "FAQ" lettering over the FAQ hero photo; the reflection is a progressive enhancement. */
-.faq-hero-word {
-  font-size: clamp(3.5rem, 8vw, 8rem);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  color: transparent;
-  background-image: linear-gradient(180deg, #d9d0fd 0%, #a58ff5 45%, var(--color-brand) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  filter: drop-shadow(0 1px 0 var(--color-brand-strong)) drop-shadow(0 2px 0 var(--color-brand-strong))
-    drop-shadow(0 3px 0 #4a2cc0) drop-shadow(0 16px 20px rgb(17 24 39 / 0.4));
-  -webkit-box-reflect: below -0.1em linear-gradient(transparent 60%, rgb(255 255 255 / 0.22));
-}
-
 .spa-pad {
   padding: var(--spa-pad-y) var(--spa-pad-x);
 }
@@ -294,6 +320,13 @@
 
 .animate-marquee-rtl {
   animation: marquee-rtl 36s linear infinite;
+}
+
+.marquee-pausable:hover > .animate-marquee-ltr,
+.marquee-pausable:hover > .animate-marquee-rtl,
+.marquee-pausable:focus-within > .animate-marquee-ltr,
+.marquee-pausable:focus-within > .animate-marquee-rtl {
+  animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {

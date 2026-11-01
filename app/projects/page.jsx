@@ -27,7 +27,20 @@ export default async function ProjectsPage() {
   const jsonLd = graph([organizationNode(settings), breadcrumbNode(breadcrumbs)]);
 
   return (
-    <SiteShell settings={settings} activePath="/projects">
+    <SiteShell
+      settings={settings}
+      activePath="/projects"
+      searchData={{
+        projects: projects.map(({ id, slug, title, location, category, flooring_type }) => ({
+          id,
+          slug,
+          title,
+          location,
+          category,
+          flooring_type,
+        })),
+      }}
+    >
       <JsonLd data={jsonLd} />
       <Breadcrumbs items={breadcrumbs} />
       <ProjectsSection settings={settings} projects={projects} headingAs="h1" className="mb-4" />
