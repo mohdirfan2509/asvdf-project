@@ -1,0 +1,10 @@
+# Not needed to build or run the website (design sources, old prototype, local data and backups).
+design/
+reference-images/
+services-images/
+dist/
+src/
+data/
+public/uploads/
+.env*
+!.env.example
