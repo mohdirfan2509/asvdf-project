@@ -15,7 +15,7 @@ export default function MobileContactBar({ settings }) {
           href={getWhatsAppUrl(whatsapp)}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 rounded-control bg-[#25D366] text-white font-semibold text-[13px] py-2.5 active:translate-y-px transition-transform"
+          className="flex items-center justify-center gap-2 rounded-control bg-[#15803D] text-white font-semibold text-[13px] py-2.5 active:translate-y-px transition-transform"
           aria-label="Chat on WhatsApp"
         >
           <WhatsAppIcon className="w-[18px] h-[18px]" />

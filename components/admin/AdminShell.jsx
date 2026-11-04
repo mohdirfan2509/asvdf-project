@@ -17,7 +17,7 @@ function SidebarContent({ pathname, email, onSignOut }) {
     <div className="flex h-full flex-col">
       <Link href="/admin" className="flex items-center gap-3 rounded-control px-2 py-1.5">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/asvdf-logo.png" alt="" className="h-11 w-auto rounded-[10px] bg-black object-contain" />
+        <img src="/asvdf-logo-sm.webp" alt="" width={240} height={160} className="h-11 w-auto rounded-[10px] bg-black object-contain" />
         <span className="min-w-0">
           <span className="block text-[15px] font-bold leading-tight text-ink">ASVDF Admin</span>
           <span className="block text-xs text-ink-muted">Website editor</span>
@@ -124,7 +124,7 @@ export default function AdminShell({ email, children }) {
             <div className="surface-raised flex h-14 items-center gap-3 rounded-panel px-3">
               <Link href="/admin" aria-label="Admin dashboard" className="shrink-0">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/asvdf-logo.png" alt="" className="h-9 w-auto rounded-lg bg-black object-contain" />
+                <img src="/asvdf-logo-sm.webp" alt="" width={240} height={160} className="h-9 w-auto rounded-lg bg-black object-contain" />
               </Link>
               <p className="min-w-0 flex-1 truncate text-sm font-semibold text-ink">{current?.label || 'Admin'}</p>
               <button

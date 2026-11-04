@@ -15,7 +15,7 @@ export default function FooterCTA({ settings }) {
           Talk to ASVDF about VDF and industrial flooring for your next project.
         </p>
         <div className="flex flex-wrap gap-3">
-          <a href={getWhatsAppUrl(whatsapp)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#25D366] rounded-control px-5 py-3 text-sm font-semibold">
+          <a href={getWhatsAppUrl(whatsapp)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#15803D] rounded-control px-5 py-3 text-sm font-semibold">
             <MessageCircle className="w-4 h-4" /> WhatsApp
           </a>
           <a href={getTelUrl(phone)} className="inline-flex items-center gap-2 bg-white text-ink rounded-control px-5 py-3 text-sm font-semibold">

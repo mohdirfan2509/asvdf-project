@@ -22,7 +22,7 @@ export default function FloatingContact({ settings }) {
         href={getWhatsAppUrl(whatsapp)}
         target="_blank"
         rel="noopener noreferrer"
-        className={`${pillClass} bg-[#25D366] focus-visible:ring-[#25D366]/50`}
+        className={`${pillClass} bg-[#15803D] focus-visible:ring-[#15803D]/50`}
         aria-label="Chat on WhatsApp (opens in a new tab)"
       >
         <span className={labelClass} aria-hidden>

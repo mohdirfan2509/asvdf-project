@@ -29,7 +29,7 @@ export async function POST(request) {
     );
   }
 
-  const { value, errors, valid } = validateInquiry(body);
+  const { value, errors, valid } = validateInquiry(body ?? {});
   if (!valid) {
     return NextResponse.json({ error: 'Please correct the highlighted fields.', errors }, { status: 422 });
   }

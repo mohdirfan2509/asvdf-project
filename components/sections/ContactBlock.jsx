@@ -19,7 +19,7 @@ export default function ContactBlock({ settings, showForm = true }) {
             href={getWhatsAppUrl(whatsapp)}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 rounded-2xl bg-[#25D366] text-white p-4 font-[600]"
+            className="flex items-center gap-3 rounded-2xl bg-[#15803D] text-white p-4 font-[600]"
           >
             <MessageCircle className="w-6 h-6" />
             <div>

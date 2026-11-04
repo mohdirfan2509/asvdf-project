@@ -3,6 +3,7 @@ import BrandLogo from '@/components/brand/BrandLogo';
 import FinalCta from '@/components/layout/FinalCta';
 import SocialIcon from '@/components/ui/SocialIcons';
 import { ALL_INDIA_AREA, COMPANY, SERVICE_AREAS, SOCIAL_LINKS } from '@/lib/seo/company';
+import { PRIMARY_NAV } from '@/lib/seo/routes';
 
 const socialClass =
   'inline-flex h-11 w-11 items-center justify-center rounded-full border border-edge bg-surface-raised text-ink shadow-neu-sm transition-[color,box-shadow,transform] duration-200';
@@ -45,6 +46,17 @@ export default function CrawlableFooter({ settings, showCta = true }) {
                 >
                   <Link href={area.path} className="transition-colors hover:text-brand">
                     {area.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <nav aria-label="Site pages" className="mt-3">
+            <ul className="flex flex-wrap gap-x-4 gap-y-1.5 text-sm font-medium text-ink">
+              {PRIMARY_NAV.filter((item) => item.href !== '/').map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="transition-colors hover:text-brand">
+                    {item.label}
                   </Link>
                 </li>
               ))}

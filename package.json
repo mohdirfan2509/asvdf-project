@@ -12,7 +12,8 @@
     "lint": "next lint",
     "seed:firebase": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local scripts/seed-firebase.mjs",
     "migrate:firebase": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local scripts/migrate-to-firebase.mjs",
-    "articles:add-missing": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local scripts/add-missing-articles.mjs"
+    "articles:add-missing": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local scripts/add-missing-articles.mjs",
+    "clients:replace": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local scripts/replace-clients.mjs"
   },
   "dependencies": {
     "cloudinary": "^2.10.1",

@@ -118,7 +118,7 @@ export default function ContactForm({ heading, services = [], privacyTitle, priv
         </Field>
         <Field id="contact-service" label="Service Required" error={errors.service}>
           <div className="relative">
-            <select {...fieldProps('service')} className={`${fieldProps('service').className} appearance-none pr-10 ${values.service ? '' : 'text-ink-muted/70'}`}>
+            <select {...fieldProps('service')} className={`${fieldProps('service').className} appearance-none pr-10 ${values.service ? '' : 'text-ink-muted'}`}>
               <option value="">Select a service</option>
               {services.map((service) => (
                 <option key={service} value={service} className="text-ink">

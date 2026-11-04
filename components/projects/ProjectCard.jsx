@@ -1,6 +1,10 @@
 import { ArrowRight } from 'lucide-react';
+import { hasCaseStudy, projectPath } from '@/lib/projects';
 
-/** Project tile; the whole card (including the arrow) opens the project's details pop-up. */
+/**
+ * Project tile; the whole card (including the arrow) opens the project's details pop-up. Projects with a
+ * case-study page also link to it, so search engines can reach that page without opening the pop-up.
+ */
 export default function ProjectCard({ project, eager = false, onOpen }) {
   const alt = [project.title, project.location].filter(Boolean).join(' in ') || 'Flooring project';
 
@@ -27,14 +31,28 @@ export default function ProjectCard({ project, eager = false, onOpen }) {
       <div className="flex flex-1 items-end justify-between gap-2 p-3.5 max-sm:p-2.5 min-[1400px]:p-4 fit:py-3">
         <div className="min-w-0">
           <h2 className="text-[13px] max-sm:text-[12.5px] min-[1400px]:text-sm font-semibold leading-snug text-ink">
-            <button
-              type="button"
-              onClick={() => onOpen(project)}
-              aria-haspopup="dialog"
-              className="text-left after:absolute after:inset-0 after:cursor-pointer focus-visible:outline-none"
-            >
-              {project.title}
-            </button>
+            {hasCaseStudy(project) ? (
+              <a
+                href={projectPath(project)}
+                onClick={(event) => {
+                  event.preventDefault();
+                  onOpen(project);
+                }}
+                aria-haspopup="dialog"
+                className="text-left after:absolute after:inset-0 after:cursor-pointer focus-visible:outline-none"
+              >
+                {project.title}
+              </a>
+            ) : (
+              <button
+                type="button"
+                onClick={() => onOpen(project)}
+                aria-haspopup="dialog"
+                className="text-left after:absolute after:inset-0 after:cursor-pointer focus-visible:outline-none"
+              >
+                {project.title}
+              </button>
+            )}
           </h2>
           {/* On the one-screen homepage and on phones the location and area share one line. */}
           <p className="fit:mt-1 fit:truncate fit:text-xs max-sm:mt-0.5 max-sm:truncate max-sm:text-[11px]">

@@ -91,7 +91,7 @@ export default async function BlogArticlePage({ params }) {
 
         <div className="mx-auto max-w-3xl px-5 py-7 sm:px-8 sm:py-10">
           <Link
-            href="/#blogs"
+            href="/blog"
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:underline"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden />

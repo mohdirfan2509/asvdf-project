@@ -86,8 +86,16 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const body = await request.json();
-  const { collection, row, action, id } = body;
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
+  }
+  const { collection, row, action, id } = body ?? {};
+  if (action === 'delete' && (!COLLECTIONS.includes(collection) || typeof id !== 'string' || !id || id.includes('/'))) {
+    return NextResponse.json({ error: 'Invalid delete request' }, { status: 400 });
+  }
   // Only the editable numbers are stored; every other site detail is fixed in code.
   const settings = body.settings
     ? sanitizeSettings(Object.fromEntries(EDITABLE_STAT_KEYS.map((key) => [key, body.settings[key] ?? ''])))

@@ -56,7 +56,7 @@ export default function AdminLoginForm() {
     <form onSubmit={onSubmit} className="surface-raised w-full max-w-sm rounded-panel p-7 shadow-neu-lg sm:p-8">
       <div className="flex flex-col items-center text-center">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/asvdf-logo.png" alt="AS VDF Flooring" className="h-16 w-auto rounded-[12px] bg-black object-contain" />
+        <img src="/asvdf-logo-sm.webp" alt="AS VDF Flooring" width={240} height={160} className="h-16 w-auto rounded-[12px] bg-black object-contain" />
         <h1 className="mt-5 text-2xl font-bold tracking-tight text-ink">Welcome back</h1>
         <p className="mt-1 text-sm text-ink-muted">Sign in to manage the ASVDF website</p>
       </div>

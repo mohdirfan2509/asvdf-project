@@ -14,7 +14,7 @@ export async function generateMetadata() {
       settings.seo_description ||
       'ASVDF Flooring installs VDF and industrial concrete floors for warehouses, plants, and commercial buildings. Based in Hyderabad.',
     path: '/',
-    image: settings.hero_image || '/banner.png',
+    image: settings.hero_image || '/og-default.jpg',
     absoluteTitle: true,
   });
 }

@@ -37,7 +37,7 @@ export async function generateMetadata() {
       siteName: settings.company_name || BRAND_NAME,
       title,
       description,
-      images: [{ url: settings.hero_image || '/banner.png' }],
+      images: [{ url: settings.hero_image || '/og-default.jpg' }],
     },
     twitter: {
       card: 'summary_large_image',

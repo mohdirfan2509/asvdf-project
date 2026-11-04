@@ -20,6 +20,7 @@ public/uploads/
 data/cms.json
 data/cms.backup*.json
 data/firestore-backup*.json
+data/client-logos-raw/
 
 # debug / os
 npm-debug.log*
