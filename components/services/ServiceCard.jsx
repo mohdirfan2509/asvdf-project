@@ -2,12 +2,13 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { serviceIcon } from '@/components/services/serviceIcon';
 
+/** Service tile: photo beside the text from `md`; on phones a compact photo-over-title card without the description. */
 export default function ServiceCard({ service }) {
   const Icon = serviceIcon(service.title);
 
   return (
-    <article className="group relative flex h-full flex-col min-[480px]:flex-row overflow-hidden rounded-card surface-raised shadow-neu-sm transition-shadow duration-200 hover:shadow-neu-md focus-within:ring-2 focus-within:ring-brand/40">
-      <div className="relative aspect-[16/9] min-[480px]:aspect-auto min-[480px]:min-h-[7.5rem] short-desktop:min-h-[6.75rem] min-[480px]:w-[43%] shrink-0 overflow-hidden bg-surface-sunken">
+    <article className="group relative flex h-full flex-col md:flex-row overflow-hidden rounded-card surface-raised shadow-neu-sm transition-shadow duration-200 hover:shadow-neu-md focus-within:ring-2 focus-within:ring-brand/40">
+      <div className="relative aspect-[16/10] md:aspect-auto md:min-h-[7.5rem] short-desktop:min-h-[6.75rem] md:w-[43%] shrink-0 overflow-hidden bg-surface-sunken">
         {service.image ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -20,12 +21,12 @@ export default function ServiceCard({ service }) {
         ) : null}
       </div>
 
-      <div className="flex min-w-0 flex-1 flex-col p-3 xl:p-3.5 short-desktop:p-2.5">
-        <div className="flex items-start gap-2.5">
-          <span className="icon-well h-9 w-9">
-            <Icon className="h-4 w-4" strokeWidth={1.6} aria-hidden />
+      <div className="flex min-w-0 flex-1 flex-col p-3 max-sm:p-2.5 xl:p-3.5 short-desktop:p-2.5">
+        <div className="flex items-start gap-2.5 max-sm:items-center max-sm:gap-2">
+          <span className="icon-well h-9 w-9 max-sm:h-7 max-sm:w-7">
+            <Icon className="h-4 w-4 max-sm:h-3.5 max-sm:w-3.5" strokeWidth={1.6} aria-hidden />
           </span>
-          <h3 className="pt-1 text-sm font-semibold leading-snug text-ink">
+          <h3 className="pt-1 max-sm:pt-0 text-sm max-sm:text-[12.5px] font-semibold leading-snug text-ink">
             {service.href ? (
               <Link href={service.href} className="after:absolute after:inset-0 focus-visible:outline-none">
                 {service.title}
@@ -35,7 +36,7 @@ export default function ServiceCard({ service }) {
             )}
           </h3>
         </div>
-        <div className="mt-2 flex flex-1 items-end gap-2">
+        <div className="mt-2 flex flex-1 items-end gap-2 max-sm:hidden">
           {service.description ? (
             <p
               title={service.description}

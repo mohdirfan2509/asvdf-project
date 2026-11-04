@@ -4,5 +4,17 @@
     "paths": {
       "@/*": ["./*"]
     }
-  }
+  },
+  "exclude": [
+    "node_modules",
+    ".next",
+    "out",
+    "dist",
+    "src",
+    "design",
+    "reference-images",
+    "services-images",
+    "data",
+    "public"
+  ]
 }

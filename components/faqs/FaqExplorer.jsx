@@ -21,6 +21,7 @@ import {
 import RequestQuoteLink from '@/components/contact/RequestQuoteLink';
 import { ALL_QUESTIONS, FAQ_CATEGORY_LINKS, categoryKey, faqCategories, filterFaqs } from '@/lib/faqs';
 import { FAQS_COPY } from '@/lib/seo/page-content';
+import { useFitLayout, usePhoneLayout } from '@/lib/use-fit-layout';
 
 const INITIAL_VISIBLE = 5;
 
@@ -52,19 +53,19 @@ function AccordionItem({ item, open, hidden, onToggle }) {
           aria-expanded={open}
           aria-controls={answerId}
           onClick={onToggle}
-          className="flex w-full items-center gap-3 sm:gap-4 rounded-card px-4 py-3.5 sm:px-5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand/40"
+          className="flex w-full items-center gap-3 sm:gap-4 max-sm:gap-2.5 rounded-card px-4 py-3.5 sm:px-5 max-sm:px-3 max-sm:py-2.5 fit:py-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand/40"
         >
           <span
-            className={`inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full transition-colors ${
+            className={`inline-flex h-7 w-7 max-sm:h-6 max-sm:w-6 shrink-0 items-center justify-center rounded-full transition-colors ${
               open ? 'bg-brand-solid text-white shadow-brand' : 'bg-brand-soft text-brand'
             }`}
           >
             {open ? <Minus className="h-4 w-4" aria-hidden /> : <Plus className="h-4 w-4" aria-hidden />}
           </span>
-          <span className={`min-w-0 flex-1 text-sm sm:text-[15px] font-semibold leading-snug ${open ? 'text-brand' : 'text-ink'}`}>
+          <span className={`min-w-0 flex-1 text-sm sm:text-[15px] max-sm:text-[13px] font-semibold leading-snug ${open ? 'text-brand' : 'text-ink'}`}>
             {item.question}
           </span>
-          <span className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${open ? 'bg-white dark:bg-surface-raised shadow-neu-sm text-ink' : 'text-ink'}`}>
+          <span className={`inline-flex h-8 w-8 max-sm:h-6 max-sm:w-6 shrink-0 items-center justify-center rounded-full ${open ? 'bg-white dark:bg-surface-raised shadow-neu-sm text-ink' : 'text-ink'}`}>
             <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${open ? 'rotate-180' : ''}`} aria-hidden />
           </span>
         </button>
@@ -77,8 +78,8 @@ function AccordionItem({ item, open, hidden, onToggle }) {
         className={`grid transition-[grid-template-rows] duration-300 ease-out ${open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
       >
         <div className="overflow-hidden">
-          <div className="px-4 pb-4 sm:pl-[3.75rem] sm:pr-16">
-            <p className="text-sm leading-relaxed text-ink-muted">{item.answer}</p>
+          <div className="px-4 pb-4 max-sm:px-3 max-sm:pb-3 sm:pl-[3.75rem] sm:pr-16">
+            <p className="text-sm max-sm:text-[13px] leading-relaxed max-sm:leading-snug text-ink-muted">{item.answer}</p>
             {link ? (
               <Link
                 href={link.href}
@@ -95,17 +96,23 @@ function AccordionItem({ item, open, hidden, onToggle }) {
   );
 }
 
-/** Category sidebar, support card, search and single-open accordion for FAQ items. */
-export default function FaqExplorer({ items = [] }) {
+/**
+ * Category sidebar, support card, search and single-open accordion for FAQ items. `fitScreen` (homepage
+ * only) shows one question fewer before "Show more" on laptops and desktops.
+ */
+export default function FaqExplorer({ items = [], fitScreen = false }) {
   const categories = useMemo(() => faqCategories(items), [items]);
   const [category, setCategory] = useState(ALL_QUESTIONS);
   const [query, setQuery] = useState('');
   const [openId, setOpenId] = useState(null);
   const [showAll, setShowAll] = useState(false);
+  const { fit } = useFitLayout(fitScreen);
+  const phone = usePhoneLayout(true);
+  const initialVisible = fit || phone ? INITIAL_VISIBLE - 1 : INITIAL_VISIBLE;
 
   const filtered = useMemo(() => filterFaqs(items, { category, query }), [items, category, query]);
   // Items beyond the first few stay rendered (hidden) so every answer remains in the HTML.
-  const visible = showAll ? filtered : filtered.slice(0, INITIAL_VISIBLE);
+  const visible = showAll ? filtered : filtered.slice(0, initialVisible);
   const hiddenCount = filtered.length - visible.length;
   const activeOpenId = visible.some((item) => item.id === openId) ? openId : null;
 
@@ -128,7 +135,7 @@ export default function FaqExplorer({ items = [] }) {
           type="button"
           aria-pressed={active}
           onClick={() => chooseCategory(key)}
-          className={`flex w-full items-center gap-3 whitespace-nowrap rounded-control px-3 py-2.5 text-left text-sm transition-colors ${
+          className={`flex w-full items-center gap-3 whitespace-nowrap rounded-control px-3 py-2.5 max-sm:py-1.5 fit:py-1.5 text-left text-sm max-sm:text-[13px] transition-colors ${
             active ? 'bg-brand-soft font-semibold text-brand shadow-neu-sm' : 'text-ink hover:text-brand'
           }`}
         >
@@ -143,24 +150,24 @@ export default function FaqExplorer({ items = [] }) {
   };
 
   return (
-    <div className="grid gap-5 lg:grid-cols-[15rem_minmax(0,1fr)] xl:grid-cols-[16.5rem_minmax(0,1fr)] lg:gap-7">
-      <aside aria-label="FAQ categories" className="min-w-0 space-y-4 lg:self-start">
-        <section aria-labelledby="faq-categories-title" className="surface-raised shadow-neu-sm rounded-card p-4">
-          <h3 id="faq-categories-title" className="px-1 text-base font-semibold text-ink">
+    <div className="grid gap-5 max-sm:gap-3 lg:grid-cols-[15rem_minmax(0,1fr)] xl:grid-cols-[16.5rem_minmax(0,1fr)] lg:gap-7">
+      <aside aria-label="FAQ categories" className="min-w-0 space-y-4 max-sm:space-y-2.5 fit:space-y-3 lg:self-start">
+        <section aria-labelledby="faq-categories-title" className="surface-raised shadow-neu-sm rounded-card p-4 max-sm:p-3">
+          <h3 id="faq-categories-title" className="px-1 text-base max-sm:text-sm font-semibold text-ink">
             {FAQS_COPY.categoriesHeading}
           </h3>
-          <ul className="-mx-1 mt-3 flex gap-2 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mx-0 lg:block lg:space-y-1 lg:overflow-visible lg:px-0 lg:pb-0">
+          <ul className="-mx-1 mt-3 max-sm:mt-2 flex gap-2 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mx-0 lg:block lg:space-y-1 lg:overflow-visible lg:px-0 lg:pb-0">
             {categoryButton(ALL_QUESTIONS, FAQS_COPY.allQuestions, items.length)}
             {categories.map(({ key, label, count }) => categoryButton(key, label, count))}
           </ul>
         </section>
 
-        <div className="surface-raised shadow-neu-sm rounded-card flex items-center gap-4 p-4">
-          <span className="icon-well h-14 w-14">
-            <Headset className="h-6 w-6" strokeWidth={1.6} aria-hidden />
+        <div className="surface-raised shadow-neu-sm rounded-card flex items-center gap-4 max-sm:gap-3 p-4 max-sm:p-3 fit:py-3.5">
+          <span className="icon-well h-14 w-14 max-sm:h-10 max-sm:w-10 fit:h-12 fit:w-12">
+            <Headset className="h-6 w-6 max-sm:h-5 max-sm:w-5" strokeWidth={1.6} aria-hidden />
           </span>
           <div className="min-w-0">
-            <p className="text-[15px] font-semibold text-ink">{FAQS_COPY.supportHeading}</p>
+            <p className="text-[15px] max-sm:text-sm font-semibold text-ink">{FAQS_COPY.supportHeading}</p>
             <p className="mt-0.5 text-xs text-ink-muted">{FAQS_COPY.supportText}</p>
             <RequestQuoteLink className="group mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-brand">
               {FAQS_COPY.contactCta}
@@ -170,9 +177,9 @@ export default function FaqExplorer({ items = [] }) {
         </div>
       </aside>
 
-      <div className="min-w-0 space-y-4">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <h3 className="text-lg sm:text-xl font-bold tracking-tight text-ink">{FAQS_COPY.listHeading}</h3>
+      <div className="min-w-0 space-y-4 max-sm:space-y-3">
+        <div className="flex flex-col gap-3 max-sm:gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <h3 className="text-lg sm:text-xl max-sm:text-base font-bold tracking-tight text-ink">{FAQS_COPY.listHeading}</h3>
           <div className="relative w-full sm:w-72">
             <label htmlFor="faq-search" className="sr-only">
               Search questions
@@ -206,18 +213,18 @@ export default function FaqExplorer({ items = [] }) {
 
         {filtered.length ? (
           <>
-            <ul id="faq-list" className="space-y-3">
+            <ul id="faq-list" className="space-y-3 max-sm:space-y-2 fit:space-y-2.5">
               {filtered.map((item, index) => (
                 <AccordionItem
                   key={item.id}
                   item={item}
-                  hidden={!showAll && index >= INITIAL_VISIBLE}
+                  hidden={!showAll && index >= initialVisible}
                   open={item.id === activeOpenId}
                   onToggle={() => setOpenId((current) => (current === item.id ? null : item.id))}
                 />
               ))}
             </ul>
-            {filtered.length > INITIAL_VISIBLE ? (
+            {filtered.length > initialVisible ? (
               <div className="flex justify-center pt-1">
                 <button
                   type="button"

@@ -140,8 +140,8 @@ export default function Navbar({ activePath = '/', searchData }) {
   return (
     <header className="w-full max-w-[1440px] mx-auto shrink-0 relative">
       {/* One raised bar below lg (no inline links there); from lg, separate logo/links and actions bars. */}
-      <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 h-14 sm:h-16 lg:h-[72px] max-lg:rounded-panel max-lg:border max-lg:border-edge max-lg:bg-surface-raised max-lg:shadow-neu-md max-lg:px-3 sm:max-lg:px-4">
-        <div className="flex-1 min-w-0 h-full flex items-center gap-4 lg:rounded-panel lg:border lg:border-edge lg:bg-surface-raised lg:shadow-neu-md lg:px-6">
+      <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 h-14 sm:h-16 lg:h-[72px] max-lg:rounded-panel max-lg:border max-lg:border-edge max-lg:bg-surface-raised max-lg:shadow-neu-lg max-lg:px-3 sm:max-lg:px-4">
+        <div className="flex-1 min-w-0 h-full flex items-center gap-4 lg:rounded-panel lg:border lg:border-edge lg:bg-surface-raised lg:shadow-neu-lg lg:px-6">
           <Link href="/" className="flex items-center shrink-0" aria-label="AS VDF Flooring home">
             <BrandLogo />
           </Link>
@@ -169,7 +169,7 @@ export default function Navbar({ activePath = '/', searchData }) {
           </nav>
         </div>
 
-        <div className="h-full shrink-0 flex items-center gap-1.5 sm:gap-3 lg:rounded-panel lg:border lg:border-edge lg:bg-surface-raised lg:shadow-neu-md lg:px-4">
+        <div className="h-full shrink-0 flex items-center gap-1.5 sm:gap-3 lg:rounded-panel lg:border lg:border-edge lg:bg-surface-raised lg:shadow-neu-lg lg:px-4">
           <button
             type="button"
             aria-label="Search the site"

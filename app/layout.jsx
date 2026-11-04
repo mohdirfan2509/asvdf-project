@@ -45,9 +45,10 @@ export async function generateMetadata() {
       description,
     },
     robots: { index: true, follow: true },
-    verification: process.env.GOOGLE_SITE_VERIFICATION
-      ? { google: process.env.GOOGLE_SITE_VERIFICATION }
-      : undefined,
+    verification: {
+      google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
+      other: process.env.BING_SITE_VERIFICATION ? { 'msvalidate.01': process.env.BING_SITE_VERIFICATION } : undefined,
+    },
     other: {
       'contact:phone_number': settings.phone || DEFAULT_PHONE_E164,
     },
@@ -69,6 +70,8 @@ export default async function RootLayout({ children }) {
     <html lang="en-IN" className={poppins.variable} data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+        {/* iOS Safari only applies :active (which pauses the scrolling rows while pressed) when a touch listener exists. */}
+        <script dangerouslySetInnerHTML={{ __html: "document.addEventListener('touchstart',function(){},{passive:true});" }} />
       </head>
       <body className={`${poppins.className} bg-surface text-ink antialiased`}>
         <a

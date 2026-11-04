@@ -47,7 +47,11 @@ export default function ServicePageView({
               </p>
             ))}
             {section.bullets?.length ? (
-              <ul className="list-disc pl-5 space-y-1.5 text-sm sm:text-base text-ink-muted mb-3 marker:text-brand">
+              <ul
+                className={`list-disc pl-5 text-sm sm:text-base text-ink-muted mb-3 marker:text-brand ${
+                  section.bullets.length > 10 ? 'columns-2 gap-x-8 lg:columns-3 [&>li]:mb-1.5 [&>li]:break-inside-avoid' : 'space-y-1.5'
+                }`}
+              >
                 {section.bullets.map((item) => (
                   <li key={item}>{item}</li>
                 ))}

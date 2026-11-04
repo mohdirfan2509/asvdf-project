@@ -2,7 +2,7 @@ import Link from 'next/link';
 import BrandLogo from '@/components/brand/BrandLogo';
 import FinalCta from '@/components/layout/FinalCta';
 import SocialIcon from '@/components/ui/SocialIcons';
-import { COMPANY, SERVICE_AREAS, SOCIAL_LINKS } from '@/lib/seo/company';
+import { ALL_INDIA_AREA, COMPANY, SERVICE_AREAS, SOCIAL_LINKS } from '@/lib/seo/company';
 
 const socialClass =
   'inline-flex h-11 w-11 items-center justify-center rounded-full border border-edge bg-surface-raised text-ink shadow-neu-sm transition-[color,box-shadow,transform] duration-200';
@@ -32,10 +32,13 @@ export default function CrawlableFooter({ settings, showCta = true }) {
           </p>
           <nav aria-labelledby="footer-service-areas" className="mt-3">
             <p id="footer-service-areas" className="text-[11px] font-semibold uppercase tracking-[0.14em] text-brand">
-              Service Areas · All over India
+              Service Areas ·{' '}
+              <Link href={ALL_INDIA_AREA.path} className="underline-offset-2 hover:underline">
+                All over India
+              </Link>
             </p>
             <ul className="mt-1.5 grid max-w-[34rem] grid-cols-2 gap-x-3 gap-y-1.5 text-sm font-medium text-ink sm:grid-cols-4 sm:gap-x-0">
-              {SERVICE_AREAS.map((area) => (
+              {[...SERVICE_AREAS, ALL_INDIA_AREA].map((area) => (
                 <li
                   key={area.path}
                   className="sm:border-l sm:border-line sm:px-3 sm:[&:nth-child(4n+1)]:border-l-0 sm:[&:nth-child(4n+1)]:pl-0"

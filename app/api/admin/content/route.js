@@ -12,6 +12,7 @@ import {
 import { readLocalStore, upsertLocalRow, deleteLocalRow, updateLocalSettings } from '@/lib/content/local-store';
 import { COLLECTIONS, SETTINGS_COLLECTION as SETTINGS, sanitizeRow, sanitizeSettings } from '@/lib/content/schema';
 import { EDITABLE_STAT_KEYS } from '@/lib/stats';
+import { projectSlug, slugify } from '@/lib/seo/slug';
 
 function revalidatePublic() {
   revalidatePath('/');
@@ -20,7 +21,34 @@ function revalidatePublic() {
   revalidatePath('/about');
   revalidatePath('/contact');
   revalidatePath('/blog');
+  revalidatePath('/blog/[slug]', 'page');
   revalidatePath('/sitemap.xml');
+}
+
+/** Collections whose items have their own web address, which must be unique within the collection. */
+const SLUG_LABELS = { blogs: 'blog post', projects: 'project' };
+
+function slugOf(collection, row) {
+  return collection === 'projects' ? projectSlug(row) : slugify(row.slug || row.title);
+}
+
+function withSlug(collection, row) {
+  return SLUG_LABELS[collection] ? { ...row, slug: slugOf(collection, row) } : row;
+}
+
+/** An error response when the row's web address is empty or already used by another item, else null. */
+function slugProblem(collection, row, existing) {
+  const label = SLUG_LABELS[collection];
+  if (!label) return null;
+  if (!row.slug) {
+    return NextResponse.json({ error: 'Please enter a web address using letters or numbers.' }, { status: 400 });
+  }
+  const taken = (existing || []).some((item) => item.id !== row.id && slugOf(collection, item) === row.slug);
+  if (!taken) return null;
+  return NextResponse.json(
+    { error: `Another ${label} already uses the web address “${row.slug}”. Please choose a different one.` },
+    { status: 409 }
+  );
 }
 
 function useFirebase() {
@@ -64,7 +92,7 @@ export async function POST(request) {
   const settings = body.settings
     ? sanitizeSettings(Object.fromEntries(EDITABLE_STAT_KEYS.map((key) => [key, body.settings[key] ?? ''])))
     : null;
-  const clean = row ? sanitizeRow(collection, row) : null;
+  const clean = row ? withSlug(collection, sanitizeRow(collection, row)) : null;
   if (!settings && !COLLECTIONS.includes(collection)) return unknownCollection();
 
   if (useFirebase()) {
@@ -83,6 +111,8 @@ export async function POST(request) {
         return NextResponse.json({ data, mode: 'firebase' });
       }
       if (clean) {
+        const problem = slugProblem(collection, clean, await firestoreGetCollection(collection));
+        if (problem) return problem;
         const data = await firestoreUpsert(collection, clean);
         revalidatePublic();
         return NextResponse.json({ data, mode: 'firebase' });
@@ -105,6 +135,8 @@ export async function POST(request) {
     return NextResponse.json({ data, mode: 'local' });
   }
   if (clean) {
+    const problem = slugProblem(collection, clean, (await readLocalStore())[collection]);
+    if (problem) return problem;
     const withId = { ...clean, id: clean.id || crypto.randomUUID() };
     const data = await upsertLocalRow(collection, withId);
     revalidatePublic();

@@ -8,8 +8,12 @@ import { slugify } from '@/lib/seo/slug';
 
 function fieldValue(field, value) {
   if (field.type === 'tags') return Array.isArray(value) ? value.join(', ') : value || '';
+  if (field.type === 'date') return String(value || '').slice(0, 10);
   return value ?? '';
 }
+
+/** Date fields are stored as ISO timestamps at midnight UTC, the format the site formats in UTC. */
+const toIsoDate = (day) => (day ? `${day}T00:00:00.000Z` : '');
 
 /**
  * Slide-over editor (full screen on phones). `fields` describe the form; a field with `slugFrom`
@@ -110,6 +114,13 @@ export default function EditorPanel({ open, heading, fields, draft, errors, savi
                       onBusyChange={setUploading}
                       contain={field.contain}
                       invalid={Boolean(error)}
+                    />
+                  ) : field.type === 'date' ? (
+                    <input
+                      {...common}
+                      type="date"
+                      value={fieldValue(field, draft[field.name])}
+                      onChange={(e) => update(field, toIsoDate(e.target.value))}
                     />
                   ) : (
                     <input

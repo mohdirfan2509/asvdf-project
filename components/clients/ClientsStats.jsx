@@ -10,5 +10,11 @@ const STATS = [
 ];
 
 export default function ClientsStats({ settings }) {
-  return <OrbStatCards items={STATS.map((stat) => ({ ...stat, value: statValue(settings, stat.key) }))} />;
+  return (
+    <OrbStatCards
+      items={STATS.map((stat) => ({ ...stat, value: statValue(settings, stat.key) }))}
+      cardClassName="fit:py-3"
+      iconClassName="icon-orb fit:h-9 fit:w-9"
+    />
+  );
 }

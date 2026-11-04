@@ -11,12 +11,12 @@ export const CONTACT_NAME_FIELD_ID = 'contact-fullName';
 const EMPTY = { fullName: '', companyName: '', email: '', phone: '', service: '', location: '', message: '', website: '' };
 
 const inputClass =
-  'w-full h-12 rounded-control border bg-surface-raised px-4 text-sm text-ink shadow-neu-inset placeholder:text-ink-muted/70 transition-colors focus:outline-none focus:ring-2 focus:ring-brand/30';
+  'w-full h-12 fit:h-11 max-sm:h-10 rounded-control border bg-surface-raised px-4 max-sm:px-3 text-sm max-sm:text-[13px] text-ink shadow-neu-inset placeholder:text-ink-muted/70 transition-colors focus:outline-none focus:ring-2 focus:ring-brand/30';
 
 function Field({ id, label, required, error, children }) {
   return (
     <div>
-      <label htmlFor={id} className="mb-2 block text-sm font-medium text-ink">
+      <label htmlFor={id} className="mb-2 fit:mb-1.5 max-sm:mb-1 block text-sm max-sm:text-xs font-medium text-ink">
         {label}
         {required ? <span className="text-red-600 dark:text-red-400" aria-hidden> *</span> : null}
       </label>
@@ -101,9 +101,9 @@ export default function ContactForm({ heading, services = [], privacyTitle, priv
 
   return (
     <div id={CONTACT_FORM_ID} className="scroll-mt-28">
-      <h2 className="text-2xl sm:text-[1.75rem] font-bold tracking-tight text-ink">{heading}</h2>
+      <h2 className="text-2xl sm:text-[1.75rem] max-sm:text-lg font-bold tracking-tight text-ink">{heading}</h2>
 
-      <form ref={formRef} onSubmit={onSubmit} noValidate className="mt-6 grid grid-cols-1 gap-x-5 gap-y-5 sm:grid-cols-2">
+      <form ref={formRef} onSubmit={onSubmit} noValidate className="mt-6 fit:mt-4 max-sm:mt-3 grid grid-cols-1 max-sm:grid-cols-2 gap-x-5 gap-y-5 fit:gap-y-3.5 max-sm:gap-x-2.5 max-sm:gap-y-2.5 sm:grid-cols-2">
         <Field id="contact-fullName" label="Full Name" required error={errors.fullName}>
           <input {...fieldProps('fullName')} type="text" autoComplete="name" placeholder="Enter your full name" required />
         </Field>
@@ -132,9 +132,9 @@ export default function ContactForm({ heading, services = [], privacyTitle, priv
         <Field id="contact-location" label="Project Location" error={errors.location}>
           <input {...fieldProps('location')} type="text" placeholder="Enter project location" />
         </Field>
-        <div className="sm:col-span-2">
+        <div className="sm:col-span-2 max-sm:col-span-2">
           <Field id="contact-message" label="Message" error={errors.message}>
-            <textarea {...fieldProps('message')} rows={4} placeholder="Tell us about your project..." className={`${fieldProps('message').className} h-auto min-h-[7rem] resize-y py-3`} />
+            <textarea {...fieldProps('message')} rows={4} placeholder="Tell us about your project..." className={`${fieldProps('message').className} h-auto min-h-[7rem] fit:h-20 fit:min-h-0 max-sm:h-[4.5rem] max-sm:min-h-0 resize-y py-3 max-sm:py-2`} />
           </Field>
         </div>
 
@@ -143,8 +143,8 @@ export default function ContactForm({ heading, services = [], privacyTitle, priv
           <input id="contact-website" name="website" type="text" tabIndex={-1} autoComplete="off" value={values.website} onChange={onChange} />
         </div>
 
-        <div className="sm:col-span-2 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
-          <button type="submit" disabled={submitting} aria-busy={submitting} className="group btn-primary h-12 w-full sm:w-auto sm:min-w-[13rem] px-6 text-sm disabled:opacity-70">
+        <div className="sm:col-span-2 max-sm:col-span-2 flex flex-col gap-4 max-sm:gap-2.5 sm:flex-row sm:items-center sm:gap-8">
+          <button type="submit" disabled={submitting} aria-busy={submitting} className="group btn-primary h-12 fit:h-11 max-sm:h-10 w-full sm:w-auto sm:min-w-[13rem] px-6 text-sm max-sm:text-[13px] disabled:opacity-70">
             {submitting ? (
               <>
                 <LoaderCircle className="h-4 w-4 animate-spin" aria-hidden />
@@ -157,9 +157,9 @@ export default function ContactForm({ heading, services = [], privacyTitle, priv
               </>
             )}
           </button>
-          <div className="flex items-center gap-3">
-            <ShieldCheck className="h-7 w-7 shrink-0 text-brand" strokeWidth={1.5} aria-hidden />
-            <p className="text-sm leading-snug text-ink-muted">
+          <div className="flex items-center gap-3 max-sm:gap-2">
+            <ShieldCheck className="h-7 w-7 max-sm:h-5 max-sm:w-5 shrink-0 text-brand" strokeWidth={1.5} aria-hidden />
+            <p className="text-sm max-sm:text-[11px] leading-snug text-ink-muted">
               <span className="block text-ink">{privacyTitle}</span>
               {privacyText}
             </p>

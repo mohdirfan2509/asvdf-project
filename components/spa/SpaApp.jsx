@@ -46,20 +46,20 @@ export default function SpaApp({ content }) {
           <Home settings={settings} />
         </section>
 
-        <div className="w-full max-w-[1440px] mx-auto px-3 sm:px-4 pt-6 lg:pt-8 space-y-6 lg:space-y-8">
+        <div className="home-fit-scope w-full max-w-[1440px] mx-auto px-3 sm:px-4 pt-6 max-sm:pt-4 lg:pt-8 space-y-6 max-sm:space-y-4 lg:space-y-8">
           <ServicesOverview id="services" settings={settings} services={services} className="home-section" />
           <ClientsSection id="clients" settings={settings} clients={clients} className="home-section" />
-          <ProjectsSection id="projects" settings={settings} projects={projects} className="home-section" />
+          <ProjectsSection id="projects" settings={settings} projects={projects} className="home-section" fitScreen />
           <AboutSection id="about" className="home-section" />
           <ContactSection id="contact" settings={settings} services={services} className="home-section" />
           <GallerySection id="gallery" settings={settings} images={gallery} className="home-section" />
           <TestimonialsSection id="testimonials" settings={settings} className="home-section" />
-          <BlogsSection id="blogs" blogs={blogs} className="home-section" />
-          <FaqSection id="faqs" settings={settings} className="home-section" />
+          <BlogsSection id="blogs" blogs={blogs} className="home-section" fitScreen />
+          <FaqSection id="faqs" settings={settings} className="home-section" fitScreen />
         </div>
       </main>
 
-      <div className="w-full max-w-[1440px] mx-auto px-3 sm:px-4 pt-6 lg:pt-8 pb-28 md:pb-10">
+      <div className="w-full max-w-[1440px] mx-auto px-3 sm:px-4 pt-6 max-sm:pt-4 lg:pt-8 pb-20 md:pb-10">
         <CrawlableFooter settings={settings} />
       </div>
 

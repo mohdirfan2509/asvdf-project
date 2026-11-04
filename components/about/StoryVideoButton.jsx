@@ -32,9 +32,9 @@ export default function StoryVideoButton({ label = 'Watch Our Story' }) {
         type="button"
         onClick={open}
         aria-haspopup="dialog"
-        className="group btn-secondary h-12 rounded-full pl-1.5 pr-5 text-sm"
+        className="group btn-secondary h-12 max-sm:h-10 rounded-full pl-1.5 pr-5 max-sm:gap-1.5 max-sm:pl-1 max-sm:pr-3.5 text-sm max-sm:text-[13px] max-sm:whitespace-nowrap"
       >
-        <span className="icon-well h-9 w-9 text-ink transition-colors group-hover:text-brand">
+        <span className="icon-well h-9 w-9 max-sm:h-8 max-sm:w-8 text-ink transition-colors group-hover:text-brand">
           <Play className="h-3.5 w-3.5 fill-current" aria-hidden />
         </span>
         {label}

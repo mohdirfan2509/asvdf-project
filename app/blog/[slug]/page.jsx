@@ -10,6 +10,7 @@ import ArticleBody from '@/components/blogs/ArticleBody';
 import BlogCard from '@/components/blogs/BlogCard';
 import { getBlogBySlug, getBlogs, getSiteSettings } from '@/lib/content/queries';
 import { blogTags, categoryKey, formatBlogDate, readingMinutes, toBlogSummary } from '@/lib/blogs';
+import { relatedPages } from '@/lib/blog-related-pages';
 import { buildMetadata } from '@/lib/seo/metadata';
 import { BLOGS_COPY } from '@/lib/seo/page-content';
 import { graph, organizationNode, breadcrumbNode, articleNode } from '@/lib/seo/schema';
@@ -154,16 +155,7 @@ export default async function BlogArticlePage({ params }) {
       ) : null}
 
       <div className="mb-4">
-        <RelatedLinks
-          links={[
-            { href: '/vdf-flooring', label: 'VDF flooring services' },
-            { href: '/industrial-flooring', label: 'Industrial flooring' },
-            { href: '/warehouse-flooring', label: 'Warehouse flooring' },
-            { href: '/concrete-flooring', label: 'Concrete flooring' },
-            { href: '/projects', label: 'Our projects' },
-            { href: '/contact', label: 'Request a quotation' },
-          ]}
-        />
+        <RelatedLinks links={relatedPages(blog, blogs)} />
       </div>
       <CrawlableFooter settings={settings} />
     </SiteShell>

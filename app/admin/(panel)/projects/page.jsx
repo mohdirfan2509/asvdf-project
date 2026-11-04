@@ -1,7 +1,7 @@
 'use client';
 
 import CollectionManager from '@/components/admin/CollectionManager';
-import { PROJECT_CATEGORIES } from '@/lib/projects';
+import { CASE_STUDY_MIN_CHARS, PROJECT_CATEGORIES } from '@/lib/projects';
 
 const subtitle = (row) => [row.category, row.location, row.area].filter(Boolean).join(' · ');
 
@@ -30,7 +30,7 @@ export default function AdminProjectsPage() {
           label: 'Description (optional)',
           type: 'textarea',
           rows: 6,
-          hint: 'A short write-up shown in the project pop-up: scope, challenges, results. Line breaks are kept.',
+          hint: `Shown in the project pop-up: scope, challenges, results. Line breaks are kept. Write about 70 words or more (${CASE_STUDY_MIN_CHARS}+ characters) and the project also gets its own page that Google can index, e.g. /projects/plant-floor-hyderabad.`,
         },
       ]}
     />

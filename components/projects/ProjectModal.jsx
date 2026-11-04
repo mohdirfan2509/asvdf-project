@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { ImageOff, X } from 'lucide-react';
+import Link from 'next/link';
+import { ArrowRight, ImageOff, X } from 'lucide-react';
+import { hasCaseStudy, projectPath } from '@/lib/projects';
 
 /** Project details pop-up: photo, the details entered in the admin, and the optional description. */
 export default function ProjectModal({ project, onClose }) {
@@ -84,6 +86,16 @@ export default function ProjectModal({ project, onClose }) {
                 <h3 className="text-sm font-semibold text-ink">About this project</h3>
                 <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-ink-muted">{description}</p>
               </div>
+            ) : null}
+
+            {hasCaseStudy(project) ? (
+              <Link
+                href={projectPath(project)}
+                className="group mt-5 inline-flex items-center gap-1.5 self-start text-sm font-semibold text-brand hover:underline"
+              >
+                View full project page
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
+              </Link>
             ) : null}
           </div>
         </div>

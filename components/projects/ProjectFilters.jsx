@@ -59,14 +59,15 @@ export default function ProjectFilters({
         : 'font-medium text-ink transition-colors hover:text-brand'
       : active
         ? 'btn-primary'
-        : 'btn-secondary font-medium';
+        : // On phones the pills sit in one raised track, so the inactive ones drop their own card look.
+          'btn-secondary font-medium max-sm:border-transparent max-sm:bg-transparent max-sm:shadow-none';
     return (
       <button
         key={key}
         type="button"
         aria-pressed={active}
         onClick={() => onChange({ category: key })}
-        className={`shrink-0 h-9 sm:h-10 rounded-full px-4 sm:px-5 text-sm ${look}`}
+        className={`shrink-0 h-9 sm:h-10 max-sm:h-8 rounded-full px-4 sm:px-5 max-sm:px-3.5 text-sm max-sm:text-[13px] ${look}`}
       >
         {label}
       </button>
@@ -74,15 +75,15 @@ export default function ProjectFilters({
   };
 
   return (
-    <div className="relative flex items-center gap-3">
+    <div className="relative flex items-center gap-3 max-sm:gap-2">
       <div className={`min-w-0 ${segmented ? 'flex-1 sm:flex-initial' : 'flex-1'}`}>
         <div
           role="group"
           aria-label={groupLabel}
           className={
             segmented
-              ? 'surface-raised shadow-neu-sm flex gap-1 sm:gap-1.5 overflow-x-auto rounded-full p-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
-              : 'flex gap-2 sm:gap-3 overflow-x-auto p-1.5 -m-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
+              ? 'surface-raised shadow-neu-sm flex gap-1 sm:gap-1.5 overflow-x-auto rounded-full p-1.5 max-sm:p-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
+              : 'flex gap-2 sm:gap-3 overflow-x-auto p-1.5 -m-1.5 max-sm:m-0 max-sm:gap-1 max-sm:p-1 max-sm:rounded-full max-sm:border max-sm:border-edge max-sm:bg-surface-raised max-sm:shadow-neu-sm [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
           }
         >
           {pill(ALL_CATEGORIES, 'All Projects')}
@@ -97,7 +98,7 @@ export default function ProjectFilters({
           aria-expanded={panelOpen}
           aria-controls={panelId}
           onClick={() => setPanelOpen((open) => !open)}
-          className="btn-secondary shrink-0 h-9 sm:h-10 rounded-control px-3 sm:px-4 text-sm font-medium sm:ml-auto"
+          className="btn-secondary shrink-0 h-9 sm:h-10 max-sm:h-10 max-sm:min-w-10 max-sm:px-2.5 rounded-control max-sm:rounded-full px-3 sm:px-4 text-sm font-medium sm:ml-auto"
         >
           <Funnel className="h-4 w-4" strokeWidth={1.75} />
           <span className="hidden sm:inline">Filter</span>

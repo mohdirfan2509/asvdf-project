@@ -15,12 +15,12 @@ export default function ContactSection({ settings, services = [], id, headingAs:
     <section
       id={id}
       aria-labelledby="contact-title"
-      className={`space-y-6 rounded-panel border border-edge bg-surface p-4 sm:p-6 lg:p-8 shadow-neu-sm ${className}`}
+      className={`space-y-6 max-sm:space-y-3 fit:space-y-4 rounded-panel border border-edge bg-surface p-4 sm:p-6 max-sm:p-3 lg:p-8 fit:p-5 shadow-neu-sm ${className}`}
     >
       <Heading id="contact-title" className="sr-only">
         {CONTACT_COPY.h1}
       </Heading>
-      <div className="surface-raised shadow-neu-sm rounded-panel grid gap-10 p-5 sm:p-7 lg:grid-cols-2 lg:gap-0">
+      <div className="surface-raised shadow-neu-sm rounded-panel grid gap-10 max-sm:gap-5 p-5 sm:p-7 max-sm:p-3.5 fit:p-5 lg:grid-cols-2 lg:gap-0">
         <div className="lg:border-r lg:border-line lg:pr-8 xl:pr-10">
           <ContactForm
             heading={CONTACT_COPY.formHeading}

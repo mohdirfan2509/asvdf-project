@@ -10,7 +10,7 @@ export default function BlogCard({ post, headingAs: Heading = 'h3', eager = fals
   return (
     <article className="surface-raised shadow-neu-sm rounded-card flex h-full flex-col transition-[box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:shadow-neu-md">
       <div className="relative">
-        <div className="aspect-[16/7] overflow-hidden rounded-t-card bg-surface-sunken">
+        <div className="aspect-[16/7] fit:aspect-[16/6] overflow-hidden rounded-t-card bg-surface-sunken">
           {post.cover ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -29,21 +29,21 @@ export default function BlogCard({ post, headingAs: Heading = 'h3', eager = fals
         ) : null}
       </div>
 
-      <div className="flex flex-1 flex-col px-4 pb-4 pt-3">
+      <div className="flex flex-1 flex-col px-4 pb-4 pt-3 max-sm:px-3.5 max-sm:pb-3">
         {date ? (
           <p className="flex items-center justify-end gap-1.5 text-xs text-ink-muted">
             <CalendarDays className="h-3.5 w-3.5" strokeWidth={1.75} aria-hidden />
             <time dateTime={post.publishedAt}>{date}</time>
           </p>
         ) : null}
-        <Heading className="mt-2.5 line-clamp-2 text-[15px] font-semibold leading-snug text-ink">
+        <Heading className="mt-2.5 max-sm:mt-2 line-clamp-2 text-[15px] max-sm:text-sm font-semibold leading-snug text-ink">
           <Link href={href} className="transition-colors hover:text-brand focus-visible:outline-none focus-visible:underline">
             {post.title}
           </Link>
         </Heading>
-        <p className="mt-2 line-clamp-3 text-[13px] leading-relaxed text-ink-muted">{post.excerpt}</p>
+        <p className="mt-2 max-sm:mt-1.5 line-clamp-3 fit:line-clamp-2 max-sm:line-clamp-2 text-[13px] leading-relaxed max-sm:leading-snug text-ink-muted">{post.excerpt}</p>
 
-        <div className="mt-auto flex items-center justify-between gap-3 pt-4">
+        <div className="mt-auto flex items-center justify-between gap-3 pt-4 max-sm:pt-3">
           <Link
             href={href}
             className="group/read inline-flex items-center gap-1.5 text-sm font-semibold text-brand focus-visible:outline-none focus-visible:underline"

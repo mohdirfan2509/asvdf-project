@@ -27,6 +27,8 @@ import {
 } from '@/lib/blogs';
 import { paginate } from '@/lib/projects';
 import { BLOGS_COPY } from '@/lib/seo/page-content';
+import { useFitLayout, usePhoneLayout } from '@/lib/use-fit-layout';
+import ViewAllButton from '@/components/ui/ViewAllButton';
 
 const CATEGORY_ICONS = {
   [ALL_POSTS]: LayoutGrid,
@@ -43,11 +45,14 @@ const MENU_ID = 'blog-filter-menu';
 const selectClass =
   'w-full surface-inset rounded-control px-3 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-brand/30';
 
-/** Sidebar panel that collapses behind a toggle below the desktop breakpoint. */
-function SidebarPanel({ id, title, summary, open, onToggle, children }) {
+/**
+ * Sidebar panel that collapses behind a toggle below the desktop breakpoint; with `collapseOnFit` it also
+ * collapses on the one-screen homepage on laptops and desktops.
+ */
+function SidebarPanel({ id, title, summary, open, onToggle, collapseOnFit = false, children }) {
   return (
-    <section aria-labelledby={`${id}-title`} className="surface-raised shadow-neu-sm rounded-card p-4">
-      <h3 id={`${id}-title`} className="hidden px-1 text-base font-semibold text-ink lg:block">
+    <section aria-labelledby={`${id}-title`} className="surface-raised shadow-neu-sm rounded-card p-4 max-sm:px-3.5 max-sm:py-3 fit:p-3.5">
+      <h3 id={`${id}-title`} className={`hidden px-1 text-base font-semibold text-ink lg:block ${collapseOnFit ? 'fit:hidden' : ''}`}>
         {title}
       </h3>
       <button
@@ -55,7 +60,7 @@ function SidebarPanel({ id, title, summary, open, onToggle, children }) {
         aria-expanded={open}
         aria-controls={id}
         onClick={onToggle}
-        className="flex w-full items-center justify-between gap-3 px-1 text-left lg:hidden"
+        className={`flex w-full items-center justify-between gap-3 px-1 text-left lg:hidden ${collapseOnFit ? 'fit:flex' : ''}`}
       >
         <span className="text-base font-semibold text-ink">
           {title}
@@ -63,7 +68,7 @@ function SidebarPanel({ id, title, summary, open, onToggle, children }) {
         </span>
         <ChevronDown className={`h-4 w-4 text-ink-muted transition-transform ${open ? 'rotate-180' : ''}`} aria-hidden />
       </button>
-      <div id={id} className={`mt-3 ${open ? 'block' : 'hidden'} lg:block`}>
+      <div id={id} className={`mt-3 ${open ? 'block' : 'hidden'} lg:block ${collapseOnFit && !open ? 'fit:hidden' : ''}`}>
         {children}
       </div>
     </section>
@@ -184,17 +189,30 @@ function FilterMenu({ filters, onChange }) {
   );
 }
 
-/** Category sidebar, tags, search, filters, article grid and pagination for blog summaries. */
-export default function BlogsExplorer({ posts = [] }) {
+/** Articles shown on the homepage on phones before "View all articles". */
+const PHONE_PREVIEW = 2;
+
+/**
+ * Category sidebar, tags, search, filters, article grid and pagination for blog summaries. `fitScreen`
+ * (homepage only) shows one row of articles per page on laptops and desktops, and on phones a short
+ * preview with a link to /blog.
+ */
+export default function BlogsExplorer({ posts = [], fitScreen = false }) {
   const categories = useMemo(() => blogCategories(posts), [posts]);
   const tags = useMemo(() => popularTags(posts), [posts]);
   const [filters, setFilters] = useState(DEFAULTS);
   const [requestedPage, setRequestedPage] = useState(1);
   const [panels, setPanels] = useState({ categories: false, tags: false });
   const topRef = useRef(null);
+  const { fit } = useFitLayout(fitScreen);
+  const phonePreview = usePhoneLayout(fitScreen);
+  const perPage = fit ? 3 : BLOGS_PER_PAGE;
 
   const filtered = useMemo(() => filterBlogs(posts, filters), [posts, filters]);
-  const { items, page, totalPages, start } = paginate(filtered, requestedPage, BLOGS_PER_PAGE);
+  const paged = paginate(filtered, requestedPage, perPage);
+  const { page, totalPages } = paged;
+  const start = phonePreview ? 0 : paged.start;
+  const items = phonePreview ? filtered.slice(0, PHONE_PREVIEW) : paged.items;
   const activeCategory = categories.find((c) => c.key === filters.category);
   const narrowed = Boolean(filters.tag || filters.query.trim() || filters.reading);
 
@@ -218,7 +236,7 @@ export default function BlogsExplorer({ posts = [] }) {
           type="button"
           aria-pressed={active}
           onClick={() => update({ category: key })}
-          className={`flex w-full items-center gap-3 rounded-control px-3 py-2.5 text-left text-sm transition-colors ${
+          className={`flex w-full items-center gap-3 rounded-control px-3 py-2.5 fit:py-2 text-left text-sm transition-colors ${
             active ? 'bg-brand-soft font-semibold text-brand shadow-neu-sm' : 'text-ink hover:text-brand'
           }`}
         >
@@ -233,8 +251,8 @@ export default function BlogsExplorer({ posts = [] }) {
   };
 
   return (
-    <div className="grid gap-5 lg:grid-cols-[15rem_minmax(0,1fr)] xl:grid-cols-[16.5rem_minmax(0,1fr)] lg:gap-7">
-      <aside aria-label="Blog categories and tags" className="space-y-4 lg:self-start">
+    <div className="grid gap-5 max-sm:gap-3 lg:grid-cols-[15rem_minmax(0,1fr)] xl:grid-cols-[16.5rem_minmax(0,1fr)] lg:gap-7">
+      <aside aria-label="Blog categories and tags" className="space-y-4 max-sm:space-y-2 fit:space-y-3 lg:self-start">
         <SidebarPanel
           id="blog-categories"
           title={BLOGS_COPY.categoriesHeading}
@@ -255,6 +273,7 @@ export default function BlogsExplorer({ posts = [] }) {
             summary={filters.tag}
             open={panels.tags}
             onToggle={() => setPanels((p) => ({ ...p, tags: !p.tags }))}
+            collapseOnFit
           >
             <ul className="flex flex-wrap gap-2">
               {tags.map((tag) => {
@@ -281,7 +300,7 @@ export default function BlogsExplorer({ posts = [] }) {
         ) : null}
       </aside>
 
-      <div ref={topRef} className="min-w-0 scroll-mt-28 space-y-5">
+      <div ref={topRef} className="min-w-0 scroll-mt-28 space-y-5 max-sm:space-y-3">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-ink-muted" aria-live="polite">
             {filtered.length
@@ -334,7 +353,7 @@ export default function BlogsExplorer({ posts = [] }) {
         ) : null}
 
         {items.length ? (
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
+          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-sm:gap-3 lg:gap-5">
             {items.map((post, index) => (
               <li key={post.id} className="h-full">
                 <BlogCard post={post} eager={page === 1 && index < 3} />
@@ -368,7 +387,11 @@ export default function BlogsExplorer({ posts = [] }) {
           </div>
         )}
 
-        <ProjectPagination page={page} totalPages={totalPages} onChange={goToPage} label="Blog pages" keepArrows />
+        {phonePreview ? (
+          filtered.length > PHONE_PREVIEW ? <ViewAllButton href="/blog">View all articles</ViewAllButton> : null
+        ) : (
+          <ProjectPagination page={page} totalPages={totalPages} onChange={goToPage} label="Blog pages" keepArrows />
+        )}
       </div>
     </div>
   );

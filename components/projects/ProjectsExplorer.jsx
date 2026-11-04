@@ -5,6 +5,7 @@ import ProjectCard from '@/components/projects/ProjectCard';
 import ProjectFilters from '@/components/projects/ProjectFilters';
 import ProjectModal from '@/components/projects/ProjectModal';
 import ProjectPagination from '@/components/projects/ProjectPagination';
+import ViewAllButton from '@/components/ui/ViewAllButton';
 import {
   ALL_CATEGORIES,
   AREA_BANDS,
@@ -16,10 +17,14 @@ import {
 } from '@/lib/projects';
 import { OPEN_PROJECT_EVENT } from '@/lib/project-link';
 import { projectSlug } from '@/lib/seo/slug';
+import { usePhoneLayout } from '@/lib/use-fit-layout';
 
 const DEFAULT_FILTERS = { category: ALL_CATEGORIES, city: '', area: '' };
+/** Projects shown on the homepage on phones before "View all projects". */
+const PHONE_PREVIEW = 4;
 
-export default function ProjectsExplorer({ projects = [] }) {
+/** `fitScreen` (homepage only): on phones, show a short preview and link to /projects instead of paging. */
+export default function ProjectsExplorer({ projects = [], fitScreen = false }) {
   const categories = useMemo(() => projectCategories(projects), [projects]);
   const cities = useMemo(() => projectCities(projects), [projects]);
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
@@ -27,9 +32,13 @@ export default function ProjectsExplorer({ projects = [] }) {
   const [urlReady, setUrlReady] = useState(false);
   const [selected, setSelected] = useState(null);
   const topRef = useRef(null);
+  const phonePreview = usePhoneLayout(fitScreen);
 
   const filtered = useMemo(() => filterProjects(projects, filters), [projects, filters]);
-  const { items, page, totalPages, start } = paginate(filtered, requestedPage, PROJECTS_PER_PAGE);
+  const paged = paginate(filtered, requestedPage, PROJECTS_PER_PAGE);
+  const { page, totalPages, start } = paged;
+  const items = phonePreview ? filtered.slice(0, PHONE_PREVIEW) : paged.items;
+  const viewAllHref = filters.category === ALL_CATEGORIES ? '/projects' : `/projects?category=${encodeURIComponent(filters.category)}`;
 
   // The server renders the unfiltered first page; shared links restore their view after hydration.
   useEffect(() => {
@@ -103,17 +112,17 @@ export default function ProjectsExplorer({ projects = [] }) {
   const emptyLabel = activeCategory ? `${activeCategory.label.toLowerCase()} ` : '';
 
   return (
-    <div ref={topRef} className="scroll-mt-28 space-y-5 sm:space-y-6">
+    <div ref={topRef} className="scroll-mt-28 space-y-5 sm:space-y-6 max-sm:space-y-3 fit:space-y-4">
       <ProjectFilters categories={categories} cities={cities} filters={filters} onChange={updateFilters} />
 
       <p className="sr-only" aria-live="polite">
         {filtered.length
-          ? `Showing projects ${start + 1} to ${start + items.length} of ${filtered.length}`
+          ? `Showing projects ${phonePreview ? 1 : start + 1} to ${(phonePreview ? 0 : start) + items.length} of ${filtered.length}`
           : 'No projects match the selected filters'}
       </p>
 
       {items.length ? (
-        <ul className="grid grid-cols-1 min-[540px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-5">
+        <ul className="grid grid-cols-1 min-[540px]:grid-cols-2 max-sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-sm:gap-2.5 lg:gap-5 fit:gap-4">
           {items.map((project, index) => (
             <li key={project.id} className="h-full">
               <ProjectCard project={project} eager={page === 1 && index < 4} onOpen={setSelected} />
@@ -134,7 +143,11 @@ export default function ProjectsExplorer({ projects = [] }) {
         </div>
       )}
 
-      <ProjectPagination page={page} totalPages={totalPages} onChange={goToPage} />
+      {phonePreview ? (
+        filtered.length > PHONE_PREVIEW ? <ViewAllButton href={viewAllHref}>View all projects</ViewAllButton> : null
+      ) : (
+        <ProjectPagination page={page} totalPages={totalPages} onChange={goToPage} />
+      )}
 
       <ProjectModal project={selected} onClose={closeProject} />
     </div>
