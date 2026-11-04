@@ -9,9 +9,9 @@ export default function StatCards({ settings, stats, className = '', cardClassNa
   if (!items.length) return null;
 
   return (
-    <dl className={className}>
+    <ul className={className}>
       {items.map(({ key, label, icon: Icon, value }, index) => (
-        <div
+        <li
           key={key}
           className={`surface-raised shadow-neu-sm rounded-card flex items-center gap-3 max-sm:gap-2.5 px-3.5 py-3 sm:px-4 sm:py-4 max-sm:px-3 max-sm:py-2.5 ${cardClassName} ${
             items.length % 2 === 1 && index === items.length - 1 ? 'col-span-2 lg:col-span-1' : ''
@@ -21,13 +21,13 @@ export default function StatCards({ settings, stats, className = '', cardClassNa
             <Icon className="h-5 w-5 max-sm:h-4 max-sm:w-4" strokeWidth={1.6} aria-hidden />
           </span>
           <div className="flex min-w-0 flex-col-reverse">
-            <dt className="mt-1 max-sm:mt-0.5 text-xs max-sm:text-[11px] text-ink-muted">{label}</dt>
-            <dd className="text-2xl max-sm:text-xl font-bold leading-none text-brand">
+            <p className="mt-1 max-sm:mt-0.5 text-xs max-sm:text-[11px] text-ink-muted">{label}</p>
+            <p className="text-2xl max-sm:text-xl font-bold leading-none text-brand">
               <CountUp value={value} />
-            </dd>
+            </p>
           </div>
-        </div>
+        </li>
       ))}
-    </dl>
+    </ul>
   );
 }

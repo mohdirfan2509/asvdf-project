@@ -13,27 +13,27 @@ export default function OrbStatCards({ items, className = '', cardClassName = ''
   if (!stats.length) return null;
 
   return (
-    <dl
+    <ul
       className={`grid grid-cols-2 gap-3 sm:gap-4 max-sm:gap-2 ${DESKTOP_COLUMNS[stats.length] || 'lg:grid-cols-4'} ${PHONE_COLUMNS[stats.length] || 'max-sm:grid-cols-4'} ${className}`}
     >
       {stats.map(({ key, label, icon: Icon, value }, index) => (
-        <div
+        <li
           key={key}
           className={`surface-raised shadow-neu-sm rounded-card flex flex-col items-center px-3 py-5 max-sm:px-1.5 max-sm:py-2.5 text-center fit:grid fit:grid-cols-[auto_minmax(0,1fr)] fit:items-center fit:gap-x-3 fit:text-left ${cardClassName} ${
             stats.length % 2 === 1 && index === stats.length - 1 ? 'col-span-2 max-sm:col-span-1 lg:col-span-1' : ''
           }`}
         >
-          <dt className="order-last mt-1 fit:mt-0.5 fit:self-start text-xs sm:text-[13px] max-sm:text-[10.5px] max-sm:leading-tight fit:leading-snug text-ink">
+          <p className="order-last mt-1 fit:mt-0.5 fit:self-start text-xs sm:text-[13px] max-sm:text-[10.5px] max-sm:leading-tight fit:leading-snug text-ink">
             {label}
-          </dt>
+          </p>
           <span className={`h-12 w-12 max-sm:h-8 max-sm:w-8 fit:row-span-2 ${iconClassName}`}>
             <Icon className="h-5 w-5 max-sm:h-4 max-sm:w-4" strokeWidth={1.75} aria-hidden />
           </span>
-          <dd className="mt-3 max-sm:mt-1.5 fit:mt-0 fit:self-end text-xl sm:text-2xl max-sm:text-base font-bold leading-none text-brand">
+          <p className="mt-3 max-sm:mt-1.5 fit:mt-0 fit:self-end text-xl sm:text-2xl max-sm:text-base font-bold leading-none text-brand">
             <CountUp value={value} />
-          </dd>
-        </div>
+          </p>
+        </li>
       ))}
-    </dl>
+    </ul>
   );
 }

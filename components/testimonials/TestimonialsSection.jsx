@@ -100,11 +100,11 @@ export default function TestimonialsSection({ settings, id, headingAs: Heading =
 
       <div className="grid gap-3 max-sm:gap-2 rounded-panel border border-edge bg-surface p-3 max-sm:p-2 shadow-neu-sm lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] lg:items-stretch">
         {stats.length ? (
-          <dl
+          <ul
             className={`grid grid-cols-2 gap-y-5 px-2 py-4 fit:py-3 sm:gap-y-0 sm:divide-x sm:divide-line max-sm:gap-y-0 max-sm:px-0 max-sm:py-2 max-sm:divide-x max-sm:divide-line ${STAT_COLUMNS[stats.length]} ${PHONE_STAT_COLUMNS[stats.length]}`}
           >
             {stats.map(({ key, label, icon: Icon, value }, index) => (
-              <div
+              <li
                 key={key}
                 className={`flex items-center gap-3 px-3 lg:justify-center max-sm:flex-col max-sm:justify-center max-sm:gap-0 max-sm:px-1 max-sm:text-center ${
                   stats.length % 2 === 1 && index === stats.length - 1 ? 'col-span-2 sm:col-span-1 max-sm:col-span-1' : ''
@@ -114,14 +114,14 @@ export default function TestimonialsSection({ settings, id, headingAs: Heading =
                   <Icon className="h-5 w-5" strokeWidth={1.75} aria-hidden />
                 </span>
                 <span className="flex min-w-0 flex-col-reverse">
-                  <dt className="mt-1 text-xs max-sm:text-[10.5px] max-sm:leading-tight text-ink-muted">{label}</dt>
-                  <dd className="text-xl sm:text-2xl max-sm:text-lg font-bold leading-none text-ink">
+                  <span className="mt-1 text-xs max-sm:text-[10.5px] max-sm:leading-tight text-ink-muted">{label}</span>
+                  <span className="text-xl sm:text-2xl max-sm:text-lg font-bold leading-none text-ink">
                     <CountUp value={value} />
-                  </dd>
+                  </span>
                 </span>
-              </div>
+              </li>
             ))}
-          </dl>
+          </ul>
         ) : (
           <span className="hidden lg:block" />
         )}
