@@ -11,11 +11,12 @@ const STATS = [
 
 /** Services intro, stats and card grid; shared by /services and the homepage. */
 export default function ServicesOverview({ settings, services = [], id, headingAs: Heading = 'h2', className = '' }) {
-  const cards = services.map(({ id: serviceId, title, description, image, imageAlt, path }) => ({
+  const cards = services.map(({ id: serviceId, title, description, image, cardImage, imageAlt, path }) => ({
     id: serviceId,
     title,
     description,
     image,
+    cardImage,
     imageAlt,
     href: path || null,
   }));

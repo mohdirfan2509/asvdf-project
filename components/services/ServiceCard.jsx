@@ -13,6 +13,8 @@ export default function ServiceCard({ service }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={service.image}
+            srcSet={service.cardImage ? `${service.cardImage} 640w, ${service.image} 960w` : undefined}
+            sizes="(max-width: 767px) 50vw, 25vw"
             alt={service.imageAlt || service.title}
             loading="lazy"
             decoding="async"

@@ -356,7 +356,7 @@ export default function BlogsExplorer({ posts = [], fitScreen = false }) {
           <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-sm:gap-3 lg:gap-5">
             {items.map((post, index) => (
               <li key={post.id} className="h-full">
-                <BlogCard post={post} eager={page === 1 && index < 3} />
+                <BlogCard post={post} eager={!fitScreen && page === 1 && index < 3} />
               </li>
             ))}
           </ul>

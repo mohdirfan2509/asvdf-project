@@ -125,7 +125,7 @@ export default function ProjectsExplorer({ projects = [], fitScreen = false }) {
         <ul className="grid grid-cols-1 min-[540px]:grid-cols-2 max-sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-sm:gap-2.5 lg:gap-5 fit:gap-4">
           {items.map((project, index) => (
             <li key={project.id} className="h-full">
-              <ProjectCard project={project} eager={page === 1 && index < 4} onOpen={setSelected} />
+              <ProjectCard project={project} eager={!fitScreen && page === 1 && index < 4} onOpen={setSelected} />
             </li>
           ))}
         </ul>
